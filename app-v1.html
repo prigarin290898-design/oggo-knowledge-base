@@ -389,6 +389,12 @@ const ROLES = {
   }
 };
 
+const ROSTER = [
+  {key:'anton', name:'Антон', initials:'АН', tg:'@Ctony3'},
+  {key:'mihail', name:'Михаил Поцелуев', initials:'МП', tg:'@nemo101253'},
+  {key:'arseniy', name:'Арсений', initials:'АР', tg:'— бота ещё не открывал'}
+];
+
 const TASKS = {
   anton: [
     {id:'PRVO-39', title:'Составить п/з по заказу 00009', pri:'hi', due:'21.09'},
@@ -453,8 +459,55 @@ const GROWTH = {
 function renderProfile(u){
   const el = document.getElementById('s-profile');
   if(!u){ el.innerHTML = `<div class="empty">Не удалось определить, кто вы.<br>Откройте кнопку бота внутри Telegram.</div>`; return; }
-  const r = ROLES[u.key];
   const li = (arr, dash) => arr.map(t=>`<div class="row" style="align-items:flex-start;">${dash?'<span style="color:var(--ink-dim);">−</span>':'<span class="tag" style="background:var(--ink);color:var(--pill-ink);border-color:var(--ink);flex:0 0 auto;">✓</span>'}<span style="font-size:13px;">${t}</span></div>`).join('<hr class="sep">');
+
+  if(u.key === 'director'){
+    const personCard = (p) => {
+      const r = ROLES[p.key];
+      const tasks = TASKS[p.key] || [];
+      const g = GROWTH[p.key];
+      const zoneBadge = g ? (g.week<=10
+        ? `<span class="tag" style="background:var(--lime);color:var(--lime-ink);border-color:transparent;font-weight:800;">норма · нед. ${g.week}</span>`
+        : `<span class="tag" style="background:${g.week<=25?'var(--warn-bg)':'var(--danger-bg)'};color:${g.week<=25?'var(--warn)':'var(--danger)'};border-color:transparent;">${g.week<=25?'внимание':'последствие'} · нед. ${g.week}</span>`) : '';
+      return `
+      <div class="racc" data-key="${p.key}">
+        <div class="rhead"><span class="row" style="gap:8px;"><span class="avatar" style="width:26px;height:26px;font-size:10.5px;">${p.initials}</span>${p.name}</span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="rbody">
+          <div class="between"><span class="muted">Должность</span><b style="font-size:12px;text-align:right;">${r.position}</b></div>
+          <div class="between"><span class="muted">Подчиняется</span><b style="font-size:12px;">${r.reportsTo}</b></div>
+          <div class="between"><span class="muted">Telegram</span><b style="font-size:12px;">${p.tg}</b></div>
+          <hr class="sep">
+          <div class="muted" style="margin-bottom:4px;">Зона ответственности</div>
+          <p>${r.scope}</p>
+          <div class="between" style="margin:8px 0;"><span class="muted">Шаги процесса</span><span class="tag">${r.stat}</span></div>
+          <div class="rlbl" style="color:var(--ok);">✅ Делает</div>
+          <ul>${r.make.map(x=>`<li>${x}</li>`).join('')}</ul>
+          <div class="rlbl" style="color:var(--ink-dim);">Контролирует</div>
+          <ul>${r.control.map(x=>`<li>${x}</li>`).join('')}</ul>
+          <div class="rlbl" style="color:var(--danger);">🚫 Не делает</div>
+          <ul>${r.dont.map(x=>`<li>${x}</li>`).join('')}</ul>
+          ${zoneBadge ? `<div class="between" style="margin-top:10px;"><span class="muted">Мой рост</span>${zoneBadge}</div>` : ''}
+          <div class="rlbl" style="color:var(--ink-soft);">Задачи сейчас</div>
+          ${tasks.length ? tasks.map(t=>`<div class="between" style="padding:4px 0;font-size:12px;"><span>${t.title}</span><span class="tag" style="font-size:10px;">${t.id}</span></div>`).join('') : '<p class="muted">Нет активных задач</p>'}
+        </div>
+      </div>`;
+    };
+    el.innerHTML = `
+      <div class="glass" style="text-align:center;padding:22px 16px;">
+        <div class="avatar" style="width:60px;height:60px;font-size:21px;margin:0 auto 10px;">${u.initials}</div>
+        <div class="name">${u.name}</div>
+        <div class="muted" style="margin-top:2px;">${u.role}</div>
+      </div>
+      <h2>Все сотрудники</h2>
+      ${ROSTER.map(personCard).join('')}
+    `;
+    el.querySelectorAll('.racc').forEach(acc=>{
+      acc.querySelector('.rhead').addEventListener('click', ()=>acc.classList.toggle('open'));
+    });
+    return;
+  }
+
+  const r = ROLES[u.key];
   el.innerHTML = `
     <div class="glass" style="text-align:center;padding:22px 16px;">
       <div class="avatar" style="width:60px;height:60px;font-size:21px;margin:0 auto 10px;">${u.initials}</div>
@@ -516,17 +569,12 @@ function renderProfile(u){
 function renderTasks(u){
   const el = document.getElementById('s-tasks');
   if(!u){ el.innerHTML = `<div class="empty">Задачи появятся после определения пользователя.</div>`; return; }
-  const own = TASKS[u.key] || [];
   const card = t => `
     <div class="taskcard">
       <div class="between"><span class="row" style="gap:6px;font-size:12.5px;font-weight:700;"><span class="dotpri ${t.pri==='hi'?'':t.pri==='mid'?'mid':'low'}"></span>${t.title}</span><span class="tag">${t.id}</span></div>
       <div class="muted">срок ${t.due}</div>
     </div>`;
-  el.innerHTML = `
-    <div class="glass">
-      <h2>Ваши задачи</h2>
-      ${own.length ? own.map(card).join('') : '<div class="muted">Сейчас на вас ничего не назначено.</div>'}
-    </div>
+  const sharedBlock = `
     <div class="glass">
       <h2>Общее</h2>
       <div class="taskcard">
@@ -537,6 +585,25 @@ function renderTasks(u){
     <div class="pill lime" id="openTracker" style="justify-content:center;width:100%;text-align:center;margin-bottom:10px;cursor:pointer;">Открыть в Трекере</div>
     <div class="honest">Данные из Яндекс Трекер (очередь PR-VO) на 19.09.2026.</div>
   `;
+
+  if(u.key === 'director'){
+    el.innerHTML = ROSTER.map(p=>{
+      const list = TASKS[p.key] || [];
+      return `
+      <div class="glass">
+        <div class="between" style="margin-bottom:8px;"><h2 style="margin:0;">${p.name}</h2><span class="tag">${list.length ? list.length+' задач' : 'пусто'}</span></div>
+        ${list.length ? list.map(card).join('') : '<div class="muted">Сейчас ничего не назначено.</div>'}
+      </div>`;
+    }).join('') + sharedBlock;
+  } else {
+    const own = TASKS[u.key] || [];
+    el.innerHTML = `
+      <div class="glass">
+        <h2>Ваши задачи</h2>
+        ${own.length ? own.map(card).join('') : '<div class="muted">Сейчас на вас ничего не назначено.</div>'}
+      </div>
+    ` + sharedBlock;
+  }
   const trackerUrl = 'https://tracker.yandex.ru/issues/?query=Queue%3A%20PRVO%20Sort%20By%3A%20key%20DESC';
   document.getElementById('openTracker').addEventListener('click', ()=>{
     if(tg && tg.openLink){ tg.openLink(trackerUrl); }
@@ -546,7 +613,36 @@ function renderTasks(u){
 
 function renderGrowth(u){
   const el = document.getElementById('s-growth');
-  const g = u && GROWTH[u.key];
+  if(!u){ el.innerHTML = `<div class="empty">Раздел доступен после определения пользователя.</div>`; return; }
+
+  if(u.key === 'director'){
+    const row = p => {
+      const g = GROWTH[p.key];
+      if(!g) return '';
+      const zoneBadge = g.week<=10
+        ? `<span class="tag" style="background:var(--lime);color:var(--lime-ink);border-color:transparent;font-weight:800;">норма</span>`
+        : `<span class="tag" style="background:${g.week<=25?'var(--warn-bg)':'var(--danger-bg)'};color:${g.week<=25?'var(--warn)':'var(--danger)'};border-color:transparent;">${g.week<=25?'внимание':'последствие'}</span>`;
+      return `
+      <div class="glass">
+        <div class="between">
+          <div class="row" style="gap:8px;"><span class="avatar" style="width:32px;height:32px;font-size:11px;">${p.initials}</span><b style="font-size:13px;">${p.name}</b></div>
+          <div class="row" style="gap:8px;"><span class="huge" style="font-size:20px;">${g.week}</span>${zoneBadge}</div>
+        </div>
+        <div class="errchip" style="margin-top:8px;"><span>${g.top}</span></div>
+      </div>`;
+    };
+    el.innerHTML = `
+      <div class="glass col"><div class="muted">Текущая неделя (15–21.09) — по отделу</div></div>
+      ${ROSTER.map(row).join('')}
+      <div class="attn">
+        <div class="eb">Важно</div>
+        <p>Баллы за текущую неделю пока не начисляются — счёт стартует с нуля 21.09.2026. Заявил проблему сам — ноль баллов, это правило не меняется.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const g = GROWTH[u.key];
   if(!g){ el.innerHTML = `<div class="empty">Раздел доступен после определения пользователя.</div>`; return; }
   const zone = g.week<=10 ? {c:'ok',l:'норма'} : g.week<=25 ? {c:'warn',l:'внимание'} : {c:'danger',l:'последствие'};
   const zoneBadge = g.week<=10
