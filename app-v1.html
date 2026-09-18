@@ -115,6 +115,30 @@
   .mm-link{width:2px;height:12px;background:var(--line);margin-left:16px;}
   .lime-heading{display:inline-block;background:var(--lime);color:var(--lime-ink);font-family:var(--font-display);font-weight:700;font-size:15px;padding:9px 16px;border-radius:99px;margin-bottom:12px;}
 
+  /* 5 стыков документооборота */
+  .stykrow{display:flex;align-items:center;gap:10px;padding:9px 0;}
+  .styknum{width:22px;height:22px;border-radius:50%;background:var(--pill);color:var(--pill-ink);font-family:var(--font-display);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .stykbody{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .stykbody b{font-size:12.5px;}
+  .stykbody span{font-size:11px;color:var(--ink-dim);}
+
+  /* Правила — аккордеон */
+  .racc{margin-bottom:8px;}
+  .rhead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 14px;background:var(--glass);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--glass-border);border-radius:16px;font-size:12.5px;font-weight:700;cursor:pointer;}
+  .racc.open .rhead{border-radius:16px 16px 0 0;}
+  .rhead .chev{transition:transform .2s;flex:0 0 auto;color:var(--ink-dim);}
+  .racc.open .rhead .chev{transform:rotate(180deg);}
+  .rbody{display:none;padding:14px;background:var(--glass-strong);border:1px solid var(--glass-border);border-top:none;border-radius:0 0 16px 16px;font-size:12px;line-height:1.55;}
+  .racc.open .rbody{display:block;}
+  .rbody p{margin:0;}
+  .rbody .rlbl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px;}
+  .rbody .rlbl:first-child{margin-top:0;}
+  .rbody ul{margin:0;padding-left:16px;}
+  .rbody li{margin-bottom:3px;}
+
+  /* Спросить ассистента — FAB */
+  .fab-ask{position:fixed;right:16px;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:9;width:48px;height:48px;border-radius:50%;background:var(--lime);color:var(--lime-ink);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 26px -12px rgba(0,0,0,.5);cursor:pointer;}
+
   .step{position:relative;padding:10px 0 10px 24px;font-size:12.5px;}
   .step::before{content:"";position:absolute;left:5px;top:0;bottom:0;width:2px;background:var(--line);}
   .step:first-child::before{top:14px;}
@@ -243,6 +267,26 @@
       </div>
 
     </div>
+
+    <h2 style="margin-top:4px;">Документооборот — 5 стыков</h2>
+    <div class="glass col" style="gap:0;">
+      <div class="stykrow"><span class="styknum">1</span><div class="stykbody"><b>Приёмка на склад производства</b><span>Поставщик → Кладовщик</span></div><span class="tag">УПД пост.</span></div>
+      <hr class="sep">
+      <div class="stykrow"><span class="styknum">2</span><div class="stykbody"><b>Выдача материалов на производство</b><span>Кладовщик → Старший смены</span></div><span class="tag">ТОРГ-13</span></div>
+      <hr class="sep">
+      <div class="stykrow"><span class="styknum">3</span><div class="stykbody"><b>Выпуск ГП на склад готовой продукции</b><span>Старший смены → Кладовщик</span></div><span class="tag">ТОРГ-13</span></div>
+      <hr class="sep">
+      <div class="stykrow"><span class="styknum">4</span><div class="stykbody"><b>Перемещение на склад Ответ-хранения</b><span>Кладовщик → Ответ-хранение</span></div><span class="tag">ТОРГ-13</span></div>
+      <hr class="sep">
+      <div class="stykrow"><span class="styknum">5</span><div class="stykbody"><b>Отгрузка покупателю</b><span>Кладовщик → Покупатель</span></div><span class="tag">УПД</span></div>
+    </div>
+    <div class="blackblock col">
+      <div class="eb">Правило подписи на каждом стыке</div>
+      <p style="margin:0;font-size:12.5px;line-height:1.5;">Две подписи от руки — «сдал» и «принял», два экземпляра. Затем фото подписанного документа в чат «Документы» — в день движения, до конца смены. Движение не считается закрытым, пока фото не в чате. PDF из программы фото не заменяет — в нём нет подписей.</p>
+    </div>
+
+    <h2>Правила по каждому документу</h2>
+    <div id="ruleAccordion"></div>
   </div>
 
   <!-- 3. ОШИБКИ -->
@@ -278,6 +322,10 @@
   <div class="ni" data-s="errors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.6"/></svg></div>
   <div class="ni" data-s="tasks"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 12l3 3 5-6"/></svg></div>
   <div class="ni" data-s="growth"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="19" x2="5" y2="13"/><line x1="12" y1="19" x2="12" y2="7"/><line x1="19" y1="19" x2="19" y2="11"/></svg></div>
+</div>
+
+<div class="fab-ask" id="fabAsk" title="Спросить ассистента">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
 </div>
 
 <script>
@@ -320,6 +368,45 @@ const TASKS = {
   director: []
 };
 const SHARED_TASK = {id:'PRVO-43', title:'Дорожная карта заказа 00011 (на проверку)', due:'до старта 00011'};
+
+const RULES = [
+  {
+    title: '1. Заказ и производственное задание',
+    ok: 'Заказ идёт по статусам Новый → Подтверждён → дальше. П/з на ГП создаётся строго после «Подтверждён» и на основании этого заказа. Задание проводится сразу и остаётся проведённым; любое изменение — с зафиксированной причиной.',
+    bad: ['Брать заказ в работу раньше «Подтверждён»','Создавать п/з не на основании заказа','Оставлять п/з непроведённым','Снимать проведение с закрытого задания без причины','Менять статус заказа без подтверждающего документа'],
+    risk: 'Рвётся связь между тем, что обещано покупателю, и тем, что реально производится. Уже было: закрытое задание с фактом производства откатили в момент разбора — факт выпуска исчез из истории.'
+  },
+  {
+    title: '2. Движение материалов',
+    ok: 'Любая физическая передача — через документ «Перемещение», собранный по расчёту в «Снабжении». Печать, подпись с обеих сторон, фото подписанного документа в чат «Документы» в день движения.',
+    bad: ['Двигать материал без перемещения в программе','Без распечатанного документа','Без фото в чат','Собирать перемещение «от себя»','Пропускать перемещение п/ф на Основной или с Основного на площадку'],
+    risk: 'Без документа неизвестно, на чьей стороне возникла недостача. Уже было: 63 позиции уехали на ХП без перемещения и пересчёта — если бы фасовка началась раньше, недостачу было бы не отличить от расхода сырья.'
+  },
+  {
+    title: '3. Цены и номенклатура',
+    ok: 'Карточку создаёт только Михаил, по образцу существующей продукции, сразу с ценой продажи (S 161 ₽, M/XL 180 ₽). Правки техкарт — только через согласованный запрос директору.',
+    bad: ['Карточка без цены','Нулевая цена по покупной позиции','Карточки не от Михаила','Смена типа номенклатуры','Правка техкарты без согласования'],
+    risk: 'Нулевая цена в приёмке навсегда фиксирует себестоимость партии как ноль — ФИФО раздаёт её по всем последующим продажам, прибыль по ним завышается задним числом. Уже найдено 29 таких документов, 6 — созданы уже после того, как правило объявили.'
+  },
+  {
+    title: '4. Даты и сроки',
+    ok: 'Документ заводится в день события. Расхождение — максимум сутки. Больше суток задним числом — только как «восстановительный документ» с явной пометкой.',
+    bad: ['Задним числом больше суток без пометки','Дата в будущем','Движение по складу после инвентаризации до конца месяца'],
+    risk: 'Без честной даты теряется реальная последовательность событий — при расследовании расхождения непонятно, кто и что делал первым.'
+  },
+  {
+    title: '5. Приёмка',
+    ok: 'Приёмка создаётся на основании заказа поставщику. Количество сверяется дважды: по документу УПД поставщика и физическим пересчётом. Если документов нет — приёмку создать можно, но количество строго по факту ручного пересчёта, не по ожидаемому по заказу. Отсутствие документов — сигнал запросить их у Михаила.',
+    bad: ['Принимать количество не по фактическому пересчёту, когда документов нет','Оставлять отсутствие документов без запроса Михаилу'],
+    risk: 'Без документа и без честного пересчёта компания либо теряет основание для претензии поставщику при недостаче, либо задним числом подгоняет цифры под ожидание — расхождение остаётся незамеченным до инвентаризации.'
+  },
+  {
+    title: '6. Бумажное сопровождение — 5 стыков',
+    ok: 'На каждой передаче ответственности — две подписи от руки (сдал/принял), затем фото подписанного документа в чат «Документы» в день движения, до конца смены.',
+    bad: ['Передавать без двух подписей','Заменять фото PDF-версией без подписей'],
+    risk: 'Без подписи с обеих сторон при расхождении спор превращается в «я передавал / мне не передавали» без возможности разрешить его фактами.'
+  }
+];
 
 const GROWTH = {
   anton:   { retro:20, retroN:2, week:31, weekN:4, top:'Откат проведения / перемещение не создано' },
@@ -426,10 +513,30 @@ function renderGrowth(u){
   `;
 }
 
+function renderRules(){
+  const el = document.getElementById('ruleAccordion');
+  el.innerHTML = RULES.map((r,i)=>`
+    <div class="racc" data-i="${i}">
+      <div class="rhead"><span>${r.title}</span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="rbody">
+        <div class="rlbl" style="color:var(--ok);">✅ Процесс</div>
+        <p>${r.ok}</p>
+        <div class="rlbl" style="color:var(--danger);">🚫 Нельзя</div>
+        <ul>${r.bad.map(b=>`<li>${b}</li>`).join('')}</ul>
+        <div class="rlbl" style="color:var(--warn);">⚠️ Риск</div>
+        <p>${r.risk}</p>
+      </div>
+    </div>`).join('');
+  el.querySelectorAll('.racc').forEach(acc=>{
+    acc.querySelector('.rhead').addEventListener('click', ()=>acc.classList.toggle('open'));
+  });
+}
+
 function renderAll(u){
   renderProfile(u);
   renderTasks(u);
   renderGrowth(u);
+  renderRules();
   const w = document.getElementById('whoami');
   w.innerHTML = u ? `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>` : `<div class="av">?</div><div class="nm">не определён</div>`;
 }
@@ -459,6 +566,12 @@ const dots = document.querySelectorAll('.carousel-dots i');
 carousel.addEventListener('scroll', ()=>{
   const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
   dots.forEach((d,i)=>d.classList.toggle('on', i===idx));
+});
+
+// Спросить ассистента — открывает чат с ботом
+document.getElementById('fabAsk').addEventListener('click', ()=>{
+  if(tg && tg.openTelegramLink){ tg.openTelegramLink('https://t.me/oggo_prvo_bot'); }
+  else { window.open('https://t.me/oggo_prvo_bot','_blank'); }
 });
 </script>
 </body>
