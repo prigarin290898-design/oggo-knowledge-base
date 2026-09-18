@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OGGO — тест авторизации</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{ color-scheme:light; }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#ffffff;
+    color:#000000;
+    font-family:'Montserrat',system-ui,sans-serif;
+    padding:20px;
+    padding-top:calc(20px + env(safe-area-inset-top,0px));
+  }
+  h1{
+    font-family:'Bounded',system-ui,sans-serif;
+    font-size:22px;
+    margin:0 0 16px;
+  }
+  .card{
+    border:1px solid rgba(0,0,0,.1);
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .ok{background:#e6f2e6;border-color:transparent;}
+  .warn{background:#fbe6e1;border-color:transparent;}
+  .row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:13.5px;border-bottom:1px solid rgba(0,0,0,.08);}
+  .row:last-child{border-bottom:none;}
+  .row b{font-weight:700;}
+  .muted{color:#8c887f;font-size:12px;}
+  .big{font-family:'Bounded',system-ui,sans-serif;font-size:19px;margin:2px 0 4px;}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bounded:wght@400;700&family=Montserrat:wght@400;600;700&display=swap">
+</head>
+<body>
+  <h1>Тест: кто меня открыл</h1>
+  <div id="result"></div>
+
+  <script>
+    // Известные сотрудники по Telegram user id (= chat_id в приватном чате с ботом)
+    const EMPLOYEES = {
+      640047705: { name: "Михаил Поцелуев", role: "Менеджер производства" },
+      352006434: { name: "Антон", role: "Руководитель отдела производства" },
+      7095736310: { name: "Алексей", role: "Директор" }
+    };
+
+    function render() {
+      const el = document.getElementById('result');
+      const tg = window.Telegram && window.Telegram.WebApp;
+
+      if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+        el.innerHTML = `
+          <div class="card warn">
+            <div class="big">Данные Telegram не найдены</div>
+            <p style="margin:0;font-size:13px;">Открой эту страницу кнопкой бота внутри Telegram, а не напрямую в браузере.</p>
+          </div>`;
+        return;
+      }
+
+      tg.ready();
+      tg.expand();
+
+      const u = tg.initDataUnsafe.user;
+      const known = EMPLOYEES[u.id];
+
+      let html = '';
+      if (known) {
+        html += `
+          <div class="card ok">
+            <div class="muted">Распознан по Telegram id</div>
+            <div class="big">✅ ${known.name}</div>
+            <div style="font-size:13.5px;">${known.role}</div>
+          </div>`;
+      } else {
+        html += `
+          <div class="card warn">
+            <div class="muted">Telegram id не найден в списке сотрудников</div>
+            <div class="big">⚠️ Неизвестный пользователь</div>
+            <p style="margin:4px 0 0;font-size:13px;">Если это сотрудник — добавь его id в список в коде.</p>
+          </div>`;
+      }
+
+      html += `
+        <div class="card">
+          <div class="muted" style="margin-bottom:6px;">Сырые данные от Telegram (initDataUnsafe.user)</div>
+          <div class="row"><span>id</span><b>${u.id}</b></div>
+          <div class="row"><span>username</span><b>${u.username ? '@' + u.username : '— не задан'}</b></div>
+          <div class="row"><span>first_name</span><b>${u.first_name || '—'}</b></div>
+          <div class="row"><span>last_name</span><b>${u.last_name || '—'}</b></div>
+        </div>
+        <p class="muted">⚠️ Данные не проверены подписью (нужен сервер с токеном бота) — для теста на своих это ок, для боевого режима с чувствительными данными понадобится проверка на сервере.</p>
+      `;
+
+      el.innerHTML = html;
+    }
+
+    render();
+  </script>
+</body>
+</html>
