@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OGGO — база знаний</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#ffffff;
+    --orange:#ef7422;
+    --orange-2:#ffab5e;
+    --ink:#000000;
+    --ink-soft:#48453f;
+    --ink-dim:#8c887f;
+    --line:rgba(0,0,0,.09);
+    --glass:rgba(255,255,255,.62);
+    --glass-strong:rgba(255,255,255,.8);
+    --glass-border:rgba(255,255,255,.7);
+    --pill:#000000;
+    --pill-ink:#ffffff;
+    --ok:#2f7a3d;
+    --ok-bg:#e6f2e6;
+    --danger:#c8331f;
+    --danger-bg:#fbe6e1;
+    --warn:#a8660f;
+    --warn-bg:#fbeed9;
+    --font-display:'Bounded',system-ui,sans-serif;
+    --font-body:'Montserrat',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    min-height:100%;
+  }
+  .bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(50% 40% at 92% -6%, var(--orange) 0%, transparent 70%),
+      radial-gradient(38% 32% at 0% 100%, var(--orange-2) 0%, transparent 72%);
+    opacity:.9;
+  }
+  .app{position:relative;z-index:1;padding:16px 16px calc(24px + env(safe-area-inset-bottom,0px));padding-top:calc(16px + env(safe-area-inset-top,0px));max-width:520px;margin:0 auto;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
+  .brand{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.02em;}
+  .brand span{color:var(--orange);}
+  .whoami{
+    display:flex;align-items:center;gap:8px;
+    background:var(--glass);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--glass-border);border-radius:99px;padding:5px 12px 5px 5px;
+  }
+  .whoami .av{width:26px;height:26px;border-radius:50%;background:var(--pill);color:var(--pill-ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:10.5px;font-weight:700;}
+  .whoami .nm{font-size:11.5px;font-weight:600;}
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:6px;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;display:flex;align-items:center;gap:6px;
+    padding:9px 14px;border-radius:99px;font-size:12.5px;font-weight:600;white-space:nowrap;
+    background:var(--glass);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--glass-border);color:var(--ink-soft);cursor:pointer;
+  }
+  .tab.active{background:var(--pill);color:var(--pill-ink);border-color:var(--pill);}
+  .block{display:none;}
+  .block.active{display:block;}
+  .glass{
+    position:relative;background:var(--glass);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
+    border:1px solid var(--glass-border);border-radius:22px;padding:16px;margin-bottom:12px;
+  }
+  .attn{background:var(--pill);color:var(--pill-ink);border-radius:18px;padding:16px;margin-bottom:12px;}
+  .attn .eb{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--orange-2);margin-bottom:4px;}
+  .attn p{margin:0;font-size:13px;line-height:1.45;}
+  .row{display:flex;align-items:center;gap:10px;}
+  .col{display:flex;flex-direction:column;gap:10px;}
+  .between{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .muted{color:var(--ink-dim);font-size:12.5px;}
+  .name{font-family:var(--font-display);font-size:19px;font-weight:700;}
+  .huge{font-family:var(--font-display);font-weight:700;line-height:1;}
+  .sep{height:1px;background:var(--line);border:0;margin:8px 0;}
+  .avatar{width:46px;height:46px;border-radius:50%;background:var(--pill);color:var(--pill-ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;font-weight:700;flex:0 0 auto;}
+  .tag{font-family:var(--font-body);font-size:10.5px;font-weight:600;color:var(--ink-soft);background:var(--glass-strong);border:1px solid var(--glass-border);padding:4px 9px;border-radius:99px;display:inline-block;}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--pill);color:var(--pill-ink);font-weight:600;font-size:12.5px;padding:10px 16px;border-radius:99px;}
+  .pill.ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--ink);backdrop-filter:blur(18px);}
+  .subtabs{display:flex;gap:6px;margin-bottom:10px;}
+  .subtab{flex:1;text-align:center;padding:9px 4px;border-radius:12px;font-size:11.5px;font-weight:600;background:var(--glass);border:1px solid var(--glass-border);color:var(--ink-soft);cursor:pointer;}
+  .subtab.active{background:var(--pill);color:var(--pill-ink);border-color:var(--pill);}
+  .sublist{display:none;}
+  .sublist.active{display:flex;flex-direction:column;gap:8px;}
+  .step{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4;}
+  .step .num{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--pill);color:var(--pill-ink);font-family:var(--font-display);font-size:10px;display:flex;align-items:center;justify-content:center;}
+  .errchip{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;background:var(--danger-bg);color:var(--danger);font-size:12.5px;font-weight:600;margin-bottom:8px;}
+  .errchip .cnt{margin-left:auto;font-family:var(--font-display);font-size:13px;}
+  .taskcard{padding:12px 14px;border-radius:16px;background:var(--glass);backdrop-filter:blur(18px) saturate(150%);border:1px solid var(--glass-border);margin-bottom:8px;}
+  .dotpri{width:8px;height:8px;border-radius:50%;background:var(--ink);flex:0 0 auto;}
+  .dotpri.mid{background:var(--orange);}
+  .dotpri.low{background:var(--ink-dim);}
+  .bars{display:flex;align-items:flex-end;gap:7px;height:54px;margin:12px 0 4px;}
+  .bars .b{flex:1;border-radius:6px 6px 2px 2px;background:var(--glass-strong);border:1px solid var(--glass-border);}
+  .bars .b.hi{background:var(--ink);border-color:var(--ink);}
+  .honest{font-size:11.5px;color:var(--ink-dim);line-height:1.4;margin-top:2px;}
+  h2{font-family:var(--font-display);font-size:16px;margin:0 0 10px;}
+  .empty{padding:30px 16px;text-align:center;color:var(--ink-dim);font-size:13px;}
+  [hidden]{display:none!important;}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bounded:wght@400;500;700;800&family=Montserrat:wght@400;500;600;700&display=swap">
+</head>
+<body>
+<div class="bg"></div>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">OGG<span>O</span> · база знаний</div>
+    <div class="whoami" id="whoami"><div class="av">···</div><div class="nm">определяем</div></div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-block="profile">Профиль</div>
+    <div class="tab" data-block="team">Команда</div>
+    <div class="tab" data-block="role">Моя роль</div>
+    <div class="tab" data-block="process">Процесс</div>
+    <div class="tab" data-block="errors">Ошибки</div>
+    <div class="tab" data-block="tasks">Задачи</div>
+    <div class="tab" data-block="growth">Мой рост</div>
+  </div>
+
+  <!-- 1. ПРОФИЛЬ -->
+  <div class="block active" id="b-profile"></div>
+
+  <!-- 2. КОМАНДА -->
+  <div class="block" id="b-team">
+    <div class="glass" style="text-align:center;">
+      <div class="avatar" style="margin:0 auto 8px;">АЛ</div>
+      <div style="font-family:var(--font-display);font-size:14px;">Директор</div>
+      <div class="muted">Алексей</div>
+    </div>
+    <div style="display:flex;justify-content:center;"><div style="width:2px;height:16px;background:var(--line);"></div></div>
+    <div class="glass" style="text-align:center;">
+      <div class="avatar" style="margin:0 auto 8px;">АН</div>
+      <div style="font-family:var(--font-display);font-size:14px;">Руководитель производства</div>
+      <div class="muted">Антон</div>
+    </div>
+    <div style="display:flex;justify-content:center;"><div style="width:2px;height:16px;background:var(--line);"></div></div>
+    <div class="row" style="gap:10px;">
+      <div class="glass" style="flex:1;text-align:center;padding:12px 8px;margin-bottom:0;">
+        <div class="avatar" style="width:36px;height:36px;font-size:13px;margin:0 auto 6px;">МП</div>
+        <div style="font-size:12px;font-weight:700;">Михаил</div>
+        <div class="muted" style="font-size:10.5px;">производство</div>
+      </div>
+      <div class="glass" style="flex:1;text-align:center;padding:12px 8px;margin-bottom:0;">
+        <div class="avatar" style="width:36px;height:36px;font-size:13px;margin:0 auto 6px;">АР</div>
+        <div style="font-size:12px;font-weight:700;">Арсений</div>
+        <div class="muted" style="font-size:10.5px;">склад</div>
+      </div>
+    </div>
+    <div class="honest" style="margin-top:10px;">Источник: 👥 Команда в Notion, решения директора 17–18.08.2026.</div>
+  </div>
+
+  <!-- 3. МОЯ РОЛЬ -->
+  <div class="block" id="b-role"></div>
+
+  <!-- 4. ПРОЦЕСС -->
+  <div class="block" id="b-process">
+    <div class="glass">
+      <h2>Эталонный процесс</h2>
+      <div class="col">
+        <div class="step"><span class="num">1</span>Заказ покупателя → статус «Подтверждён»</div>
+        <div class="step"><span class="num">2</span>П/з на ГП — на основании заказа</div>
+        <div class="step"><span class="num">3</span>Вложенные п/з на п/ф, если нужно произвести</div>
+        <div class="step"><span class="num">4</span>Приёмка сырья — по УПД + пересчёт</div>
+        <div class="step"><span class="num">5</span>Изготовление полуфабриката</div>
+        <div class="step"><span class="num">6</span>Перемещение п/ф на Основной склад</div>
+        <div class="step"><span class="num">7</span>Перемещение на площадку (ХП/РЕЛЛ)</div>
+        <div class="step"><span class="num">8</span>Фасовка</div>
+        <div class="step"><span class="num">9</span>Оприходование ГП</div>
+        <div class="step"><span class="num">10</span>Отгрузка покупателю</div>
+      </div>
+    </div>
+    <div class="attn">
+      <div class="eb">Важно</div>
+      <p>Каждая физическая передача — только через документ «Перемещение» + фото в чат «Документы» в день движения.</p>
+    </div>
+    <div class="honest">Это справочник шагов, не статус конкретного заказа — актуальный статус смотрите в Мой Склад. Живая привязка к заказам — следующий этап.</div>
+  </div>
+
+  <!-- 5. ОШИБКИ -->
+  <div class="block" id="b-errors">
+    <div class="glass">
+      <h2>Часто повторяется по отделу</h2>
+      <div class="col">
+        <div class="errchip"><span>Техкарты / номенклатура (Михаил)</span><span class="cnt">3 случая</span></div>
+        <div class="errchip"><span>Умалчивание — не заявлено в 2 дня</span><span class="cnt">2 случая</span></div>
+        <div class="errchip"><span>Перемещение не создано вовремя</span><span class="cnt">2 случая</span></div>
+      </div>
+      <div class="honest" style="margin-top:10px;">Ретроспектива 18.08–16.09 из 🎯 Дисциплинарный KPI — не для санкций, для понимания масштаба.</div>
+    </div>
+    <div class="attn col">
+      <div class="eb">Топ запретов</div>
+      <p>Двигать материал без перемещения в программе</p>
+      <hr class="sep" style="background:rgba(255,255,255,.18);">
+      <p>Проводить документ с нулевой ценой по покупной позиции</p>
+      <hr class="sep" style="background:rgba(255,255,255,.18);">
+      <p>Закрывать движение без фото в чат «Документы»</p>
+    </div>
+  </div>
+
+  <!-- 6. ЗАДАЧИ -->
+  <div class="block" id="b-tasks"></div>
+
+  <!-- 7. МОЙ РОСТ -->
+  <div class="block" id="b-growth"></div>
+
+</div>
+
+<script>
+const EMPLOYEES = {
+  640047705: { key:'mihail', name:'Михаил Поцелуев', role:'Менеджер производства', dept:'Производство и склад', manager:'Антону', reports:'никого', since:'2025', tg:'@nemo101253', initials:'МП' },
+  352006434: { key:'anton', name:'Антон', role:'Руководитель отдела производства', dept:'Производство и склад', manager:'Директору', reports:'Михаил, Арсений, старший смены, 5 фасовщиков', since:'2025', tg:'@Ctony3', initials:'АН' },
+  7095736310: { key:'director', name:'Алексей', role:'Директор', dept:'Все отделы', manager:'—', reports:'Антон, Марина, Максим', since:'—', tg:'@super_mario812', initials:'АЛ' }
+};
+
+const ROLES = {
+  mihail: {
+    make: [
+      'Проверяю техкарты на все позиции заказа перед запуском',
+      'Считаю потребность в сырье (контур пополнения)',
+      'Создаю заказ поставщику по подтверждённой потребности',
+      'Отправляю заказ поставщику после согласования суммы директором',
+      'Передаю платёжное поручение поставщику',
+      'Получаю от поставщика срок готовности письменно',
+      'Вношу дату приёмки, ставлю заказ в ожидание'
+    ],
+    control: ['Соответствие сменных заданий техкартам'],
+    dont: [
+      'Не создаю и не подтверждаю заказ покупателя',
+      'Не согласую суммы закупок',
+      'Не оплачиваю счета',
+      'Не принимаю материалы физически',
+      'Не формирую производственные/сменные задания',
+      'Не выбираю ветку процесса — это Антон'
+    ]
+  },
+  anton: {
+    make: [
+      'Развилка процесса — выбираю быструю или полную ветку',
+      'Формирую производственное задание по заказу',
+      'Проверяю обоснование потребности в сырье от Михаила',
+      'Сверяю приёмку с заказом поставщику',
+      'Формирую сменные задания, передаю сырьё в производство',
+      'Готовлю отчёт план/факт по количеству'
+    ],
+    control: [
+      'Остатки и товароучёт склада — Арсений',
+      'Техкарты на позиции заказа — Михаил',
+      'Расчёт и согласование закупки — Михаил',
+      'Приёмку материалов — Арсений',
+      'Выпуск ГП и списание брака — старший смены',
+      'Оприходование ГП, отгрузку — Арсений'
+    ],
+    dont: [
+      'Не создаю и не подтверждаю заказ покупателя, не общаюсь с Сергеем',
+      'Не создаю карточки товара, не правлю техкарты',
+      'Не согласую суммы закупок',
+      'Не принимаю материалы физически',
+      'Не решаю о частичном запуске при недопоставке или смене поставщика'
+    ]
+  },
+  arseniy: {
+    make: [
+      'Плановая инвентаризация склада (последний день месяца)',
+      'Сверка остатков сырья по позициям задания',
+      'Приёмка от поставщика — на основании заказа',
+      'Оприходование готовой продукции на склад',
+      'Отгрузка покупателю',
+      'Еженедельное перемещение ГП на Ответ-хранение',
+      'Перемещение избытков материалов на Ответ-хранение',
+      'Сверка остатков на Ответ-хранении (ежемесячно)'
+    ],
+    control: ['Ничего — каждый мой шаг принимает Антон'],
+    dont: [
+      'Не создаю карточки товара и не правлю номенклатуру',
+      'Не отвечаю за остатки контрактных площадок',
+      'Не рассчитываю потребность в сырье, не создаю заказы поставщику',
+      'Не сверяю свою же приёмку с заказом — это Антон',
+      'Не формирую сменные задания, не выпускаю продукцию физически',
+      'Не принимаю собственную инвентаризацию — это Антон'
+    ]
+  }
+};
+
+const TASKS = {
+  anton: [
+    {id:'PRVO-39', title:'Составить п/з по заказу 00009', pri:'hi', due:'21.09'},
+    {id:'PRVO-40', title:'Сверить 00059, найти недостачу', pri:'hi', due:'не подтверждён'},
+    {id:'PRVO-41', title:'Диагностировать линию, наладчик Виктор', pri:'mid', due:'не назван'}
+  ],
+  mihail: [
+    {id:'PRVO-42', title:'Отправить на ХП пакет ребрендинга', pri:'hi', due:'19.09'},
+    {id:'PRVO-44', title:'Контроль поставки короба высечки', pri:'mid', due:'25.09'},
+    {id:'PRVO-46', title:'Согласовать материал этикетки', pri:'low', due:'21.09'}
+  ],
+  arseniy: [],
+  director: []
+};
+const SHARED_TASK = {id:'PRVO-43', title:'Дорожная карта заказа 00011 (на проверку)', due:'до старта 00011'};
+
+const GROWTH = {
+  anton:   { retro:20, retroN:2, week:31, weekN:4, top:'Откат проведения / перемещение не создано' },
+  mihail:  { retro:29, retroN:6, week:6,  weekN:1, top:'Техкарты и номенклатура — 3-й повтор' },
+  arseniy: { retro:12, retroN:5, week:0,  weekN:0, top:'УПД вместо ТОРГ-13' }
+};
+
+function initials(name){ return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
+
+function renderProfile(u){
+  const el = document.getElementById('b-profile');
+  if(!u){
+    el.innerHTML = `<div class="empty">Не удалось определить, кто вы.<br>Откройте кнопку бота внутри Telegram.</div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="glass" style="text-align:center;padding:24px 16px;">
+      <div class="avatar" style="width:64px;height:64px;font-size:22px;margin:0 auto 12px;">${u.initials}</div>
+      <div class="name">${u.name}</div>
+      <div class="muted" style="margin-top:4px;">${u.role}</div>
+      <div class="row" style="justify-content:center;gap:8px;margin-top:12px;"><span class="tag">${u.dept}</span></div>
+    </div>
+    <div class="glass col">
+      <div class="between"><span class="muted">Подчиняется</span><b>${u.manager}</b></div>
+      <hr class="sep">
+      <div class="between"><span class="muted">В подчинении</span><b>${u.reports}</b></div>
+      <hr class="sep">
+      <div class="between"><span class="muted">В компании с</span><b>${u.since}</b></div>
+    </div>
+    <div class="glass row" style="justify-content:space-between;">
+      <span style="font-size:12.5px;font-weight:600;">Telegram</span>
+      <span class="tag">${u.tg}</span>
+    </div>
+  `;
+}
+
+function renderRole(u){
+  const el = document.getElementById('b-role');
+  const r = u && ROLES[u.key];
+  if(!r){
+    el.innerHTML = `<div class="empty">Роль появится, когда вы откроетесь через бот.</div>`;
+    return;
+  }
+  const li = (arr, dash) => arr.map(t=>`<div class="row" style="align-items:flex-start;">${dash?'<span style="color:var(--ink-dim);">−</span>':'<span class="tag" style="background:var(--ink);color:var(--pill-ink);border-color:var(--ink);flex:0 0 auto;">✓</span>'}<span style="font-size:13px;">${t}</span></div>`).join('<hr class="sep">');
+  el.innerHTML = `
+    <div class="subtabs">
+      <div class="subtab active" data-sub="make">Делаю</div>
+      <div class="subtab" data-sub="control">Контролирую</div>
+      <div class="subtab" data-sub="dont">Не делаю</div>
+    </div>
+    <div class="glass">
+      <div class="sublist active" data-sub="make">${li(r.make,false)}</div>
+      <div class="sublist" data-sub="control">${li(r.control,false)}</div>
+      <div class="sublist" data-sub="dont">${li(r.dont,true)}</div>
+    </div>
+  `;
+  el.querySelectorAll('.subtab').forEach(st=>{
+    st.addEventListener('click', ()=>{
+      el.querySelectorAll('.subtab').forEach(x=>x.classList.remove('active'));
+      el.querySelectorAll('.sublist').forEach(x=>x.classList.remove('active'));
+      st.classList.add('active');
+      el.querySelector(`.sublist[data-sub="${st.dataset.sub}"]`).classList.add('active');
+    });
+  });
+}
+
+function renderTasks(u){
+  const el = document.getElementById('b-tasks');
+  if(!u){ el.innerHTML = `<div class="empty">Задачи появятся после определения пользователя.</div>`; return; }
+  const own = TASKS[u.key] || [];
+  const card = t => `
+    <div class="taskcard">
+      <div class="between">
+        <span class="row" style="gap:6px;font-size:12.5px;font-weight:700;"><span class="dotpri ${t.pri==='hi'?'':t.pri==='mid'?'mid':'low'}"></span>${t.title}</span>
+        <span class="tag">${t.id}</span>
+      </div>
+      <div class="muted">срок ${t.due}</div>
+    </div>`;
+  el.innerHTML = `
+    <div class="glass">
+      <h2>Ваши задачи</h2>
+      ${own.length ? own.map(card).join('') : '<div class="muted">Сейчас на вас ничего не назначено.</div>'}
+    </div>
+    <div class="glass">
+      <h2>Общее</h2>
+      <div class="taskcard">
+        <div class="between">
+          <span style="font-size:12.5px;font-weight:700;">${SHARED_TASK.title}</span>
+          <span class="tag">${SHARED_TASK.id}</span>
+        </div>
+        <div class="muted">срок ${SHARED_TASK.due}</div>
+      </div>
+    </div>
+    <div class="honest">Данные из Яндекс Трекер (очередь PR-VO) на 19.09.2026. Открыть карточку — пока только по ссылке из Трекера напрямую, кнопка появится позже.</div>
+  `;
+}
+
+function renderGrowth(u){
+  const el = document.getElementById('b-growth');
+  const g = u && GROWTH[u.key];
+  if(!g){ el.innerHTML = `<div class="empty">Раздел доступен после определения пользователя.</div>`; return; }
+  const zoneColor = g.week<=10 ? 'ok' : g.week<=25 ? 'warn' : 'danger';
+  const zoneLabel = g.week<=10 ? '🟢 норма' : g.week<=25 ? '🟡 внимание' : '🔴 последствие';
+  el.innerHTML = `
+    <div class="glass">
+      <div class="between">
+        <div><div class="muted">Текущая неделя (15–21.09)</div><div class="huge" style="font-size:32px;">${g.week}</div></div>
+        <span class="tag" style="background:var(--${zoneColor}-bg);color:var(--${zoneColor});border-color:transparent;">${zoneLabel}</span>
+      </div>
+      <div class="bars">
+        <div class="b" style="height:${Math.max(10, g.retro/1.2)}%;"></div>
+        <div class="b hi" style="height:${Math.max(10, g.week/1.2)}%;"></div>
+      </div>
+      <div class="row" style="justify-content:space-between;">
+        <span class="muted" style="font-size:10px;">ретро 18.08–16.09 (${g.retroN} зап.)</span>
+        <span class="muted" style="font-size:10px;">тек. неделя (${g.weekN} зап.)</span>
+      </div>
+    </div>
+    <div class="glass col">
+      <div class="muted">Часто повторяется</div>
+      <div class="errchip"><span>${g.top}</span></div>
+    </div>
+    <div class="attn">
+      <div class="eb">Важно</div>
+      <p>Баллы за текущую неделю пока не начисляются — счёт стартует с нуля 21.09.2026 при объявлении структуры. Заявил проблему сам — ноль баллов, это правило не меняется.</p>
+    </div>
+  `;
+}
+
+function renderAll(u){
+  renderProfile(u);
+  renderRole(u);
+  renderTasks(u);
+  renderGrowth(u);
+  const w = document.getElementById('whoami');
+  if(u){
+    w.innerHTML = `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>`;
+  } else {
+    w.innerHTML = `<div class="av">?</div><div class="nm">не определён</div>`;
+  }
+}
+
+// Auth
+const tg = window.Telegram && window.Telegram.WebApp;
+let currentUser = null;
+if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user){
+  tg.ready(); tg.expand();
+  const tgUser = tg.initDataUnsafe.user;
+  currentUser = EMPLOYEES[tgUser.id] || null;
+}
+renderAll(currentUser);
+
+// Top tabs
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.block').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('b-'+t.dataset.block).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
