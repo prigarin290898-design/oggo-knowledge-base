@@ -12,12 +12,12 @@
     --orange:#ef7422;
     --orange-2:#ffab5e;
     --ink:#000000;
-    --ink-soft:#48453f;
-    --ink-dim:#8c887f;
-    --line:rgba(0,0,0,.09);
-    --glass:rgba(255,255,255,.62);
-    --glass-strong:rgba(255,255,255,.8);
-    --glass-border:rgba(255,255,255,.7);
+    --ink-soft:#211f1b;
+    --ink-dim:#54514a;
+    --line:rgba(0,0,0,.16);
+    --glass:rgba(255,255,255,.46);
+    --glass-strong:rgba(255,255,255,.68);
+    --glass-border:rgba(0,0,0,.14);
     --pill:#000000;
     --pill-ink:#ffffff;
     --ok:#2f7a3d;
@@ -26,54 +26,44 @@
     --danger-bg:#fbe6e1;
     --warn:#a8660f;
     --warn-bg:#fbeed9;
+    --lime:#dbff3d;
+    --lime-ink:#0e1400;
     --font-display:'Bounded',system-ui,sans-serif;
     --font-body:'Montserrat',system-ui,sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;height:100%;}
   body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--font-body);
-    -webkit-font-smoothing:antialiased;
-    min-height:100%;
+    background:var(--paper);color:var(--ink);font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;min-height:100%;
   }
-  .bg{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:
-      radial-gradient(50% 40% at 92% -6%, var(--orange) 0%, transparent 70%),
-      radial-gradient(38% 32% at 0% 100%, var(--orange-2) 0%, transparent 72%);
-    opacity:.9;
+  .oshape{
+    position:fixed;top:-54px;right:-38px;width:230px;height:230px;
+    background:var(--orange);border-radius:30% 34% 38% 32%/30%;
+    transform:rotate(-18deg);z-index:0;pointer-events:none;
   }
-  .app{position:relative;z-index:1;padding:16px 16px calc(24px + env(safe-area-inset-bottom,0px));padding-top:calc(16px + env(safe-area-inset-top,0px));max-width:520px;margin:0 auto;}
+  .app{position:relative;z-index:1;padding:16px 16px 92px;padding-top:calc(16px + env(safe-area-inset-top,0px));max-width:520px;margin:0 auto;}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
-  .brand{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.02em;}
-  .brand span{color:var(--orange);}
+  .logo{height:15px;display:block;}
   .whoami{
     display:flex;align-items:center;gap:8px;
-    background:var(--glass);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    background:var(--glass);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
     border:1px solid var(--glass-border);border-radius:99px;padding:5px 12px 5px 5px;
   }
   .whoami .av{width:26px;height:26px;border-radius:50%;background:var(--pill);color:var(--pill-ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:10.5px;font-weight:700;}
-  .whoami .nm{font-size:11.5px;font-weight:600;}
-  .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:6px;scrollbar-width:none;}
-  .tabs::-webkit-scrollbar{display:none;}
-  .tab{
-    flex:0 0 auto;display:flex;align-items:center;gap:6px;
-    padding:9px 14px;border-radius:99px;font-size:12.5px;font-weight:600;white-space:nowrap;
-    background:var(--glass);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
-    border:1px solid var(--glass-border);color:var(--ink-soft);cursor:pointer;
-  }
-  .tab.active{background:var(--pill);color:var(--pill-ink);border-color:var(--pill);}
-  .block{display:none;}
-  .block.active{display:block;}
+  .whoami .nm{font-size:11.5px;font-weight:700;}
+  .section{display:none;}
+  .section.active{display:block;}
   .glass{
-    position:relative;background:var(--glass);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
+    position:relative;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);
     border:1px solid var(--glass-border);border-radius:22px;padding:16px;margin-bottom:12px;
+    box-shadow:0 10px 24px -18px rgba(0,0,0,.3);
   }
-  .attn{background:var(--pill);color:var(--pill-ink);border-radius:18px;padding:16px;margin-bottom:12px;}
+  .attn{background:var(--pill);color:var(--pill-ink);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 14px 30px -16px rgba(0,0,0,.45);}
   .attn .eb{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--orange-2);margin-bottom:4px;}
   .attn p{margin:0;font-size:13px;line-height:1.45;}
+  .blackblock{background:var(--pill);color:var(--pill-ink);border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 14px 30px -16px rgba(0,0,0,.45);}
+  .blackblock hr.sep{background:rgba(255,255,255,.18);}
   .row{display:flex;align-items:center;gap:10px;}
   .col{display:flex;flex-direction:column;gap:10px;}
   .between{display:flex;justify-content:space-between;align-items:center;gap:10px;}
@@ -82,120 +72,187 @@
   .huge{font-family:var(--font-display);font-weight:700;line-height:1;}
   .sep{height:1px;background:var(--line);border:0;margin:8px 0;}
   .avatar{width:46px;height:46px;border-radius:50%;background:var(--pill);color:var(--pill-ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;font-weight:700;flex:0 0 auto;}
-  .tag{font-family:var(--font-body);font-size:10.5px;font-weight:600;color:var(--ink-soft);background:var(--glass-strong);border:1px solid var(--glass-border);padding:4px 9px;border-radius:99px;display:inline-block;}
-  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--pill);color:var(--pill-ink);font-weight:600;font-size:12.5px;padding:10px 16px;border-radius:99px;}
+  .avatar.lime{background:var(--lime);color:var(--lime-ink);}
+  .tag{font-size:10.5px;font-weight:700;color:var(--ink);background:var(--glass-strong);border:1px solid var(--glass-border);padding:4px 9px;border-radius:99px;display:inline-block;}
+  .pill{position:relative;z-index:2;display:inline-flex;align-items:center;gap:6px;background:var(--pill);color:var(--pill-ink);font-weight:600;font-size:12.5px;padding:10px 16px;border-radius:99px;}
   .pill.ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--ink);backdrop-filter:blur(18px);}
-  .subtabs{display:flex;gap:6px;margin-bottom:10px;}
-  .subtab{flex:1;text-align:center;padding:9px 4px;border-radius:12px;font-size:11.5px;font-weight:600;background:var(--glass);border:1px solid var(--glass-border);color:var(--ink-soft);cursor:pointer;}
-  .subtab.active{background:var(--pill);color:var(--pill-ink);border-color:var(--pill);}
-  .sublist{display:none;}
-  .sublist.active{display:flex;flex-direction:column;gap:8px;}
-  .step{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4;}
-  .step .num{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--pill);color:var(--pill-ink);font-family:var(--font-display);font-size:10px;display:flex;align-items:center;justify-content:center;}
-  .errchip{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;background:var(--danger-bg);color:var(--danger);font-size:12.5px;font-weight:600;margin-bottom:8px;}
-  .errchip .cnt{margin-left:auto;font-family:var(--font-display);font-size:13px;}
-  .taskcard{padding:12px 14px;border-radius:16px;background:var(--glass);backdrop-filter:blur(18px) saturate(150%);border:1px solid var(--glass-border);margin-bottom:8px;}
-  .dotpri{width:8px;height:8px;border-radius:50%;background:var(--ink);flex:0 0 auto;}
-  .dotpri.mid{background:var(--orange);}
-  .dotpri.low{background:var(--ink-dim);}
-  .bars{display:flex;align-items:flex-end;gap:7px;height:54px;margin:12px 0 4px;}
-  .bars .b{flex:1;border-radius:6px 6px 2px 2px;background:var(--glass-strong);border:1px solid var(--glass-border);}
-  .bars .b.hi{background:var(--ink);border-color:var(--ink);}
-  .honest{font-size:11.5px;color:var(--ink-dim);line-height:1.4;margin-top:2px;}
-  h2{font-family:var(--font-display);font-size:16px;margin:0 0 10px;}
+  .pill.lime{background:var(--lime);color:var(--lime-ink);}
+  h2{font-family:var(--font-display);font-size:15px;margin:0 0 10px;}
   .empty{padding:30px 16px;text-align:center;color:var(--ink-dim);font-size:13px;}
+  .honest{font-size:11.5px;color:var(--ink-dim);line-height:1.4;margin-top:2px;}
+
+  /* Моя роль subtabs */
+  .subtabs{display:flex;gap:6px;margin-bottom:10px;}
+  .subtab{flex:1;text-align:center;padding:9px 4px;border-radius:12px;font-size:11.5px;font-weight:700;background:var(--glass);border:1px solid var(--glass-border);color:var(--ink-soft);cursor:pointer;}
+  .subtab.active{background:var(--pill);color:var(--pill-ink);border-color:var(--pill);}
+  .sublist{display:none;flex-direction:column;gap:0;}
+  .sublist.active{display:flex;}
+
+  /* Team strip */
+  .teamstrip{display:flex;justify-content:space-between;align-items:center;}
+  .teamnode{text-align:center;}
+  .teamnode .avatar{width:34px;height:34px;font-size:12px;margin:0 auto 4px;}
+  .teamnode div.lbl{font-size:9.5px;color:var(--ink-dim);}
+  .teamlink{width:14px;height:2px;background:var(--line);}
+
+  /* Process carousel */
+  .carousel-dots{display:flex;gap:5px;justify-content:center;margin-bottom:10px;}
+  .carousel-dots i{width:6px;height:6px;border-radius:50%;background:var(--line);display:block;}
+  .carousel-dots i.on{background:var(--ink);width:16px;border-radius:3px;}
+  .carousel{display:flex;overflow-x:auto;gap:12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none;}
+  .carousel::-webkit-scrollbar{display:none;}
+  .cpage{flex:0 0 100%;scroll-snap-align:start;}
+  .docdef{display:flex;gap:10px;align-items:flex-start;}
+  .docdef .ic{width:34px;height:34px;border-radius:10px;background:var(--pill);color:var(--pill-ink);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .docdef b{display:block;font-size:13.5px;}
+  .docdef span{font-size:11.5px;color:var(--ink-dim);}
+  .blackblock .docdef span{color:rgba(255,255,255,.78);}
+  .blackblock .docdef .ic{background:var(--orange-2);color:#000;}
+  .mm-node{background:var(--glass-strong);border:1px solid var(--glass-border);border-radius:12px;padding:10px 14px;font-size:12.5px;font-weight:600;}
+  .mm-node.main{background:var(--pill);color:var(--pill-ink);border:none;}
+  .mm-branch{margin-left:26px;display:flex;align-items:center;gap:6px;font-size:11.5px;}
+  .mm-branch::before{content:"↳";color:var(--ink-dim);}
+  .mm-link{width:2px;height:12px;background:var(--line);margin-left:16px;}
+  .lime-heading{display:inline-block;background:var(--lime);color:var(--lime-ink);font-family:var(--font-display);font-weight:700;font-size:15px;padding:9px 16px;border-radius:99px;margin-bottom:12px;}
+
+  .step{position:relative;padding:10px 0 10px 24px;font-size:12.5px;}
+  .step::before{content:"";position:absolute;left:5px;top:0;bottom:0;width:2px;background:var(--line);}
+  .step:first-child::before{top:14px;}
+  .step:last-child::before{bottom:calc(100% - 24px);}
+  .step .dot{position:absolute;left:0;top:13px;width:12px;height:12px;border-radius:50%;background:var(--pill);border:2px solid #fff;}
+
+  .errchip{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;background:var(--danger-bg);color:var(--danger);font-size:12.5px;font-weight:600;margin-bottom:8px;}
+  .errchip .cnt{margin-left:auto;font-family:var(--font-display);font-size:14px;}
+
+  .cal{display:flex;gap:6px;}
+  .cal .d{flex:1;text-align:center;border-radius:12px;padding:8px 0;background:var(--glass-strong);border:1px solid var(--glass-border);font-size:11px;font-weight:600;color:var(--ink-dim);}
+  .cal .d.today{background:var(--pill);color:var(--pill-ink);border-color:var(--pill);}
+  .cal .d b{display:block;font-family:var(--font-display);font-size:15px;color:inherit;margin-top:2px;}
+  .taskcard{padding:12px 14px;border-radius:16px;background:var(--glass);backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--glass-border);margin-bottom:8px;}
+  .dotpri{width:8px;height:8px;border-radius:50%;background:var(--ink);flex:0 0 auto;}
+  .dotpri.mid{background:var(--lime);}
+  .dotpri.low{background:var(--ink-dim);}
+
+  .bars{display:flex;align-items:flex-end;gap:7px;height:58px;margin:12px 0 4px;}
+  .bars .b{flex:1;border-radius:6px 6px 2px 2px;background:var(--glass-strong);border:1px solid var(--glass-border);}
+  .bars .b.hi{background:var(--lime);border-color:var(--lime);}
+
+  /* bottom nav */
+  .botnav{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:9;display:flex;gap:6px;background:var(--orange);border-radius:99px;padding:6px;box-shadow:0 16px 30px -14px rgba(0,0,0,.45);}
+  .botnav .ni{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:transparent;color:#fff;cursor:pointer;}
+  .botnav .ni.on{background:var(--lime);color:var(--lime-ink);}
+  .botnav .ni svg{display:block;}
   [hidden]{display:none!important;}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bounded:wght@400;500;700;800&family=Montserrat:wght@400;500;600;700&display=swap">
 </head>
 <body>
-<div class="bg"></div>
+<div class="oshape"></div>
 <div class="app">
 
   <div class="topbar">
-    <div class="brand">OGG<span>O</span> · база знаний</div>
+    <svg class="logo" viewBox="0 0 183 191" xmlns="http://www.w3.org/2000/svg"><path d="M60.7836 166.809C56.4346 168.899 51.654 169.989 46.8233 169.989C46.563 169.989 46.2921 169.985 46.0368 169.981C45.9289 169.981 45.8151 169.983 45.706 169.983C39.8179 169.983 34.1912 167.533 30.1791 163.224C25.8996 158.617 23.52 152.555 23.52 146.264C23.52 145.862 23.5321 145.449 23.5502 145.05C23.5309 144.65 23.519 144.233 23.519 143.828C23.519 137.444 26.0255 131.307 30.4955 126.752C34.8515 122.268 40.8441 119.735 47.0966 119.735C47.2607 119.735 47.4299 119.738 47.5917 119.741C47.655 119.74 47.7307 119.74 47.7965 119.74C51.0847 119.74 54.3524 120.345 57.4234 121.518C61.1503 123.141 64.5847 125.387 67.5718 128.146L69.1255 129.478L81.2096 112.066L79.9713 111.02C71.0109 102.862 59.3066 98.3296 47.1792 98.3296C46.9887 98.3296 46.7921 98.3355 46.6087 98.3355C46.3712 98.3331 46.1208 98.3271 45.8821 98.3271C33.8218 98.3271 22.2399 103.124 13.717 111.653C4.96268 120.084 0.00597164 131.719 0.00597164 143.877C0.00597164 144.205 0.0119082 144.538 0.016826 144.86C0.0108895 145.25 0 145.662 0 146.058C0 158.022 4.83569 169.497 13.4005 177.846C21.9425 186.203 33.4336 190.893 45.3883 190.893C45.7515 190.893 46.1196 190.887 46.4768 190.883C62.0181 190.883 74.4189 185.903 83.2355 176.039L83.7113 175.499L83.7137 142.451H60.7836V166.809L60.7836 166.809Z" fill="black"/><path d="M159.356 44.129V68.487C149.722 73.1393 136.499 73.0134 128.75 64.7769C124.456 60.1703 122.061 54.0976 122.061 47.796C122.061 47.4004 122.07 46.9964 122.088 46.6043C122.07 46.2171 122.062 45.8193 122.062 45.4296C122.062 39.0308 124.567 32.8802 129.036 28.3035C133.405 23.8946 139.362 21.4133 145.569 21.4133C145.765 21.4133 145.969 21.4193 146.163 21.4217C146.239 21.4193 146.317 21.4193 146.392 21.4193C149.674 21.4193 152.931 22.0222 155.994 23.1946C159.723 24.8151 163.165 27.0615 166.145 29.8259L167.698 31.1577L179.75 13.7451L178.544 12.6986C169.561 4.53535 157.844 0.00891988 145.703 0.00891988C145.518 0.00891988 145.328 0.014856 145.148 0.014856C144.927 0.013627 144.683 0.00769043 144.455 0.00769043C132.395 0.00769043 120.813 4.8050 2 112.29 13.334C87.7282 36.9833 97.3046 81.3996 131.479 90.9438C132.684 91.2927 133.921 91.5467 135.158 91.7996C140.277 92.6724 145.876 92.8473 151.014 92.3379H151.712C153.378 92.1929 155.048 91.9579 156.693 91.6427L156.915 91.6402C166.526 89.9668 175.325 85.1096 181.873 77.8741L182.349 77.3348L182.35 44.129H159.356Z" fill="black"/><path d="M10.635 72.4505C17.209 69.8817 26.0961 67.8835 33.3126 67.8835H33.7871C32.5429 66.9411 31.3789 65.8756 30.3336 64.7115C21.1048 54.761 21.1192 37.9454 30.2701 27.9529C34.3638 23.1795 40.343 20.4309 46.6339 20.4309C46.7705 20.4309 46.9132 20.4334 47.0474 20.4334C47.1757 20.4346 47.3099 20.4321 47.4417 20.4321C53.7279 20.4321 59.7012 23.1795 63.7922 27.9517C68.2217 32.8101 70.6801 39.1562 70.6801 45.7312C70.6801 45.9145 70.6767 46.1052 70.6742 46.2849C70.6789 46.4756 70.6826 46.6829 70.6826 46.8783C70.6826 53.4318 68.2205 59.7549 63.7935 64.5846C61.9008 66.711 59.628 68.4804 57.0998 69.7858C57.8299 69.9176 58.5528 70.0987 59.2576 70.3263C66.4223 72.3953 73.3498 75.2724 79.1432 80.0935C79.1432 80.0935 79.8731 79.4594 80.2219 79.1417C88.902 70.7771 93.807 59.2311 93.807 47.1745C93.807 46.8388 93.801 46.4862 93.7963 46.1555C93.801 45.8187 93.807 45.4603 93.807 45.1139C93.807 33.1169 88.951 21.6248 80.3478 13.2662C71.7182 4.77088 60.0703 0.00122945 47.9548 0.00122945C47.6337 0.00122945 47.3004 0.00716597 46.985 0.0119081C46.6554 0.00597164 46.3113 0 45.9793 0C33.8638 0 22.2159 4.76965 13.5851 13.2649C4.90644 21.632 0 33.1782 0 45.2349C0 45.5597 0.00614728 45.9014 0.010854 46.2215C0.00962488 46.4875 0.00368837 46.7717 0.00368837 47.0437C0.00368837 56.4753 2.99678 65.6779 8.54102 73.3053L9.11279 72.9577L10.6351 72.4505H10.635Z" fill="black"/><path d="M114.356 134.55C115.522 131.461 117.272 128.617 119.495 126.177C123.764 121.417 129.861 118.696 136.255 118.696C142.649 118.696 148.747 121.417 153.017 126.176C157.455 131.25 159.902 137.767 159.902 144.509C159.902 151.25 157.455 157.768 153.018 162.84C149.651 166.679 145.03 169.212 139.982 169.977L140.3 170.167L141.219 170.674L142.139 171.15C150.678 175.42 157.941 176.892 168.178 176.892L169.414 176.1C178.095 167.733 183.002 156.187 183.002 144.13C183.002 143.794 182.996 143.442 182.991 143.111C182.995 142.794 183.001 142.452 183.001 142.127C183.001 130.07 178.094 118.524 169.415 110.16C160.959 102.519 149.945 98.2803 138.542 98.2803C137.828 98.2803 137.109 98.303 136.4 98.3305C136.09 98.3258 135.758 98.3197 135.443 98.3197C123.977 98.3197 112.904 102.606 104.426 110.32C107.399 118.404 111.473 125.9 114.356 134.55L114.356 134.55Z" fill="black"/></svg>
     <div class="whoami" id="whoami"><div class="av">···</div><div class="nm">определяем</div></div>
   </div>
 
-  <div class="tabs" id="tabs">
-    <div class="tab active" data-block="profile">Профиль</div>
-    <div class="tab" data-block="team">Команда</div>
-    <div class="tab" data-block="role">Моя роль</div>
-    <div class="tab" data-block="process">Процесс</div>
-    <div class="tab" data-block="errors">Ошибки</div>
-    <div class="tab" data-block="tasks">Задачи</div>
-    <div class="tab" data-block="growth">Мой рост</div>
+  <!-- 1. ПРОФИЛЬ · КОМАНДА · РОЛЬ -->
+  <div class="section active" id="s-profile"></div>
+
+  <!-- 2. ПРОЦЕСС -->
+  <div class="section" id="s-process">
+    <div class="carousel-dots"><i class="on"></i><i></i><i></i><i></i></div>
+    <div class="carousel" id="processCarousel">
+
+      <div class="cpage">
+        <div class="glass">
+          <div class="docdef">
+            <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1z"/><rect x="6" y="6" width="12" height="15" rx="2"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+            <div><b>Производственное задание</b><span>Фиксирует состав и объём выпуска</span></div>
+          </div>
+          <hr class="sep">
+          <div class="between" style="font-size:12.5px;"><span class="muted">Создаёт</span><b>Антон</b></div>
+          <div class="between" style="font-size:12.5px;"><span class="muted">На основании</span><b>заказа</b></div>
+        </div>
+        <div class="glass col">
+          <div class="muted">Статусы</div>
+          <div class="row" style="flex-wrap:wrap;gap:6px;"><span class="tag">Заказ покупателя</span><span class="tag">Заказ п/ф</span><span class="tag">Расчёт снабжения</span><span class="tag">Отменено</span></div>
+        </div>
+        <div class="attn">
+          <div class="eb">Снабжение</div>
+          <p>Экран считает потребность в 3 режимах — без учёта остатков / с учётом доступно / с учётом остатка. Документом не является, следа не оставляет.</p>
+        </div>
+      </div>
+
+      <div class="cpage">
+        <div class="glass">
+          <div class="docdef">
+            <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5"/><line x1="12" y1="13" x2="12" y2="21"/></svg></div>
+            <div><b>Заказ поставщику</b><span>Создаёт Михаил по потребности</span></div>
+          </div>
+          <hr class="sep">
+          <div class="row" style="gap:6px;flex-wrap:wrap;"><span class="tag">на согласовании</span><span class="tag">согласовано</span><span class="tag">заказано</span></div>
+        </div>
+        <div class="glass">
+          <div class="docdef">
+            <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v19l-3-2-3 2-3-2-3 2V2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg></div>
+            <div><b>Счёт поставщика</b><span>Сверяет Валерия</span></div>
+          </div>
+        </div>
+        <div class="blackblock">
+          <div class="docdef">
+            <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+            <div><b>Оплата заказа</b><span>П/п передано Михаилу, получение подтверждено</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cpage">
+        <div class="glass col">
+          <div class="muted">5 рабочих складов</div>
+          <div class="row" style="flex-wrap:wrap;gap:6px;"><span class="tag">Основной</span><span class="tag">Производство</span><span class="tag">Ответ-хранения</span><span class="tag">ХП</span><span class="tag">РЕЛЛ</span></div>
+        </div>
+        <div class="glass">
+          <div class="docdef"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div><div><b>Приёмка</b><span>На основании заказа, УПД + пересчёт</span></div></div>
+        </div>
+        <div class="glass">
+          <div class="docdef"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M3 7h18"/><path d="M7 21l-4-4 4-4"/><path d="M21 17H3"/></svg></div><div><b>Перемещение</b><span>5 стыков, 2 подписи, фото в чат «Документы»</span></div></div>
+        </div>
+        <div class="attn">
+          <div class="eb">Инвентаризация</div>
+          <p>Последний день месяца. Допуск отклонения — 5%, по количеству, по каждой позиции.</p>
+        </div>
+      </div>
+
+      <div class="cpage">
+        <div class="lime-heading">Эталонный процесс</div>
+        <div class="glass col">
+          <div class="mm-node main">Заказ → Подтверждён</div>
+          <div class="mm-link"></div>
+          <div class="mm-node">П/з на ГП</div>
+          <div class="mm-link"></div>
+          <div class="mm-node main">Развилка: хватает сырья?</div>
+          <div class="mm-branch">да → сразу в производство</div>
+          <div class="mm-branch">нет → контур Б: закупка</div>
+          <div class="mm-link"></div>
+          <div class="mm-node">Изготовление п/ф</div>
+          <div class="mm-link"></div>
+          <div class="mm-node">Фасовка на площадке</div>
+          <div class="mm-link"></div>
+          <div class="mm-node main">Отгрузка</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- 1. ПРОФИЛЬ -->
-  <div class="block active" id="b-profile"></div>
-
-  <!-- 2. КОМАНДА -->
-  <div class="block" id="b-team">
-    <div class="glass" style="text-align:center;">
-      <div class="avatar" style="margin:0 auto 8px;">АЛ</div>
-      <div style="font-family:var(--font-display);font-size:14px;">Директор</div>
-      <div class="muted">Алексей</div>
-    </div>
-    <div style="display:flex;justify-content:center;"><div style="width:2px;height:16px;background:var(--line);"></div></div>
-    <div class="glass" style="text-align:center;">
-      <div class="avatar" style="margin:0 auto 8px;">АН</div>
-      <div style="font-family:var(--font-display);font-size:14px;">Руководитель производства</div>
-      <div class="muted">Антон</div>
-    </div>
-    <div style="display:flex;justify-content:center;"><div style="width:2px;height:16px;background:var(--line);"></div></div>
-    <div class="row" style="gap:10px;">
-      <div class="glass" style="flex:1;text-align:center;padding:12px 8px;margin-bottom:0;">
-        <div class="avatar" style="width:36px;height:36px;font-size:13px;margin:0 auto 6px;">МП</div>
-        <div style="font-size:12px;font-weight:700;">Михаил</div>
-        <div class="muted" style="font-size:10.5px;">производство</div>
-      </div>
-      <div class="glass" style="flex:1;text-align:center;padding:12px 8px;margin-bottom:0;">
-        <div class="avatar" style="width:36px;height:36px;font-size:13px;margin:0 auto 6px;">АР</div>
-        <div style="font-size:12px;font-weight:700;">Арсений</div>
-        <div class="muted" style="font-size:10.5px;">склад</div>
-      </div>
-    </div>
-    <div class="honest" style="margin-top:10px;">Источник: 👥 Команда в Notion, решения директора 17–18.08.2026.</div>
-  </div>
-
-  <!-- 3. МОЯ РОЛЬ -->
-  <div class="block" id="b-role"></div>
-
-  <!-- 4. ПРОЦЕСС -->
-  <div class="block" id="b-process">
-    <div class="glass">
-      <h2>Эталонный процесс</h2>
-      <div class="col">
-        <div class="step"><span class="num">1</span>Заказ покупателя → статус «Подтверждён»</div>
-        <div class="step"><span class="num">2</span>П/з на ГП — на основании заказа</div>
-        <div class="step"><span class="num">3</span>Вложенные п/з на п/ф, если нужно произвести</div>
-        <div class="step"><span class="num">4</span>Приёмка сырья — по УПД + пересчёт</div>
-        <div class="step"><span class="num">5</span>Изготовление полуфабриката</div>
-        <div class="step"><span class="num">6</span>Перемещение п/ф на Основной склад</div>
-        <div class="step"><span class="num">7</span>Перемещение на площадку (ХП/РЕЛЛ)</div>
-        <div class="step"><span class="num">8</span>Фасовка</div>
-        <div class="step"><span class="num">9</span>Оприходование ГП</div>
-        <div class="step"><span class="num">10</span>Отгрузка покупателю</div>
-      </div>
-    </div>
-    <div class="attn">
-      <div class="eb">Важно</div>
-      <p>Каждая физическая передача — только через документ «Перемещение» + фото в чат «Документы» в день движения.</p>
-    </div>
-    <div class="honest">Это справочник шагов, не статус конкретного заказа — актуальный статус смотрите в Мой Склад. Живая привязка к заказам — следующий этап.</div>
-  </div>
-
-  <!-- 5. ОШИБКИ -->
-  <div class="block" id="b-errors">
+  <!-- 3. ОШИБКИ -->
+  <div class="section" id="s-errors">
     <div class="glass">
       <h2>Часто повторяется по отделу</h2>
-      <div class="col">
-        <div class="errchip"><span>Техкарты / номенклатура (Михаил)</span><span class="cnt">3 случая</span></div>
-        <div class="errchip"><span>Умалчивание — не заявлено в 2 дня</span><span class="cnt">2 случая</span></div>
-        <div class="errchip"><span>Перемещение не создано вовремя</span><span class="cnt">2 случая</span></div>
-      </div>
-      <div class="honest" style="margin-top:10px;">Ретроспектива 18.08–16.09 из 🎯 Дисциплинарный KPI — не для санкций, для понимания масштаба.</div>
+      <div class="errchip"><span>Техкарты / номенклатура (Михаил)</span><span class="cnt">3 случая</span></div>
+      <div class="errchip"><span>Умалчивание — не заявлено в 2 дня</span><span class="cnt">2 случая</span></div>
+      <div class="errchip"><span>Перемещение не создано вовремя</span><span class="cnt">2 случая</span></div>
+      <div class="honest" style="margin-top:6px;">Ретроспектива 18.08–16.09 из 🎯 Дисциплинарный KPI — не для санкций, для понимания масштаба.</div>
     </div>
     <div class="attn col">
       <div class="eb">Топ запретов</div>
@@ -207,12 +264,20 @@
     </div>
   </div>
 
-  <!-- 6. ЗАДАЧИ -->
-  <div class="block" id="b-tasks"></div>
+  <!-- 4. ЗАДАЧИ -->
+  <div class="section" id="s-tasks"></div>
 
-  <!-- 7. МОЙ РОСТ -->
-  <div class="block" id="b-growth"></div>
+  <!-- 5. МОЙ РОСТ -->
+  <div class="section" id="s-growth"></div>
 
+</div>
+
+<div class="botnav" id="botnav">
+  <div class="ni on" data-s="profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg></div>
+  <div class="ni" data-s="process"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M3 7h18"/><path d="M7 21l-4-4 4-4"/><path d="M21 17H3"/></svg></div>
+  <div class="ni" data-s="errors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.6"/></svg></div>
+  <div class="ni" data-s="tasks"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 12l3 3 5-6"/></svg></div>
+  <div class="ni" data-s="growth"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="19" x2="5" y2="13"/><line x1="12" y1="19" x2="12" y2="7"/><line x1="19" y1="19" x2="19" y2="11"/></svg></div>
 </div>
 
 <script>
@@ -224,70 +289,19 @@ const EMPLOYEES = {
 
 const ROLES = {
   mihail: {
-    make: [
-      'Проверяю техкарты на все позиции заказа перед запуском',
-      'Считаю потребность в сырье (контур пополнения)',
-      'Создаю заказ поставщику по подтверждённой потребности',
-      'Отправляю заказ поставщику после согласования суммы директором',
-      'Передаю платёжное поручение поставщику',
-      'Получаю от поставщика срок готовности письменно',
-      'Вношу дату приёмки, ставлю заказ в ожидание'
-    ],
+    make: ['Проверяю техкарты на все позиции заказа перед запуском','Считаю потребность в сырье (контур пополнения)','Создаю заказ поставщику по подтверждённой потребности','Отправляю заказ поставщику после согласования суммы директором','Передаю платёжное поручение поставщику','Получаю от поставщика срок готовности письменно','Вношу дату приёмки, ставлю заказ в ожидание'],
     control: ['Соответствие сменных заданий техкартам'],
-    dont: [
-      'Не создаю и не подтверждаю заказ покупателя',
-      'Не согласую суммы закупок',
-      'Не оплачиваю счета',
-      'Не принимаю материалы физически',
-      'Не формирую производственные/сменные задания',
-      'Не выбираю ветку процесса — это Антон'
-    ]
+    dont: ['Не создаю и не подтверждаю заказ покупателя','Не согласую суммы закупок','Не оплачиваю счета','Не принимаю материалы физически','Не формирую производственные/сменные задания','Не выбираю ветку процесса — это Антон']
   },
   anton: {
-    make: [
-      'Развилка процесса — выбираю быструю или полную ветку',
-      'Формирую производственное задание по заказу',
-      'Проверяю обоснование потребности в сырье от Михаила',
-      'Сверяю приёмку с заказом поставщику',
-      'Формирую сменные задания, передаю сырьё в производство',
-      'Готовлю отчёт план/факт по количеству'
-    ],
-    control: [
-      'Остатки и товароучёт склада — Арсений',
-      'Техкарты на позиции заказа — Михаил',
-      'Расчёт и согласование закупки — Михаил',
-      'Приёмку материалов — Арсений',
-      'Выпуск ГП и списание брака — старший смены',
-      'Оприходование ГП, отгрузку — Арсений'
-    ],
-    dont: [
-      'Не создаю и не подтверждаю заказ покупателя, не общаюсь с Сергеем',
-      'Не создаю карточки товара, не правлю техкарты',
-      'Не согласую суммы закупок',
-      'Не принимаю материалы физически',
-      'Не решаю о частичном запуске при недопоставке или смене поставщика'
-    ]
+    make: ['Развилка процесса — выбираю быструю или полную ветку','Формирую производственное задание по заказу','Проверяю обоснование потребности в сырье от Михаила','Сверяю приёмку с заказом поставщику','Формирую сменные задания, передаю сырьё в производство','Готовлю отчёт план/факт по количеству'],
+    control: ['Остатки и товароучёт склада — Арсений','Техкарты на позиции заказа — Михаил','Расчёт и согласование закупки — Михаил','Приёмку материалов — Арсений','Выпуск ГП и списание брака — старший смены','Оприходование ГП, отгрузку — Арсений'],
+    dont: ['Не создаю и не подтверждаю заказ покупателя, не общаюсь с Сергеем','Не создаю карточки товара, не правлю техкарты','Не согласую суммы закупок','Не принимаю материалы физически','Не решаю о частичном запуске при недопоставке или смене поставщика']
   },
   arseniy: {
-    make: [
-      'Плановая инвентаризация склада (последний день месяца)',
-      'Сверка остатков сырья по позициям задания',
-      'Приёмка от поставщика — на основании заказа',
-      'Оприходование готовой продукции на склад',
-      'Отгрузка покупателю',
-      'Еженедельное перемещение ГП на Ответ-хранение',
-      'Перемещение избытков материалов на Ответ-хранение',
-      'Сверка остатков на Ответ-хранении (ежемесячно)'
-    ],
+    make: ['Плановая инвентаризация склада (последний день месяца)','Сверка остатков сырья по позициям задания','Приёмка от поставщика — на основании заказа','Оприходование готовой продукции на склад','Отгрузка покупателю','Еженедельное перемещение ГП на Ответ-хранение','Перемещение избытков материалов на Ответ-хранение','Сверка остатков на Ответ-хранении (ежемесячно)'],
     control: ['Ничего — каждый мой шаг принимает Антон'],
-    dont: [
-      'Не создаю карточки товара и не правлю номенклатуру',
-      'Не отвечаю за остатки контрактных площадок',
-      'Не рассчитываю потребность в сырье, не создаю заказы поставщику',
-      'Не сверяю свою же приёмку с заказом — это Антон',
-      'Не формирую сменные задания, не выпускаю продукцию физически',
-      'Не принимаю собственную инвентаризацию — это Антон'
-    ]
+    dont: ['Не создаю карточки товара и не правлю номенклатуру','Не отвечаю за остатки контрактных площадок','Не рассчитываю потребность в сырье, не создаю заказы поставщику','Не сверяю свою же приёмку с заказом — это Антон','Не формирую сменные задания, не выпускаю продукцию физически','Не принимаю собственную инвентаризацию — это Антон']
   }
 };
 
@@ -313,44 +327,30 @@ const GROWTH = {
   arseniy: { retro:12, retroN:5, week:0,  weekN:0, top:'УПД вместо ТОРГ-13' }
 };
 
-function initials(name){ return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
-
 function renderProfile(u){
-  const el = document.getElementById('b-profile');
-  if(!u){
-    el.innerHTML = `<div class="empty">Не удалось определить, кто вы.<br>Откройте кнопку бота внутри Telegram.</div>`;
-    return;
-  }
-  el.innerHTML = `
-    <div class="glass" style="text-align:center;padding:24px 16px;">
-      <div class="avatar" style="width:64px;height:64px;font-size:22px;margin:0 auto 12px;">${u.initials}</div>
-      <div class="name">${u.name}</div>
-      <div class="muted" style="margin-top:4px;">${u.role}</div>
-      <div class="row" style="justify-content:center;gap:8px;margin-top:12px;"><span class="tag">${u.dept}</span></div>
-    </div>
-    <div class="glass col">
-      <div class="between"><span class="muted">Подчиняется</span><b>${u.manager}</b></div>
-      <hr class="sep">
-      <div class="between"><span class="muted">В подчинении</span><b>${u.reports}</b></div>
-      <hr class="sep">
-      <div class="between"><span class="muted">В компании с</span><b>${u.since}</b></div>
-    </div>
-    <div class="glass row" style="justify-content:space-between;">
-      <span style="font-size:12.5px;font-weight:600;">Telegram</span>
-      <span class="tag">${u.tg}</span>
-    </div>
-  `;
-}
-
-function renderRole(u){
-  const el = document.getElementById('b-role');
-  const r = u && ROLES[u.key];
-  if(!r){
-    el.innerHTML = `<div class="empty">Роль появится, когда вы откроетесь через бот.</div>`;
-    return;
-  }
+  const el = document.getElementById('s-profile');
+  if(!u){ el.innerHTML = `<div class="empty">Не удалось определить, кто вы.<br>Откройте кнопку бота внутри Telegram.</div>`; return; }
+  const r = ROLES[u.key];
   const li = (arr, dash) => arr.map(t=>`<div class="row" style="align-items:flex-start;">${dash?'<span style="color:var(--ink-dim);">−</span>':'<span class="tag" style="background:var(--ink);color:var(--pill-ink);border-color:var(--ink);flex:0 0 auto;">✓</span>'}<span style="font-size:13px;">${t}</span></div>`).join('<hr class="sep">');
   el.innerHTML = `
+    <div class="glass" style="text-align:center;padding:22px 16px;">
+      <div class="avatar" style="width:60px;height:60px;font-size:21px;margin:0 auto 10px;">${u.initials}</div>
+      <div class="name">${u.name}</div>
+      <div class="muted" style="margin-top:2px;">${u.role}</div>
+      <div class="row" style="justify-content:center;gap:8px;margin-top:10px;"><span class="tag">${u.dept}</span></div>
+    </div>
+    <div class="glass">
+      <div class="muted" style="margin-bottom:8px;">Команда отдела</div>
+      <div class="teamstrip">
+        <div class="teamnode"><div class="avatar">АЛ</div><div class="lbl">Директор</div></div>
+        <div class="teamlink"></div>
+        <div class="teamnode"><div class="avatar">АН</div><div class="lbl">Антон</div></div>
+        <div class="teamlink"></div>
+        <div class="teamnode"><div class="avatar lime">${u.initials}</div><div class="lbl" style="font-weight:700;color:var(--ink-soft);">вы</div></div>
+        <div class="teamnode"><div class="avatar">АР</div><div class="lbl">Арсений</div></div>
+      </div>
+    </div>
+    ${r ? `
     <div class="subtabs">
       <div class="subtab active" data-sub="make">Делаю</div>
       <div class="subtab" data-sub="control">Контролирую</div>
@@ -360,6 +360,9 @@ function renderRole(u){
       <div class="sublist active" data-sub="make">${li(r.make,false)}</div>
       <div class="sublist" data-sub="control">${li(r.control,false)}</div>
       <div class="sublist" data-sub="dont">${li(r.dont,true)}</div>
+    </div>` : ''}
+    <div class="glass row" style="justify-content:space-between;">
+      <span style="font-size:12.5px;font-weight:600;">Telegram</span><span class="tag">${u.tg}</span>
     </div>
   `;
   el.querySelectorAll('.subtab').forEach(st=>{
@@ -373,15 +376,12 @@ function renderRole(u){
 }
 
 function renderTasks(u){
-  const el = document.getElementById('b-tasks');
+  const el = document.getElementById('s-tasks');
   if(!u){ el.innerHTML = `<div class="empty">Задачи появятся после определения пользователя.</div>`; return; }
   const own = TASKS[u.key] || [];
   const card = t => `
     <div class="taskcard">
-      <div class="between">
-        <span class="row" style="gap:6px;font-size:12.5px;font-weight:700;"><span class="dotpri ${t.pri==='hi'?'':t.pri==='mid'?'mid':'low'}"></span>${t.title}</span>
-        <span class="tag">${t.id}</span>
-      </div>
+      <div class="between"><span class="row" style="gap:6px;font-size:12.5px;font-weight:700;"><span class="dotpri ${t.pri==='hi'?'':t.pri==='mid'?'mid':'low'}"></span>${t.title}</span><span class="tag">${t.id}</span></div>
       <div class="muted">срок ${t.due}</div>
     </div>`;
   el.innerHTML = `
@@ -392,60 +392,46 @@ function renderTasks(u){
     <div class="glass">
       <h2>Общее</h2>
       <div class="taskcard">
-        <div class="between">
-          <span style="font-size:12.5px;font-weight:700;">${SHARED_TASK.title}</span>
-          <span class="tag">${SHARED_TASK.id}</span>
-        </div>
+        <div class="between"><span style="font-size:12.5px;font-weight:700;">${SHARED_TASK.title}</span><span class="tag">${SHARED_TASK.id}</span></div>
         <div class="muted">срок ${SHARED_TASK.due}</div>
       </div>
     </div>
-    <div class="honest">Данные из Яндекс Трекер (очередь PR-VO) на 19.09.2026. Открыть карточку — пока только по ссылке из Трекера напрямую, кнопка появится позже.</div>
+    <div class="pill lime" style="justify-content:center;width:100%;text-align:center;margin-bottom:10px;">Открыть в Трекере</div>
+    <div class="honest">Данные из Яндекс Трекер (очередь PR-VO) на 19.09.2026.</div>
   `;
 }
 
 function renderGrowth(u){
-  const el = document.getElementById('b-growth');
+  const el = document.getElementById('s-growth');
   const g = u && GROWTH[u.key];
   if(!g){ el.innerHTML = `<div class="empty">Раздел доступен после определения пользователя.</div>`; return; }
-  const zoneColor = g.week<=10 ? 'ok' : g.week<=25 ? 'warn' : 'danger';
-  const zoneLabel = g.week<=10 ? '🟢 норма' : g.week<=25 ? '🟡 внимание' : '🔴 последствие';
+  const zone = g.week<=10 ? {c:'ok',l:'норма'} : g.week<=25 ? {c:'warn',l:'внимание'} : {c:'danger',l:'последствие'};
+  const zoneBadge = g.week<=10
+    ? `<span class="tag" style="background:var(--lime);color:var(--lime-ink);border-color:transparent;font-weight:800;">норма</span>`
+    : `<span class="tag" style="background:var(--${zone.c}-bg);color:var(--${zone.c});border-color:transparent;">${zone.l}</span>`;
   el.innerHTML = `
     <div class="glass">
       <div class="between">
         <div><div class="muted">Текущая неделя (15–21.09)</div><div class="huge" style="font-size:32px;">${g.week}</div></div>
-        <span class="tag" style="background:var(--${zoneColor}-bg);color:var(--${zoneColor});border-color:transparent;">${zoneLabel}</span>
+        ${zoneBadge}
       </div>
-      <div class="bars">
-        <div class="b" style="height:${Math.max(10, g.retro/1.2)}%;"></div>
-        <div class="b hi" style="height:${Math.max(10, g.week/1.2)}%;"></div>
-      </div>
-      <div class="row" style="justify-content:space-between;">
-        <span class="muted" style="font-size:10px;">ретро 18.08–16.09 (${g.retroN} зап.)</span>
-        <span class="muted" style="font-size:10px;">тек. неделя (${g.weekN} зап.)</span>
-      </div>
+      <div class="bars"><div class="b" style="height:${Math.max(10,g.retro/1.2)}%;"></div><div class="b hi" style="height:${Math.max(10,g.week/1.2)}%;"></div></div>
+      <div class="row" style="justify-content:space-between;"><span class="muted" style="font-size:10px;">ретро 18.08–16.09 (${g.retroN} зап.)</span><span class="muted" style="font-size:10px;">тек. неделя (${g.weekN} зап.)</span></div>
     </div>
-    <div class="glass col">
-      <div class="muted">Часто повторяется</div>
-      <div class="errchip"><span>${g.top}</span></div>
-    </div>
+    <div class="glass col"><div class="muted">Часто повторяется</div><div class="errchip"><span>${g.top}</span></div></div>
     <div class="attn">
       <div class="eb">Важно</div>
-      <p>Баллы за текущую неделю пока не начисляются — счёт стартует с нуля 21.09.2026 при объявлении структуры. Заявил проблему сам — ноль баллов, это правило не меняется.</p>
+      <p>Баллы за текущую неделю пока не начисляются — счёт стартует с нуля 21.09.2026. Заявил проблему сам — ноль баллов, это правило не меняется.</p>
     </div>
   `;
 }
 
 function renderAll(u){
   renderProfile(u);
-  renderRole(u);
   renderTasks(u);
   renderGrowth(u);
   const w = document.getElementById('whoami');
-  if(u){
-    w.innerHTML = `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>`;
-  } else {
-    w.innerHTML = `<div class="av">?</div><div class="nm">не определён</div>`;
-  }
+  w.innerHTML = u ? `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>` : `<div class="av">?</div><div class="nm">не определён</div>`;
 }
 
 // Auth
@@ -453,19 +439,26 @@ const tg = window.Telegram && window.Telegram.WebApp;
 let currentUser = null;
 if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user){
   tg.ready(); tg.expand();
-  const tgUser = tg.initDataUnsafe.user;
-  currentUser = EMPLOYEES[tgUser.id] || null;
+  currentUser = EMPLOYEES[tg.initDataUnsafe.user.id] || null;
 }
 renderAll(currentUser);
 
-// Top tabs
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click', ()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    document.querySelectorAll('.block').forEach(x=>x.classList.remove('active'));
-    t.classList.add('active');
-    document.getElementById('b-'+t.dataset.block).classList.add('active');
+// Bottom nav switching
+document.querySelectorAll('.botnav .ni').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.botnav .ni').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('on');
+    document.getElementById('s-'+btn.dataset.s).classList.add('active');
   });
+});
+
+// Process carousel dots
+const carousel = document.getElementById('processCarousel');
+const dots = document.querySelectorAll('.carousel-dots i');
+carousel.addEventListener('scroll', ()=>{
+  const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+  dots.forEach((d,i)=>d.classList.toggle('on', i===idx));
 });
 </script>
 </body>
