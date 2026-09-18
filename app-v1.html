@@ -444,10 +444,27 @@ const RULES = [
 ];
 
 const GROWTH = {
-  anton:   { retro:20, retroN:2, week:31, weekN:4, top:'Откат проведения / перемещение не создано' },
-  mihail:  { retro:29, retroN:6, week:6,  weekN:1, top:'Техкарты и номенклатура — 3-й повтор' },
-  arseniy: { retro:12, retroN:5, week:0,  weekN:0, top:'УПД вместо ТОРГ-13' }
+  anton:   { retro:20, retroN:2, retroBreak:'умалчивание 10 · передача без перемещения 10',
+             week:31,  weekN:4,  weekBreak:'п/з задним числом 1 · откат проведения п/з 10 · 2× непроведённое перемещение 10+10',
+             top:'Откат проведения / перемещение не создано', note:'31 балл — предварительно. Объявление регламента перенесено на 21.09, начисление этих баллов разбирается на созвоне.' },
+  mihail:  { retro:29, retroN:6, retroBreak:'неявка на созвон 1 · умалчивание 10 · техкарты 3+6+6 · нулевая цена 3',
+             week:6,   weekN:1,  weekBreak:'номенклатура Turn не доведена — 3-й случай, уровень 2 повторно',
+             top:'Техкарты и номенклатура — 3-й повтор', note:'' },
+  arseniy: { retro:12, retroN:5, retroBreak:'УПД вместо ТОРГ-13 3 · нулевые цены одним эпизодом 9',
+             week:0,   weekN:0,  weekBreak:'нарушений не зафиксировано',
+             top:'УПД вместо ТОРГ-13', note:'' }
 };
+
+const SCALE = [
+  {lvl:1, first:1,  repeat:5,  meaning:'Формальное нарушение, материального следа нет'},
+  {lvl:2, first:3,  repeat:6,  meaning:'Искажает остатки, себестоимость или деньги'},
+  {lvl:3, first:10, repeat:20, meaning:'Сокрытие, самодеятельность, действие в обход процесса'}
+];
+
+const COMEBACK = [
+  {way:'Рутинный', need:'Три операции того же типа подряд без нарушений', gives:'Обнуляет счётчик повторов по этому виду. Аттестация не нужна'},
+  {way:'Аттестация', need:'Сдать участок — выполнить операцию и письменно объяснить каждое поле', gives:'Возвращаются забранные операции, снимается режим обязательной проверки'}
+];
 
 const ERROR_LOG = [
   {emp:'Михаил', cat:'Другое', dt:'2026-09-18', title:'Короб сложной высечки не заказан вовремя'},
@@ -685,8 +702,9 @@ function renderGrowth(u){
       ${ROSTER.map(row).join('')}
       <div class="attn">
         <div class="eb">Важно</div>
-        <p>Баллы за текущую неделю пока не начисляются — счёт стартует с нуля 21.09.2026. Заявил проблему сам — ноль баллов, это правило не меняется.</p>
+        <p>Счёт по регламенту идёт с 21.09.2026, но денежный вес баллы получают только с 01.10.2026 — сентябрь считается «на сухую». Заявил проблему сам — ноль баллов всегда, без исключений.</p>
       </div>
+      ${scaleBlock()}
     `;
     return;
   }
@@ -706,11 +724,52 @@ function renderGrowth(u){
       <div class="bars"><div class="b" style="height:${Math.max(10,g.retro/1.2)}%;"></div><div class="b hi" style="height:${Math.max(10,g.week/1.2)}%;"></div></div>
       <div class="row" style="justify-content:space-between;"><span class="muted" style="font-size:10px;">ретро 18.08–16.09 (${g.retroN} зап.)</span><span class="muted" style="font-size:10px;">тек. неделя (${g.weekN} зап.)</span></div>
     </div>
+    <div class="glass col">
+      <div class="muted">Из чего баллы этой недели</div>
+      <div style="font-size:12.5px;line-height:1.5;">${g.weekBreak}</div>
+    </div>
+    <div class="glass col">
+      <div class="muted">Из чего баллы ретроспективы</div>
+      <div style="font-size:12.5px;line-height:1.5;">${g.retroBreak}</div>
+    </div>
+    ${g.note ? `<div class="attn"><div class="eb">Уточнение</div><p>${g.note}</p></div>` : ''}
     <div class="glass col"><div class="muted">Часто повторяется</div><div class="errchip"><span>${g.top}</span></div></div>
     <div class="attn">
       <div class="eb">Важно</div>
-      <p>Баллы за текущую неделю пока не начисляются — счёт стартует с нуля 21.09.2026. Заявил проблему сам — ноль баллов, это правило не меняется.</p>
+      <p>Счёт по регламенту идёт с 21.09.2026, но денежный вес баллы получают только с 01.10.2026 — сентябрь считается «на сухую». Заявил проблему сам — ноль баллов всегда, без исключений.</p>
     </div>
+    ${scaleBlock()}
+  `;
+}
+
+function scaleBlock(){
+  return `
+    <h2 style="margin-top:4px;">Как считаются баллы</h2>
+    <div class="glass col" style="gap:0;">
+      ${SCALE.map(s=>`
+        <div class="between" style="padding:9px 0;">
+          <div><b style="font-size:12.5px;">Уровень ${s.lvl}</b><div class="muted" style="font-size:11px;max-width:220px;">${s.meaning}</div></div>
+          <div class="row" style="gap:6px;"><span class="tag">1-й раз ${s.first}</span><span class="tag" style="background:var(--pill);color:var(--pill-ink);border-color:var(--pill);">повтор ${s.repeat}</span></div>
+        </div>
+        ${s.lvl<3 ? '<hr class="sep">' : ''}
+      `).join('')}
+    </div>
+    <div class="blackblock col">
+      <div class="eb">Зоны месяца</div>
+      <p style="margin:0;font-size:12.5px;">🟢 0–10 — норма, ничего не происходит. 🟡 11–25 — разговор один на один с директором. 🔴 выше 25 — не проходит аттестацию, не получает расширения полномочий, с фондом — депремирование.</p>
+    </div>
+    <h2>Два пути обратно</h2>
+    <div class="glass col" style="gap:0;">
+      ${COMEBACK.map((c,i)=>`
+        <div style="padding:9px 0;">
+          <b style="font-size:12.5px;">${c.way}</b>
+          <div style="font-size:12px;margin-top:2px;"><span class="muted">Нужно:</span> ${c.need}</div>
+          <div style="font-size:12px;margin-top:2px;"><span class="muted">Даёт:</span> ${c.gives}</div>
+        </div>
+        ${i<COMEBACK.length-1 ? '<hr class="sep">' : ''}
+      `).join('')}
+    </div>
+    <div class="honest">Аттестация — ежемесячно, два дня: 01–02.10 (установочная, без последствий) · 02–03.11 · 01–02.12. Сдача — право, не обязанность: тратит время только тот, у кого есть повод вернуть операцию или снять проверку.</div>
   `;
 }
 
