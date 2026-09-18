@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OGGO — Роли и процесс</title>
+<style>
+  :root{
+    --paper:#f5f1e8;
+    --paper-raised:#ffffff;
+    --ink:#1c1a16;
+    --ink-dim:#6b6459;
+    --line:#ddd4c2;
+    --accent:#c1631f;
+    --accent-ink:#ffffff;
+    --ok:#2f6b45;
+    --ok-bg:#e7efe4;
+    --danger:#a33b2b;
+    --danger-bg:#f3e6e1;
+    --warn:#8a5a12;
+    --warn-bg:#f3ead4;
+    --chip-bg:#eee6d4;
+    --font-body:'IBM Plex Sans',system-ui,sans-serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#17140f;
+      --paper-raised:#221e17;
+      --ink:#efe8da;
+      --ink-dim:#a89e8c;
+      --line:#3a3428;
+      --accent:#e08a3f;
+      --accent-ink:#1c1a16;
+      --ok:#7ec090;
+      --ok-bg:#1e2d21;
+      --danger:#e08272;
+      --danger-bg:#2f1f1b;
+      --warn:#e0b45f;
+      --warn-bg:#2e2617;
+      --chip-bg:#2a2519;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#17140f;
+    --paper-raised:#221e17;
+    --ink:#efe8da;
+    --ink-dim:#a89e8c;
+    --line:#3a3428;
+    --accent:#e08a3f;
+    --accent-ink:#1c1a16;
+    --ok:#7ec090;
+    --ok-bg:#1e2d21;
+    --danger:#e08272;
+    --danger-bg:#2f1f1b;
+    --warn:#e0b45f;
+    --warn-bg:#2e2617;
+    --chip-bg:#2a2519;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.5;
+    padding-inline:16px;
+    padding-block:0 24px;
+  }
+  h1,h2,h3{font-family:var(--font-body);text-wrap:balance;margin:0;}
+  .topbar{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    background:var(--paper);
+    padding-block:12px 8px;
+    z-index:5;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:8px;
+  }
+  .tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+  }
+  .tab{
+    flex:0 0 auto;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    color:var(--ink-dim);
+    font-family:var(--font-mono);
+    font-size:13px;
+    cursor:pointer;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--accent);
+    color:var(--accent-ink);
+    border-color:var(--accent);
+    font-weight:600;
+  }
+  .role-panel{padding-block:18px 8px;}
+  .role-head{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    margin-bottom:16px;
+  }
+  .role-head .name{font-size:22px;font-weight:700;}
+  .role-head .title{color:var(--ink-dim);font-size:14px;}
+  .role-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:8px;
+  }
+  .chip{
+    font-family:var(--font-mono);
+    font-size:11px;
+    background:var(--chip-bg);
+    color:var(--ink-dim);
+    padding:4px 8px;
+    border-radius:6px;
+  }
+  section{margin-block:20px;}
+  section > h3{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:10px;
+  }
+  ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+  ol.steps li{
+    display:grid;
+    grid-template-columns:24px 1fr;
+    gap:10px;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    align-items:start;
+  }
+  ol.steps li::before{
+    counter-increment:step;
+    content:counter(step);
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--accent);
+    font-weight:700;
+  }
+  ol.steps{counter-reset:step;}
+  ul.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
+  ul.plain li{
+    display:grid;
+    grid-template-columns:18px 1fr;
+    gap:8px;
+    font-size:14px;
+  }
+  ul.plain.no li::before{content:"−";color:var(--danger);font-weight:700;}
+  ul.plain.ctrl li::before{content:"◆";color:var(--ink-dim);font-size:10px;padding-top:4px;}
+  .callout{
+    background:var(--warn-bg);
+    border:1px solid var(--line);
+    border-left:3px solid var(--warn);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+    color:var(--ink);
+  }
+  .callout b{color:var(--warn);}
+  .divider{border:0;border-top:1px solid var(--line);margin-block:24px;}
+  .kb-head{margin-bottom:12px;}
+  .kb-head .name{font-size:18px;font-weight:700;}
+  .kb-head .sub{color:var(--ink-dim);font-size:13px;}
+  details.rule{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:8px;
+    overflow:hidden;
+  }
+  details.rule summary{
+    padding:12px 14px;
+    font-weight:600;
+    cursor:pointer;
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  }
+  details.rule summary::-webkit-details-marker{display:none;}
+  details.rule summary::after{
+    content:"+";
+    font-family:var(--font-mono);
+    color:var(--ink-dim);
+    font-size:16px;
+  }
+  details.rule[open] summary::after{content:"–";}
+  .rule-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;}
+  .row{
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+  }
+  .row.ok{background:var(--ok-bg);}
+  .row.no{background:var(--danger-bg);}
+  .row.warn{background:var(--warn-bg);}
+  .row .tag{
+    font-family:var(--font-mono);
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:4px;
+  }
+  .row.ok .tag{color:var(--ok);}
+  .row.no .tag{color:var(--danger);}
+  .row.warn .tag{color:var(--warn);}
+  footer{
+    margin-top:28px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    color:var(--ink-dim);
+    font-size:11.5px;
+    font-family:var(--font-mono);
+  }
+  [hidden]{display:none!important;}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">OGGO · Производство и склад</div>
+  <div class="tabs" role="tablist">
+    <button class="tab" data-role="anton" role="tab" aria-selected="true">Антон</button>
+    <button class="tab" data-role="mihail" role="tab" aria-selected="false">Михаил</button>
+    <button class="tab" data-role="arseniy" role="tab" aria-selected="false">Арсений</button>
+  </div>
+</div>
+
+<div id="anton" class="role-panel">
+  <div class="role-head">
+    <div class="name">Антон</div>
+    <div class="title">Руководитель отдела производства</div>
+    <div class="role-meta">
+      <span class="chip">подчиняется директору</span>
+      <span class="chip">в подчинении: Михаил, Арсений, старший смены, 5 фасовщиков</span>
+    </div>
+  </div>
+
+  <section>
+    <h3>Что я делаю сам</h3>
+    <ol class="steps">
+      <li>Развилка процесса — выбираю быструю или полную ветку</li>
+      <li>Формирую производственное задание по заказу</li>
+      <li>Проверяю обоснование потребности в сырье от Михаила</li>
+      <li>Сверяю приёмку с заказом поставщику</li>
+      <li>Формирую сменные задания, передаю сырьё в производство</li>
+      <li>Готовлю отчёт план/факт по количеству</li>
+    </ol>
+  </section>
+
+  <section>
+    <h3>Что контролирую (принимаю результат, не делаю сам)</h3>
+    <ul class="plain ctrl">
+      <li>Остатки и товароучёт склада — Арсений</li>
+      <li>Техкарты на позиции заказа — Михаил</li>
+      <li>Расчёт и согласование закупки — Михаил</li>
+      <li>Приёмку материалов — Арсений</li>
+      <li>Выпуск ГП и списание брака — старший смены</li>
+      <li>Оприходование ГП, отгрузку — Арсений</li>
+      <li>Перемещения на Ответ-хранения — Арсений</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Чего не делаю</h3>
+    <ul class="plain no">
+      <li>Не создаю и не подтверждаю заказ покупателя, не общаюсь с Сергеем</li>
+      <li>Не создаю карточки товара, не правлю техкарты</li>
+      <li>Не согласую суммы закупок</li>
+      <li>Не принимаю материалы физически</li>
+      <li>Не решаю о частичном запуске при недопоставке или смене поставщика</li>
+    </ul>
+  </section>
+
+  <div class="callout"><b>Правило обкатки.</b> Если результат шага не достигнут — действую по «если не сходится». К директору иду только с тремя вопросами: сумма закупки, частичный запуск при недопоставке, смена поставщика.</div>
+</div>
+
+<div id="mihail" class="role-panel" hidden>
+  <div class="role-head">
+    <div class="name">Михаил</div>
+    <div class="title">Менеджер производства</div>
+    <div class="role-meta">
+      <span class="chip">подчиняется Антону</span>
+      <span class="chip">в подчинении: никого</span>
+    </div>
+  </div>
+
+  <section>
+    <h3>Что я делаю сам</h3>
+    <ol class="steps">
+      <li>Проверяю техкарты на все позиции заказа перед запуском</li>
+      <li>Считаю потребность в сырье (контур пополнения)</li>
+      <li>Создаю заказ поставщику по подтверждённой потребности</li>
+      <li>Отправляю заказ поставщику после согласования суммы директором</li>
+      <li>Передаю платёжное поручение поставщику</li>
+      <li>Получаю от поставщика срок готовности письменно</li>
+      <li>Вношу дату приёмки, ставлю заказ в ожидание</li>
+    </ol>
+  </section>
+
+  <section>
+    <h3>Что контролирую</h3>
+    <ul class="plain ctrl">
+      <li>Соответствие сменных заданий техкартам</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Чего не делаю</h3>
+    <ul class="plain no">
+      <li>Не создаю и не подтверждаю заказ покупателя</li>
+      <li>Не согласую суммы закупок</li>
+      <li>Не оплачиваю счета</li>
+      <li>Не принимаю материалы физически</li>
+      <li>Не формирую производственные/сменные задания</li>
+      <li>Не выбираю ветку процесса — это Антон</li>
+    </ul>
+  </section>
+
+  <div class="callout"><b>Постоянные правила по техкартам.</b> Создание и правка — только через согласование с директором, через Антона, с письменным обоснованием. Карточки товара — только вы, единолично, сразу с ценой продажи (S 161₽, M/XL 180₽). Новый товар похож на существующий — правится копия с «(2)», не оригинал.</div>
+</div>
+
+<div id="arseniy" class="role-panel" hidden>
+  <div class="role-head">
+    <div class="name">Арсений</div>
+    <div class="title">Ответственный за склад</div>
+    <div class="role-meta">
+      <span class="chip">подчиняется Антону</span>
+      <span class="chip">в подчинении: никого</span>
+      <span class="chip">дублёра нет</span>
+    </div>
+  </div>
+
+  <section>
+    <h3>Что я делаю сам</h3>
+    <ol class="steps">
+      <li>Плановая инвентаризация склада (последний день месяца)</li>
+      <li>Сверка остатков сырья по позициям задания</li>
+      <li>Приёмка от поставщика — на основании заказа</li>
+      <li>Оприходование готовой продукции на склад</li>
+      <li>Отгрузка покупателю</li>
+      <li>Еженедельное перемещение ГП на Ответ-хранение (по понедельникам)</li>
+      <li>Перемещение избытков материалов на Ответ-хранение</li>
+      <li>Сверка остатков на Ответ-хранении (ежемесячно)</li>
+    </ol>
+  </section>
+
+  <section>
+    <h3>Что контролирую</h3>
+    <ul class="plain ctrl">
+      <li>Ничего — каждый мой шаг принимает Антон</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Чего не делаю</h3>
+    <ul class="plain no">
+      <li>Не создаю карточки товара и не правлю номенклатуру</li>
+      <li>Не отвечаю за остатки на складах контрактных площадок</li>
+      <li>Не рассчитываю потребность в сырье, не создаю заказы поставщику</li>
+      <li>Не сверяю свою же приёмку с заказом — это Антон</li>
+      <li>Не формирую сменные задания, не выпускаю продукцию физически</li>
+      <li>Не решаю о частичном запуске при недопоставке</li>
+      <li>Не принимаю собственную инвентаризацию — это Антон</li>
+    </ul>
+  </section>
+
+  <div class="callout"><b>Правило приёмки.</b> Количество сверяется по УПД поставщика и физическим пересчётом. Если документов нет — приёмку создать можно, но количество строго по факту ручного пересчёта. Нет документов — запросить у Михаила.</div>
+</div>
+
+<hr class="divider">
+
+<div class="kb-head">
+  <div class="name">Процесс: как правильно, что нельзя, риски</div>
+  <div class="sub">Общее для всех — черновик, синхронизирован с комплектом на 21.09</div>
+</div>
+
+<details class="rule">
+  <summary>1. Заказ и производственное задание</summary>
+  <div class="rule-body">
+    <div class="row ok"><span class="tag">Процесс</span>Заказ идёт по статусам Новый → Подтверждён → далее. П/з на ГП создаётся строго после «Подтверждён» и на основании заказа. Задание проводится сразу; изменение — с зафиксированной причиной.</div>
+    <div class="row no"><span class="tag">Нельзя</span>Брать заказ в работу раньше «Подтверждён» · создавать п/з не на основании заказа · оставлять п/з непроведённым · снимать проведение без причины · менять статус без документа.</div>
+    <div class="row warn"><span class="tag">Риск</span>Рвётся связь между обещанным покупателю и реально произведённым. Уже было: закрытое задание с фактом производства откатили в момент разбора — факт выпуска исчез из истории.</div>
+  </div>
+</details>
+
+<details class="rule">
+  <summary>2. Движение материалов</summary>
+  <div class="rule-body">
+    <div class="row ok"><span class="tag">Процесс</span>Любая передача — через «Перемещение», собранное по расчёту в «Снабжении». Печать, подпись с обеих сторон, фото в чат «Документы» в день движения.</div>
+    <div class="row no"><span class="tag">Нельзя</span>Двигать без перемещения в программе · без распечатанного документа · без фото в чат · собирать «от себя» · пропускать перемещение п/ф.</div>
+    <div class="row warn"><span class="tag">Риск</span>Без документа неизвестно, на чьей стороне недостача. Уже было: 63 позиции уехали на ХП без перемещения и пересчёта.</div>
+  </div>
+</details>
+
+<details class="rule">
+  <summary>3. Цены и номенклатура</summary>
+  <div class="rule-body">
+    <div class="row ok"><span class="tag">Процесс</span>Карточку создаёт только Михаил, сразу с ценой продажи (S 161₽, M/XL 180₽). Правки техкарт — только через согласованный запрос директору.</div>
+    <div class="row no"><span class="tag">Нельзя</span>Карточка без цены · нулевая цена по покупной позиции · карточки не от Михаила · смена типа номенклатуры · правка без согласования.</div>
+    <div class="row warn"><span class="tag">Риск</span>Нулевая цена в приёмке навсегда фиксирует себестоимость партии как ноль — ФИФО разносит её по всем следующим продажам. Уже найдено 29 таких документов.</div>
+  </div>
+</details>
+
+<details class="rule">
+  <summary>4. Даты и сроки</summary>
+  <div class="rule-body">
+    <div class="row ok"><span class="tag">Процесс</span>Документ заводится в день события. Расхождение — максимум сутки. Больше — только «восстановительный документ» с пометкой.</div>
+    <div class="row no"><span class="tag">Нельзя</span>Задним числом больше суток без пометки · дата в будущем · движение по складу после инвентаризации до конца месяца.</div>
+    <div class="row warn"><span class="tag">Риск</span>Без честной даты теряется реальная последовательность событий при расследовании расхождения.</div>
+  </div>
+</details>
+
+<details class="rule">
+  <summary>5. Приёмка</summary>
+  <div class="rule-body">
+    <div class="row ok"><span class="tag">Процесс</span>Приёмка — на основании заказа поставщику. Количество сверяется по УПД поставщика и физическим пересчётом. Нет документов — приёмку создать можно, но количество строго по факту пересчёта; отсутствие документов — сигнал запросить их у Михаила.</div>
+    <div class="row no"><span class="tag">Нельзя</span>Принимать количество не по факту пересчёта, когда документов нет · оставлять их отсутствие без запроса Михаилу.</div>
+    <div class="row warn"><span class="tag">Риск</span>Без документа и без честного пересчёта — нет основания для претензии поставщику, либо цифры подгоняются под ожидание.</div>
+  </div>
+</details>
+
+<details class="rule">
+  <summary>6. Бумажное сопровождение — 5 стыков</summary>
+  <div class="rule-body">
+    <div class="row ok"><span class="tag">Процесс</span>На каждой передаче ответственности — две подписи от руки, затем фото подписанного документа в чат «Документы» в день движения.</div>
+    <div class="row no"><span class="tag">Нельзя</span>Передавать без двух подписей · заменять фото PDF-версией без подписей.</div>
+    <div class="row warn"><span class="tag">Риск</span>Без подписи с обеих сторон спор превращается в «я передавал / мне не передавали» без возможности разрешить его фактами.</div>
+  </div>
+</details>
+
+<footer>Черновик 18.09.2026 · синхронизировано с официальным комплектом на 21.09.2026</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab');
+  var panels = {
+    anton: document.getElementById('anton'),
+    mihail: document.getElementById('mihail'),
+    arseniy: document.getElementById('arseniy')
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      tab.setAttribute('aria-selected','true');
+      Object.keys(panels).forEach(function(key){
+        panels[key].hidden = (key !== tab.dataset.role);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
