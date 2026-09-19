@@ -267,10 +267,100 @@
 
 
   /* Карточка документа — модалка */
-  .docModal{position:fixed;inset:0;background:var(--paper);z-index:30;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .docModal{position:fixed;inset:0;background:#000;z-index:30;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
   .docModal.open{display:block;}
-  .docModal-inner{padding:20px 16px 100px;max-width:520px;margin:0 auto;padding-top:calc(20px + env(safe-area-inset-top,0px));}
-  .doc-back{display:inline-flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:16px;}
+  .docModal-inner{max-width:520px;margin:0 auto;min-height:100%;padding-top:env(safe-area-inset-top,0px);}
+  .dm-top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;}
+  .dm-back{width:44px;height:44px;border-radius:14px;border:0;background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;}
+  .dm-cap{color:rgba(255,255,255,.7);font-size:12.5px;font-weight:600;}
+  .dm-hero{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 20px 28px;text-align:center;}
+  .dm-ic{width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:6px;}
+  .dm-title{font-family:var(--font-display);font-size:24px;font-weight:700;color:#fff;line-height:1.15;}
+  .dm-sub{font-size:12px;color:rgba(255,255,255,.62);}
+  .dm-sheet{background:#fff;border-radius:32px 32px 0 0;padding:22px 16px 110px;min-height:62vh;}
+  .docModal.open .dm-sheet{animation:dm-up .45s cubic-bezier(.2,.9,.3,1) both;}
+  .docModal.open .dm-hero{animation:dm-fade .4s ease both;}
+  @keyframes dm-up{from{transform:translateY(55%);opacity:.5;}to{transform:none;opacity:1;}}
+  @keyframes dm-fade{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:none;}}
+
+  /* Карусели блоков */
+  .cz{margin:0 -16px 14px;}
+  .cz-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:6px 0 12px;scrollbar-width:none;outline:none;}
+  .cz-track::-webkit-scrollbar{display:none;}
+  .cz-sp{flex:0 0 calc(13% - 12px);}
+  .cz-card{flex:0 0 74%;scroll-snap-align:center;scroll-snap-stop:always;position:relative;min-height:178px;border-radius:28px;padding:16px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;
+    background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);
+    transform:scale(calc(1 - var(--k,1)*.07));opacity:calc(1 - var(--k,1)*.4);transition:background-color .3s,color .3s,border-color .3s,box-shadow .3s;}
+  .cz-card.on{background:#000;color:#fff;border-color:#000;box-shadow:0 18px 34px -18px rgba(0,0,0,.55);}
+  .cz-card.dashed:not(.on){border-style:dashed;border-color:rgba(0,0,0,.35);}
+  .cz-ic{width:48px;height:48px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:auto;transition:background-color .3s;}
+  .cz-card.on .cz-ic{background:rgba(255,255,255,.14);}
+  .cz-t{font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1.15;margin-top:14px;}
+  .cz-s{font-size:11.5px;color:var(--ink-dim);margin-top:3px;}
+  .cz-card.on .cz-s{color:rgba(255,255,255,.66);}
+  .cz-p{font-size:11px;line-height:1.4;color:var(--ink-dim);margin-top:5px;}
+  .cz-card.on .cz-p{color:rgba(255,255,255,.55);}
+  .cz-tag{position:absolute;top:16px;right:16px;}
+  .cz-dots{display:flex;justify-content:center;gap:6px;margin:0 0 12px;}
+  .cz-dots button{width:7px;height:7px;border-radius:99px;border:0;padding:0;background:rgba(0,0,0,.2);transition:width .25s,background-color .25s;cursor:pointer;}
+  .cz-dots button.on{width:22px;background:#000;}
+  .cz-list{display:flex;flex-direction:column;gap:8px;margin:0 16px;transition:opacity .12s,transform .12s;}
+  .cz-list.out{opacity:0;transform:translateY(6px);}
+  .cz-list > *{animation:cz-in .38s cubic-bezier(.22,.78,.2,1) both;animation-delay:calc(var(--n,0)*55ms);}
+  @keyframes cz-in{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .cz-row{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);}
+  .cz-row .ic{width:40px;height:40px;border-radius:12px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .cz-row .tx{flex:1;min-width:0;}
+  .cz-row .dt{display:block;font-size:13.5px;font-weight:700;}
+  .cz-row .ds{display:block;font-size:11px;color:var(--ink-dim);line-height:1.4;margin-top:2px;}
+  .cz-row .chv{color:var(--ink-dim);flex:0 0 auto;display:flex;}
+  .cz-note{border-radius:20px;padding:14px 16px;background:#000;color:#fff;box-shadow:0 14px 30px -16px rgba(0,0,0,.45);}
+  .cz-cap{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-2);margin-bottom:6px;}
+  .cz-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:2px;}
+  .cz-chips span{font-size:11px;font-weight:600;background:rgba(255,255,255,.14);color:#fff;border-radius:99px;padding:5px 10px;}
+  .cz-chips i{font-style:normal;color:rgba(255,255,255,.5);font-size:12px;}
+  .cz-txt{font-size:12.5px;line-height:1.55;}
+  .cz-note .cz-txt{color:#fff;}
+  .cz-step{border-radius:20px;overflow:hidden;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);transition:background-color .38s ease,color .38s ease,border-color .38s ease,box-shadow .38s ease;}
+  .cz-step.open{background:#000;color:#fff;border-color:#000;box-shadow:0 16px 30px -18px rgba(0,0,0,.55);}
+  .cz-step .hd{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;}
+  .cz-step .num{width:30px;height:30px;border-radius:50%;background:#000;color:#fff;font-family:var(--font-display);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;transition:background-color .38s ease,color .38s ease;}
+  .cz-step .num.lime{background:var(--lime);color:var(--lime-ink);}
+  .cz-step.open .num{background:rgba(255,255,255,.16);color:#fff;}
+  .cz-step.open .num.lime{background:var(--lime);color:var(--lime-ink);}
+  .cz-step .tt{font-size:13.5px;font-weight:700;line-height:1.3;}
+  .cz-step .dd{font-size:11px;color:var(--ink-dim);line-height:1.4;margin-top:2px;transition:color .38s ease;}
+  .cz-step.open .dd{color:rgba(255,255,255,.64);}
+  .cz-step .tg{display:inline-block;margin-top:5px;font-size:9.5px;font-weight:700;letter-spacing:.06em;background:var(--lime);color:var(--lime-ink);border-radius:99px;padding:3px 9px;}
+  .cz-step .chv{color:var(--ink-dim);flex:0 0 auto;display:flex;transition:transform .45s cubic-bezier(.22,.78,.2,1),color .38s ease;}
+  .cz-step.open .chv{transform:rotate(180deg);color:rgba(255,255,255,.7);}
+  .cz-step .dtl-w{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.22,.78,.2,1);}
+  .cz-step.open .dtl-w{grid-template-rows:1fr;}
+  .cz-step .dtl-w > div{overflow:hidden;min-height:0;}
+  .cz-step .dtl{margin:0 14px 14px 56px;background:rgba(255,255,255,.1);border-radius:16px;padding:12px 14px;font-size:12px;line-height:1.6;color:#fff;opacity:0;transform:translateY(-8px);transition:opacity .38s ease .08s,transform .5s cubic-bezier(.22,.78,.2,1);}
+  .cz-step.open .dtl{opacity:1;transform:none;}
+  .cz-step .dtl p{margin:0 0 8px;}
+  .cz-step .dtl p:last-child{margin:0;}
+  .cz-route{border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:9px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);}
+  .cz-path{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+  .cz-path .a{font-size:12.5px;font-weight:700;background:rgba(255,255,255,.7);border:1px solid var(--glass-border);border-radius:12px;padding:8px 12px;}
+  .cz-path .b{font-size:12.5px;font-weight:700;background:#000;color:#fff;border-radius:12px;padding:8px 12px;}
+  .cz-path .ar{display:flex;}
+  .cz-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+  .cz-line .lb{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-dim);}
+  .cz-line .pr{font-size:11px;font-weight:700;border:1px solid #000;border-radius:99px;padding:4px 10px;}
+  .cz-line .tx{font-size:12px;line-height:1.4;}
+  .cz-when{display:flex;align-items:flex-start;gap:8px;}
+  .cz-when .k{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;background:var(--lime);color:var(--lime-ink);border-radius:99px;padding:4px 9px;margin-top:1px;}
+  .cz-when .tx{font-size:12px;line-height:1.45;}
+  .cz-rule{border-radius:22px;padding:14px 16px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);font-size:12.5px;line-height:1.55;}
+  .cz-rule.bad{background:var(--danger-bg);border-color:transparent;color:#7a2416;}
+  .cz-rule.risk{background:var(--warn-bg);border-color:transparent;color:#4a2f05;}
+  .cz-rule .lb{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+  .cz-rule p{margin:0;}
+  .cz-rule ul{margin:0;padding-left:18px;}
+  .cz-rule li{padding:2px 0;}
+  @media (prefers-reduced-motion:reduce){.cz-card,.cz-list,.cz-list > *,.docModal.open .dm-sheet,.docModal.open .dm-hero,.cz-step,.cz-step *{animation:none;transition:none;}}
 
   .step{position:relative;padding:10px 0 10px 24px;font-size:12.5px;}
   .step::before{content:"";position:absolute;left:5px;top:0;bottom:0;width:2px;background:var(--line);}
@@ -688,53 +778,22 @@ const FAST = {
 };
 
 function renderFlow(){
-  const el = document.getElementById('flowBlocks');
-  if(!el) return;
   const chev = ic('<polyline points="6 9 12 15 18 9"/>',15);
-  const stepsHtml = steps => steps.map(st=>`
-    <div class="fstep">
-      <div class="dblock-sep"></div>
-      <div class="frow">
-        <div class="fnum${st.mark?' lime':''}">${st.n}</div>
-        <div class="fbody"><div class="ftitle">${st.title}</div><div class="fdesc">${st.desc}</div>${st.tag?`<span class="ftag">${st.tag}</span>`:''}</div>
-        <span class="fchev">${chev}</span>
-      </div>
-      <div class="fdetail">${st.detail.split('\n').map(l=>`<p>${l}</p>`).join('')}</div>
-    </div>`).join('');
-  const chain = `<div class="fchips-cap">Матрёшка документов · максимум 4 уровня</div>
-    <div class="fchips"><span class="fchip">Заказ покупателя</span><span class="ar">→</span><span class="fchip">П/з ГП</span><span class="ar">→</span><span class="fchip">П/з премикс</span><span class="ar">→</span><span class="fchip">П/з концентрат</span><span class="ar">·</span><span class="fchip">П/з основа</span></div>`;
-  const branches = FLOW.map(b=>`
-    <div class="dblock" data-block="${b.key}">
-      <div class="dblock-head">
-        <div class="row" style="gap:14px;min-width:0;">
-          <div class="dblock-ic">${ic(b.icon,22)}</div>
-          <div style="min-width:0;"><div class="dblock-title">${b.title}</div><div class="dblock-count">${b.sub}</div></div>
-        </div>
-        <div class="dblock-chev">${ic('<polyline points="6 9 12 15 18 9"/>',15)}</div>
-      </div>
-      <div class="dblock-body">
-        ${b.intro==='chain' ? chain : `<div class="fintro">${b.intro}</div>`}
-        ${stepsHtml(b.steps)}
-      </div>
-    </div>`).join('');
-  const fast = `
-    <div class="dblock fast" data-block="fast">
-      <div class="dblock-head">
-        <div class="row" style="gap:14px;min-width:0;">
-          <div class="dblock-ic">${ic(FAST.icon,22)}</div>
-          <div style="min-width:0;display:flex;flex-direction:column;align-items:flex-start;"><div class="dblock-title">${FAST.title}</div><span class="tag rev">ПРОЕКТ</span></div>
-        </div>
-        <div class="dblock-chev">${ic('<polyline points="6 9 12 15 18 9"/>',15)}</div>
-      </div>
-      <div class="dblock-body">
-        <div class="dblock-sep"></div>
-        <div style="font-size:12.5px;line-height:1.55;color:#fff;padding:12px 0 8px;">${FAST.lead}</div>
-        <div style="font-size:12px;line-height:1.55;color:rgba(255,255,255,.7);">${FAST.note}</div>
-      </div>
-    </div>`;
-  el.innerHTML = branches + fast;
-  el.querySelectorAll('.dblock-head').forEach(h=>h.addEventListener('click', ()=>h.closest('.dblock').classList.toggle('open')));
-  el.querySelectorAll('.frow').forEach(r=>r.addEventListener('click', ()=>r.closest('.fstep').classList.toggle('open')));
+  const stepsHtml = steps => steps.map(st=>
+    '<div class="cz-step"><div class="hd"><span class="num'+(st.mark?' lime':'')+'">'+st.n+'</span><div style="flex:1;min-width:0;"><div class="tt">'+st.title+'</div><div class="dd">'+st.desc+'</div>'+(st.tag?'<span class="tg">'+st.tag+'</span>':'')+'</div><span class="chv">'+chev+'</span></div><div class="dtl-w"><div><div class="dtl">'+st.detail.split('\n').map(l=>'<p>'+l+'</p>').join('')+'</div></div></div></div>').join('');
+  const chain = '<div class="cz-note"><div class="cz-cap">Матрёшка документов · максимум 4 уровня</div><div class="cz-chips"><span>Заказ покупателя</span><i>→</i><span>П/з ГП</span><i>→</i><span>П/з премикс</span><i>→</i><span>П/з концентрат</span><i>·</i><span>П/з основа</span></div></div>';
+  makeCarousel(document.getElementById('flowBlocks'), {
+    label:'Ветки процесса',
+    items: FLOW.map(b=>({title:b.title, sub:b.sub, icon:b.icon, peek:b.steps.length+' шагов'})).concat([{title:FAST.title, sub:'дорабатывается', icon:FAST.icon, tag:'ПРОЕКТ', dashed:true, peek:'Пока не правило'}]),
+    list: i=>{
+      if(i < FLOW.length){
+        const b = FLOW[i];
+        return (b.intro==='chain' ? chain : '<div class="cz-note"><div class="cz-cap">Важно</div><div class="cz-txt">'+b.intro+'</div></div>') + stepsHtml(b.steps);
+      }
+      return '<div class="cz-note"><div class="cz-cap">Проект</div><div class="cz-txt" style="font-weight:600;">'+FAST.lead+'</div><div class="cz-txt" style="margin-top:8px;color:rgba(255,255,255,.7);">'+FAST.note+'</div></div>';
+    },
+    bind: list=>list.querySelectorAll('.cz-step .hd').forEach(h=>h.addEventListener('click', ()=>h.parentElement.classList.toggle('open')))
+  });
 }
 
 
@@ -845,32 +904,19 @@ const MOVEMAP = [
 ];
 
 function renderMoveMap(){
-  const el = document.getElementById('moveMap');
-  if(!el) return;
   const arrow = ic('<line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>',16);
   const printer = ic('<polyline points="6 9 6 3 18 3 18 9"/><rect x="4" y="9" width="16" height="9" rx="2"/><rect x="7" y="14" width="10" height="7" rx="1"/>',14);
   const unclear = '<span class="tag rev">уточняется в аудите</span>';
-  const routeHtml = r => `
-    <div class="mroute">
-      <div class="mpath"><span class="mchip">${r.frm}</span><span class="ar">${arrow}</span><span class="mchip to">${r.to}</span></div>
-      <div class="mline"><span class="mlbl">${printer}К печати</span>${r.printUnclear ? unclear : r.prints.map(x=>`<span class="mprint">${x}</span>`).join('')}</div>
-      <div class="mline"><span class="mlbl">Кто</span>${r.whoUnclear ? unclear : `<span class="mtxt">${r.who}</span>`}</div>
-      <div class="mwhen"><span class="k">КОГДА</span><span class="mtxt">${r.whenOnlyUnclear ? unclear : r.when + (r.whenUnclear ? ' ' + unclear : '')}</span></div>
-    </div>`;
-  el.innerHTML = MOVEMAP.map(m=>`
-    <div class="dblock" data-block="map-${m.key}">
-      <div class="dblock-head">
-        <div class="row" style="gap:14px;min-width:0;">
-          <div class="dblock-ic">${ic(m.icon,22)}</div>
-          <div style="min-width:0;"><div class="dblock-title">${m.title}</div><div class="dblock-count">${m.sub}</div></div>
-        </div>
-        <div class="dblock-chev">${ic('<polyline points="6 9 12 15 18 9"/>',15)}</div>
-      </div>
-      <div class="dblock-body">
-        ${m.routes.map(r=>`<div class="dblock-sep"></div>${routeHtml(r)}`).join('')}
-      </div>
-    </div>`).join('');
-  el.querySelectorAll('.dblock-head').forEach(h=>h.addEventListener('click', ()=>h.closest('.dblock').classList.toggle('open')));
+  const routeHtml = r => '<div class="cz-route">'+
+    '<div class="cz-path"><span class="a">'+r.frm+'</span><span class="ar">'+arrow+'</span><span class="b">'+r.to+'</span></div>'+
+    '<div class="cz-line"><span class="lb">'+printer+'К печати</span>'+(r.printUnclear ? unclear : r.prints.map(x=>'<span class="pr">'+x+'</span>').join(''))+'</div>'+
+    '<div class="cz-line"><span class="lb">Кто</span>'+(r.whoUnclear ? unclear : '<span class="tx">'+r.who+'</span>')+'</div>'+
+    '<div class="cz-when"><span class="k">КОГДА</span><span class="tx">'+(r.whenOnlyUnclear ? unclear : r.when + (r.whenUnclear ? ' '+unclear : ''))+'</span></div></div>';
+  makeCarousel(document.getElementById('moveMap'), {
+    label:'Документы движения',
+    items: MOVEMAP.map(m=>({title:m.title, sub:m.sub, icon:m.icon, peek:m.routes.length+' '+(m.routes.length===1?'маршрут':m.routes.length<5?'маршрута':'маршрутов')})),
+    list: i=>MOVEMAP[i].routes.map(routeHtml).join('')
+  });
 }
 
 function ruDocWord(n){
@@ -880,59 +926,92 @@ function ruDocWord(n){
   return 'документов';
 }
 
-function renderDocBlocks(){
-  const el = document.getElementById('docBlocks');
-  if(!el) return;
-  el.innerHTML = DOC_BLOCKS.map(b=>`
-    <div class="dblock" data-block="${b.key}">
-      <div class="dblock-head">
-        <div class="row" style="gap:14px;min-width:0;">
-          <div class="dblock-ic">${ic(b.icon,22)}</div>
-          <div style="min-width:0;">
-            <div class="dblock-title">${b.title}</div>
-            <div class="dblock-count">${b.docs.length} ${ruDocWord(b.docs.length)}</div>
-          </div>
-        </div>
-        <div class="dblock-chev">${ic('<polyline points="6 9 12 15 18 9"/>',15)}</div>
-      </div>
-      <div class="dblock-body">
-        <div class="dblock-sep"></div>
-        ${b.docs.map(dk=>{
-          const d = DOCS[dk];
-          return `<div class="doc-row" data-doc="${dk}">
-            <div class="ic-sm">${ic(d.icon,16)}</div>
-            <div style="flex:1;min-width:0;">
-              <div class="dt">${d.title}</div>
-              <div class="ds">${d.rule.length>50 ? d.rule.slice(0,50)+'…' : d.rule}</div>
-            </div>
-            <span class="chv">${ic('<polyline points="9 6 15 12 9 18"/>',15)}</span>
-          </div>
-          <div class="dblock-sep"></div>`;
-        }).join('')}
-      </div>
-    </div>
-  `).join('');
+// ===== Карусели: карточки блоков сверху, содержимое активной карточки — под ними =====
+const CAROUSELS = [];
+function refreshCarousels(){ CAROUSELS.forEach(c=>c.update()); }
+window.addEventListener('resize', ()=>refreshCarousels());
 
-  el.querySelectorAll('.dblock-head').forEach(h=>{
-    h.addEventListener('click', ()=> h.closest('.dblock').classList.toggle('open'));
+function plain(html, n){
+  const t = String(html).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  return t.length>n ? t.slice(0,n).replace(/\s+\S*$/,'')+'…' : t;
+}
+
+function makeCarousel(host, cfg){
+  if(!host) return;
+  const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  host.innerHTML = '<div class="cz"><div class="cz-track" tabindex="0" aria-label="'+(cfg.label||'')+'"><i class="cz-sp"></i>'+
+    cfg.items.map((it,i)=>'<button class="cz-card'+(it.dashed?' dashed':'')+(i===0?' on':'')+'" data-i="'+i+'" style="--k:'+(i===0?0:1)+'">'+
+      (it.tag?'<span class="cz-tag tag rev">'+it.tag+'</span>':'')+
+      '<span class="cz-ic">'+ic(it.icon,22)+'</span><span class="cz-t">'+it.title+'</span><span class="cz-s">'+it.sub+'</span>'+(it.peek?'<span class="cz-p">'+it.peek+'</span>':'')+'</button>').join('')+
+    '<i class="cz-sp"></i></div><div class="cz-dots">'+cfg.items.map((it,i)=>'<button aria-label="'+it.title+'" data-i="'+i+'"'+(i===0?' class="on"':'')+'></button>').join('')+'</div><div class="cz-list"></div></div>';
+  const track = host.querySelector('.cz-track');
+  const cards = Array.from(track.querySelectorAll('.cz-card'));
+  const dots = Array.from(host.querySelectorAll('.cz-dots button'));
+  const list = host.querySelector('.cz-list');
+  let cur = -1, raf = 0;
+
+  function fill(i){
+    list.innerHTML = cfg.list(i);
+    Array.from(list.children).forEach((c,n)=>c.style.setProperty('--n', n));
+    if(cfg.bind) cfg.bind(list, i);
+  }
+  function setList(i, animate){
+    if(!animate || reduced){ fill(i); return; }
+    list.classList.add('out');
+    setTimeout(()=>{ if(cur===i){ fill(i); list.classList.remove('out'); } }, 130);
+  }
+  function goTo(i){
+    const c = cards[Math.max(0,Math.min(cards.length-1,i))];
+    c.scrollIntoView({behavior: reduced ? 'auto' : 'smooth', inline:'center', block:'nearest'});
+  }
+  function update(){
+    if(!track.clientWidth) return;
+    const cr = track.getBoundingClientRect(), cx = cr.left + cr.width/2;
+    let best = 0, bd = 1e9;
+    cards.forEach((c,i)=>{
+      const r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width/2 - cx);
+      c.style.setProperty('--k', Math.min(1, d/r.width).toFixed(3));
+      if(d < bd){ bd = d; best = i; }
+    });
+    if(best !== cur){
+      const first = cur === -1;
+      cur = best;
+      cards.forEach((c,i)=>c.classList.toggle('on', i===cur));
+      dots.forEach((d,i)=>d.classList.toggle('on', i===cur));
+      setList(cur, !first);
+    }
+  }
+  track.addEventListener('scroll', ()=>{ if(!raf) raf = requestAnimationFrame(()=>{ raf = 0; update(); }); }, {passive:true});
+  cards.forEach((c,i)=>c.addEventListener('click', ()=>{ if(i !== cur) goTo(i); }));
+  dots.forEach((d,i)=>d.addEventListener('click', ()=>goTo(i)));
+  track.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight'){ e.preventDefault(); goTo(cur+1); }
+    if(e.key==='ArrowLeft'){ e.preventDefault(); goTo(cur-1); }
   });
-  el.querySelectorAll('.doc-row').forEach(r=>{
-    r.addEventListener('click', (e)=>{ e.stopPropagation(); openDoc(r.dataset.doc); });
+  cur = 0; fill(0);
+  CAROUSELS.push({update});
+}
+
+function renderDocBlocks(){
+  makeCarousel(document.getElementById('docBlocks'), {
+    label:'Блоки документов',
+    items: DOC_BLOCKS.map(b=>({title:b.title, sub:b.docs.length+' '+ruDocWord(b.docs.length), icon:b.icon, peek:b.docs.map(k=>DOCS[k].title).join(' · ')})),
+    list: i=>DOC_BLOCKS[i].docs.map(k=>{
+      const d = DOCS[k];
+      return '<button class="cz-row" data-doc="'+k+'"><span class="ic">'+ic(d.icon,18)+'</span><span class="tx"><span class="dt">'+d.title+'</span><span class="ds">'+plain(d.rule,72)+'</span></span><span class="chv">'+ic('<polyline points="9 6 15 12 9 18"/>',15)+'</span></button>';
+    }).join(''),
+    bind: list=>list.querySelectorAll('.cz-row').forEach(r=>r.addEventListener('click', ()=>openDoc(r.dataset.doc)))
   });
 }
 
 function openDoc(key){
   const d = DOCS[key];
   if(!d) return;
+  const blk = DOC_BLOCKS.find(b=>b.docs.includes(key));
   document.getElementById('docModalInner').innerHTML = `
-    <div class="doc-back" id="docBack"><span>${ic('<polyline points="15 18 9 12 15 6"/>',18)}</span><span style="font-size:12.5px;font-weight:600;">Процесс</span></div>
-    <div class="row" style="gap:14px;margin-bottom:20px;">
-      <div class="avatar" style="width:56px;height:56px;border-radius:16px;">${ic(d.icon,26)}</div>
-      <div>
-        <div class="name" style="font-size:24px;">${d.title}</div>
-        <div class="muted" style="font-size:12px;margin-top:2px;">${d.subtitle}</div>
-      </div>
-    </div>
+    <div class="dm-top"><button class="dm-back" id="docBack" aria-label="Назад">${ic('<polyline points="15 18 9 12 15 6"/>',20)}</button><div class="dm-cap">Памятка документы</div><span style="width:44px;flex:0 0 auto;"></span></div>
+    <div class="dm-hero"><div class="dm-ic">${ic(d.icon,32)}</div><div class="dm-title">${d.title}</div><div class="dm-sub">${blk ? blk.title : d.subtitle}</div></div>
+    <div class="dm-sheet">
     <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ok);margin-bottom:6px;">✅ Правило работы</div>
     <div class="glass" style="border-radius:22px;padding:16px;margin-bottom:18px;font-size:12.5px;line-height:1.55;">${d.rule}</div>
     <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--danger);margin-bottom:6px;">🚫 Нельзя</div>
@@ -946,6 +1025,7 @@ function openDoc(key){
     <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);margin-bottom:6px;">⚠️ Ошибки, которые уже были — недопустимо</div>
     <div class="blackblock" style="border-radius:22px;padding:16px;">
       ${d.errors.length ? d.errors.map((e,i)=>`<div class="between" style="padding:7px 0;"><span style="font-size:12px;color:#fff;">${withRev(e.what)}</span><span style="font-size:10.5px;color:var(--orange-2);white-space:nowrap;">${e.who} · ${e.when}</span></div>${i<d.errors.length-1?'<hr class="sep" style="background:rgba(255,255,255,.14);">':''}`).join('') : '<div style="font-size:12.5px;color:rgba(255,255,255,.6);">Нарушений по этому документу пока не зафиксировано.</div>'}
+    </div>
     </div>
   `;
   document.getElementById('docBack').addEventListener('click', closeDoc);
@@ -1210,21 +1290,16 @@ function scaleBlock(){
 }
 
 function renderRules(){
-  const el = document.getElementById('ruleAccordion');
-  el.innerHTML = RULES.map((r,i)=>`
-    <div class="racc" data-i="${i}">
-      <div class="rhead"><span>${r.title}</span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="rbody">
-        <div class="rlbl" style="color:var(--ok);">✅ Процесс</div>
-        <p>${r.ok}</p>
-        <div class="rlbl" style="color:var(--danger);">🚫 Нельзя</div>
-        <ul>${r.bad.map(b=>`<li>${withRev(b)}</li>`).join('')}</ul>
-        ${r.risk ? `<div class="rlbl" style="color:var(--warn);">⚠️ Риск</div>
-        <p>${r.risk}</p>` : ''}
-      </div>
-    </div>`).join('');
-  el.querySelectorAll('.racc').forEach(acc=>{
-    acc.querySelector('.rhead').addEventListener('click', ()=>acc.classList.toggle('open'));
+  const icons = ['<path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/>', '<rect x="3" y="5" width="18" height="16" rx="3"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>', '<path d="M4 20l4-1 11-11-3-3L5 16z"/><line x1="13" y1="6" x2="17" y2="10"/>'];
+  makeCarousel(document.getElementById('ruleAccordion'), {
+    label:'Общие правила',
+    items: RULES.map((r,i)=>({title:r.title.replace(/^\d+\.\s*/,''), sub:'Для любого документа', icon:icons[i%icons.length], peek:plain(r.ok,60)})),
+    list: i=>{
+      const r = RULES[i];
+      return '<div class="cz-rule"><div class="lb" style="color:var(--ok);">✅ Процесс</div><p>'+r.ok+'</p></div>'+
+        '<div class="cz-rule bad"><div class="lb" style="color:var(--danger);">🚫 Нельзя</div><ul>'+r.bad.map(b=>'<li>'+withRev(b)+'</li>').join('')+'</ul></div>'+
+        (r.risk ? '<div class="cz-rule risk"><div class="lb" style="color:var(--warn);">⚠️ Риск</div><p>'+r.risk+'</p></div>' : '');
+    }
   });
 }
 
@@ -1534,6 +1609,7 @@ document.querySelectorAll('.botnav .ni').forEach(btn=>{
     document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
     btn.classList.add('on');
     document.getElementById('s-'+btn.dataset.s).classList.add('active');
+    if(btn.dataset.s==='process') refreshCarousels();
   });
 });
 
