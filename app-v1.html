@@ -192,6 +192,77 @@
   .mwhen{display:flex;align-items:flex-start;gap:8px;}
   .mwhen .k{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;background:var(--lime);color:var(--lime-ink);border-radius:99px;padding:4px 9px;margin-top:1px;}
 
+  /* Тренажёр — колода карточек (стекло) */
+  /* статистика игры — стекло */
+  .g-stats{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;border-radius:99px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);}
+  .g-pill{font-size:11px;font-weight:700;border-radius:99px;padding:5px 11px;white-space:nowrap;}
+  .g-pill.g-know{background:var(--lime);color:var(--lime-ink);}
+  .g-pill.g-left{background:#000;color:#fff;}
+  .g-bar{flex:1 1 60px;height:6px;border-radius:99px;background:rgba(0,0,0,.12);overflow:hidden;min-width:50px;}
+  .g-bar i{display:block;height:100%;width:0;background:#000;border-radius:99px;transition:width .4s cubic-bezier(.22,.78,.2,1);}
+
+
+  .g-deck{position:relative;height:500px;margin:6px 6px 0;}
+  .g-card{position:absolute;left:0;top:0;width:100%;height:436px;border-radius:32px;overflow:hidden;
+    background:rgba(255,255,255,.74);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);
+    border:1px solid var(--glass-border);box-shadow:0 14px 34px -18px rgba(0,0,0,.35);
+    transform-origin:50% 50%;transition:transform 430ms cubic-bezier(.22,.78,.2,1),opacity 320ms ease;
+    user-select:none;-webkit-user-select:none;-webkit-user-drag:none;touch-action:pan-y;outline:none;}
+  .g-card:focus-visible{outline:3px solid var(--lime);outline-offset:2px;}
+  .g-card.g-s0{z-index:4;transform:translate3d(0,0,0) rotate(0) scale(1,1);cursor:grab;box-shadow:0 22px 48px -20px rgba(0,0,0,calc(.32 + var(--sh,0)));}
+  .g-card.g-s1{z-index:3;transform:translate3d(-8px,24px,0) rotate(1.15deg) scale(.94,.93);}
+  .g-card.g-s2{z-index:2;transform:translate3d(-7px,40px,0) rotate(-4.5deg) scale(.88,.87);}
+  .g-card.g-s3{z-index:1;transform:translate3d(-11px,58px,0) rotate(7.5deg) scale(.82,.81);}
+  .g-card.g-dragging{transition:none;cursor:grabbing;will-change:transform;}
+  .g-card.g-preview{transition:none;will-change:transform;}
+  .g-card.g-preview .g-tint{transition:none;}
+  .g-card.g-entering{opacity:0;}
+  .g-card.g-leaving{z-index:30;pointer-events:none;}
+  .g-tint{position:absolute;inset:0;z-index:20;border-radius:inherit;pointer-events:none;transition:opacity 360ms cubic-bezier(.22,.78,.2,1),background-color 430ms;}
+  .g-s0 .g-tint{background:rgba(255,255,255,.6);opacity:0;}
+  .g-s1 .g-tint{background:rgba(255,171,94,.34);opacity:1;}
+  .g-s2 .g-tint{background:rgba(219,255,61,.4);opacity:1;}
+  .g-s3 .g-tint{background:rgba(0,0,0,.08);opacity:1;}
+  .g-art{position:absolute;left:12px;right:12px;top:12px;height:150px;border-radius:24px;overflow:hidden;border:1px solid rgba(0,0,0,.08);}
+  .g-art-in{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .2s ease-out;}
+  .g-art-in svg{width:74%;height:auto;max-height:100%;animation:g-float 4.6s ease-in-out infinite;}
+  .g-card:nth-child(2n) .g-art-in svg{animation-delay:-1.4s;}
+  .g-card:nth-child(3n) .g-art-in svg{animation-delay:-2.6s;}
+  @keyframes g-float{0%,100%{transform:translateY(0) rotate(-1.6deg);}50%{transform:translateY(-8px) rotate(1.6deg);}}
+  .g-chip{position:absolute;top:12px;font-size:11px;font-weight:700;border-radius:99px;padding:5px 11px;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(0,0,0,.1);}
+  .g-chip.g-tag{left:12px;}
+  .g-chip.g-cnt{right:12px;background:#000;color:#fff;border-color:#000;}
+  .g-body{position:absolute;left:0;right:0;top:174px;bottom:0;padding:14px 20px 0;}
+  .g-title{font-family:var(--font-display);font-weight:700;font-size:20px;line-height:1.15;margin-bottom:10px;}
+  .g-key{background:#000;color:#fff;border-radius:18px;padding:11px 14px 12px;margin-bottom:10px;}
+  .g-key b{display:inline-block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;background:var(--lime);color:var(--lime-ink);border-radius:99px;padding:3px 9px;margin-bottom:6px;}
+  .g-key span{display:block;font-size:14px;font-weight:700;line-height:1.35;}
+  .g-more{margin:0;font-size:13px;line-height:1.6;color:#211f1b;}
+  .g-stamp{position:absolute;z-index:15;top:64px;font-family:var(--font-display);font-weight:800;font-size:22px;padding:8px 14px;border-radius:14px;border:3px solid;opacity:0;pointer-events:none;background:rgba(255,255,255,.9);}
+  .g-stamp.g-know{left:22px;color:var(--ok);border-color:var(--ok);transform:rotate(-10deg);}
+  .g-stamp.g-rep{right:22px;color:var(--warn);border-color:var(--warn);transform:rotate(10deg);}
+
+  .g-consent{display:flex;gap:10px;align-items:flex-start;margin:4px 0 12px;padding:12px 14px;border-radius:20px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);font-size:12px;line-height:1.5;}
+  .g-consent svg{flex:0 0 auto;margin-top:1px;}
+  .g-consent .g-draft{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.06em;background:var(--warn-bg);color:var(--warn);border:1px solid rgba(168,102,15,.35);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:1px;}
+  .g-actions{display:flex;gap:10px;margin-top:6px;}
+  .g-btn{flex:1;min-height:52px;border-radius:99px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+    border:1px solid var(--glass-border);background:var(--glass);color:var(--ink);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);}
+  .g-btn.g-know{background:var(--lime);border-color:var(--lime);color:var(--lime-ink);}
+  .g-btn:disabled{opacity:.4;cursor:default;}
+  .g-btn:focus-visible{outline:3px solid #000;outline-offset:2px;}
+  .g-hint{margin:14px 4px 0;font-size:11.5px;line-height:1.45;color:var(--ink-dim);text-align:center;}
+
+  .g-done{position:absolute;left:0;right:0;top:0;height:436px;border-radius:32px;background:var(--lime);color:var(--lime-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;border:1px solid rgba(0,0,0,.12);}
+  .g-done[hidden]{display:none;}
+  .g-done .g-ok{width:72px;height:72px;border-radius:50%;background:#000;color:var(--lime);display:flex;align-items:center;justify-content:center;}
+  .g-done h3{margin:0;font-family:var(--font-display);font-size:20px;line-height:1.2;}
+  .g-done p{margin:0;font-size:12.5px;line-height:1.5;}
+  .g-done .g-again{margin-top:6px;min-height:44px;padding:0 22px;border-radius:99px;border:0;background:#000;color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+  .g-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+
+
+
   /* Карточка документа — модалка */
   .docModal{position:fixed;inset:0;background:var(--paper);z-index:30;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
   .docModal.open{display:block;}
@@ -254,12 +325,13 @@
     <div class="lime-heading">Движение документов</div>
     <div class="honest" style="margin:-4px 0 12px 4px;">Откуда, куда, что печатать и когда</div>
     <div id="moveMap"></div>
-    <div class="blackblock col">
+    <div class="attn col">
       <div class="eb">Всегда, при любом движении</div>
       <p style="margin:0;font-size:12.5px;line-height:1.5;">Две подписи от руки — «сдал» и «принял». Затем фото подписанного документа в чат «Документы» — в день движения, до конца смены. PDF из программы фото не заменяет — в нём нет подписей.</p>
     </div>
 
-    <h2>Правила по каждому документу</h2>
+    <div class="lime-heading">Общие правила</div>
+    <div class="honest" style="margin:-4px 0 12px 4px;">Действуют для любого документа</div>
     <div id="ruleAccordion"></div>
   </div>
 
@@ -281,6 +353,9 @@
   <!-- 5. МОЙ РОСТ -->
   <div class="section" id="s-growth"></div>
 
+  <!-- 6. ТРЕНАЖЁР -->
+  <div class="section" id="s-game"></div>
+
 </div>
 
 <div class="botnav" id="botnav">
@@ -289,6 +364,7 @@
   <div class="ni" data-s="errors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.6"/></svg></div>
   <div class="ni" data-s="tasks"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 12l3 3 5-6"/></svg></div>
   <div class="ni" data-s="growth"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="19" x2="5" y2="13"/><line x1="12" y1="19" x2="12" y2="7"/><line x1="19" y1="19" x2="19" y2="11"/></svg></div>
+  <div class="ni" data-s="game"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="14" rx="3"/><path d="M8 3h11a2 2 0 012 2v11"/></svg></div>
 </div>
 
 <div class="fab-ask" id="fabAsk" title="Спросить ассистента">
@@ -336,7 +412,7 @@ const ROLES = {
     ],
     note: '20 из 28 шагов процесса идут через Антона — без него встаёт три четверти цикла, замещает пока только директор.',
     make: ['Развилка процесса — выбираю быструю или полную ветку','Формирую производственное задание по заказу','Проверяю обоснование потребности в сырье от Михаила','Сверяю приёмку с заказом поставщику','Формирую сменные задания, передаю сырьё в производство','Готовлю отчёт план/факт по количеству'],
-    control: ['Остатки и товароучёт склада — Арсений','Техкарты на позиции заказа — Михаил','Расчёт и согласование закупки — Михаил','Приёмку материалов — Арсений','Выпуск ГП и списание брака — старший смены','Отгрузку — Арсений'],
+    control: ['Остатки и товароучёт склада — Арсений','Техкарты на позиции заказа — Михаил','Расчёт и согласование закупки — Михаил','Приёмку материалов — Арсений','Выпуск ГП и списание брака — старший смены <span class="tag rev">списание — уточняется в аудите</span>','Отгрузку — Арсений'],
     dont: ['Не создаю и не подтверждаю заказ покупателя, не общаюсь с Сергеем','Не создаю карточки товара, не правлю техкарты','Не согласую суммы закупок','Не принимаю материалы физически','Не решаю о частичном запуске при недопоставке или смене поставщика']
   },
   arseniy: {
@@ -382,37 +458,18 @@ const SHARED_TASK = {id:'PRVO-43', title:'Дорожная карта заказ
 
 const RULES = [
   {
-    title: '1. Заказ и производственное задание',
-    ok: 'Заказ идёт по статусам Новый → Подтверждён → дальше. До «Подтверждён» Михаил проверяет цены в документе: нет цены — заводит в товар и делает «Расценить по цене продажи». После «Подтверждён» заказ не меняется, правки не принимаются; корректировка — только дополнительным заказом покупателя, старый остаётся как есть. Затем проверка техкарт всех позиций и п/ф — и только после неё п/з на ГП, только на основании заказа и текущей датой; при создании уже проведено и остаётся проведённым. Перед каждым следующим документом — стоп-проверка состава п/з. Вложенные п/з на п/ф — на основании п/з на ГП. Ошибка в п/з — не трогать, созвон с директором.',
-    bad: ['Брать заказ в работу раньше «Подтверждён»','Создавать п/з не на основании заказа','Оставлять п/з непроведённым','Снимать проведение с закрытого задания без причины','Создавать п/з ранней датой без комментария «исправление»','Менять статус заказа без подтверждающего документа','Менять заказ после «Подтверждён» — корректировка только дополнительным заказом','Подтверждать заказ, не проверив цены'],
-    risk: 'Рвётся связь между тем, что обещано покупателю, и тем, что реально производится. Уже было: закрытое задание с фактом производства откатили в момент разбора — факт выпуска исчез из истории.'
-  },
-  {
-    title: '2. Движение материалов',
-    ok: 'Любая физическая передача — через документ «Перемещение», собранный по расчёту в «Снабжении». Печать → сборка с отметками → правка факта в программе → печать чистового → две подписи → физическое перемещение → фото документа в чат «Документы» после физического перемещения.',
-    bad: ['Двигать материал без перемещения в программе','Без распечатанного документа','Без правки факта в программе — перемещение останется расчётным','Без фото в чат после физического перемещения','Собирать перемещение «от себя»','Пропускать перемещение с Основного на площадку','Пропускать перемещение п/ф на Основной'],
-    risk: 'Без документа неизвестно, на чьей стороне возникла недостача. Уже было: 63 позиции уехали на ХП без перемещения и пересчёта — если бы фасовка началась раньше, недостачу было бы не отличить от расхода сырья.'
-  },
-  {
-    title: '3. Цены и номенклатура',
+    title: '1. Цены и номенклатура',
     ok: 'Карточку создаёт только Михаил, по образцу существующей продукции, сразу с ценой продажи (S 161 ₽, M/XL 180 ₽). Правки техкарт — только через согласованный запрос директору.',
-    bad: ['Карточка без цены','Нулевая цена по покупной позиции','Карточки не от Михаила','Смена типа номенклатуры','Правка техкарты без согласования'],
-    risk: 'Нулевая цена в приёмке навсегда фиксирует себестоимость партии как ноль — ФИФО раздаёт её по всем последующим продажам, прибыль по ним завышается задним числом. Уже найдено 29 таких документов, 6 — созданы уже после того, как правило объявили. <span class="tag rev">правило под пересмотром</span>'
+    bad: ['Карточка без цены','Нулевая цена по покупной позиции','Карточки не от Михаила','Смена типа номенклатуры','Правка техкарты без согласования']
   },
   {
-    title: '4. Даты и сроки',
+    title: '2. Даты и сроки',
     ok: 'Документ заводится в день события. Расхождение — максимум сутки. Больше суток задним числом — только как «восстановительный документ» с явной пометкой. Для п/з — только текущая дата, ранняя — лишь с комментарием «исправление».',
     bad: ['Задним числом больше суток без пометки','Дата в будущем','П/з ранней датой без комментария «исправление»','Движение товаров по складу, который инвентаризируется, до согласования инвентаризации директором'],
     risk: 'Без честной даты теряется реальная последовательность событий — при расследовании расхождения непонятно, кто и что делал первым.'
   },
   {
-    title: '5. Приёмка',
-    ok: 'Приёмка создаётся на основании заказа поставщику. Количество сверяется дважды: по документу УПД поставщика и физическим пересчётом. Если документов нет — приёмку создать можно, но количество строго по факту ручного пересчёта, не по ожидаемому по заказу. Отсутствие документов — сигнал запросить их у Михаила.',
-    bad: ['Принимать количество не по фактическому пересчёту, когда документов нет','Оставлять отсутствие документов без запроса Михаилу'],
-    risk: 'Без документа и без честного пересчёта компания либо теряет основание для претензии поставщику при недостаче, либо задним числом подгоняет цифры под ожидание — расхождение остаётся незамеченным до инвентаризации.'
-  },
-  {
-    title: '6. Бумажное сопровождение',
+    title: '3. Бумажное сопровождение',
     ok: 'На каждой передаче ответственности — две подписи от руки (сдал/принял), затем фото подписанного документа в чат «Документы» в день движения, до конца смены.',
     bad: ['Передавать без двух подписей','Заменять фото PDF-версией без подписей'],
     risk: 'Без подписи с обеих сторон при расхождении спор превращается в «я передавал / мне не передавали» без возможности разрешить его фактами.'
@@ -524,6 +581,7 @@ const DOCS = {
     icon:'<path d="M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1z"/><rect x="6" y="6" width="12" height="15" rx="2"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="15" y2="15"/>',
     rule:'Создаётся строго после того, как заказ покупателя в статусе «Подтверждён», и только на его основании, без исключений: Документ → Снабжение → Производственное задание, источник — техкарта. Дата — только текущая; ранняя — лишь с комментарием «исправление». При создании уже проведено и остаётся проведённым.<br><br>Статусы: «Заказ покупателя» — п/з на ГП; «Заказ п/ф» — вложенные п/з на п/ф (премикс, концентрат, основа — каждый отдельным п/з, максимум 4 уровня с ГП). Каждое проходит проверку остатков и стоп-проверку состава. Материалы проверяются по каждому п/з отдельно, расчёт — только через «Снабжение».<br><br>В п/з на ГП склад материалов, склад списания и склад выпуска — один и тот же, выставляются сразу (для п/ф это правило не действует). Склад проверяется перед выполнением этапов и перед выпуском ГП.<br><br>Ошибка в п/з: п/з не трогаем — не отменяем, не правим, ничего нового не создаём. Созвон с директором, разбор, решение.<br><br>Факт выпуска ГП вносится через «Выполнение этапа» в день отчёта площадки; пока отчёт не заведён, отгрузки быть не может — иначе платное хранение ГП. В работу задание отдаётся, только если материалов хватает в полном количестве.',
     bad:['Брать заказ в работу раньше «Подтверждён»','Создавать п/з не на основании заказа — исключений нет','Оставлять п/з непроведённым','Снимать проведение с закрытого задания без причины','Создавать п/з ранней датой без комментария «исправление» или датой в будущем','Ставить в п/з на ГП разные склады материалов, списания и выпуска','Создавать следующий документ, не убедившись в составе п/з на ГП','Считать расход вручную вместо «Снабжения»','Отменять или править п/з, в котором найдена ошибка, — сначала созвон с директором','Вносить факт выпуска ГП позже дня отчёта площадки','Отдавать п/з в работу без материалов в полном количестве'],
+    risk:'Рвётся связь между тем, что обещано покупателю, и тем, что реально производится. Уже было: закрытое задание с фактом производства откатили в момент разбора — факт выпуска исчез из истории.',
     errors:[
       {who:'Антон', when:'16–17.09', what:'Откат проведения п/з 00057, факт производства стёрт'},
       {who:'Антон', when:'16.09', what:'П/з 00062 заведено задним числом на 8 дней'},
@@ -559,6 +617,7 @@ const DOCS = {
     icon:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
     rule:'Создаётся на основании заказа поставщику. Количество сверяется дважды — по УПД поставщика и физическим пересчётом. Если документов нет — приёмку создать можно, но количество строго по факту ручного пересчёта, не по ожидаемому по заказу.',
     bad:['Принимать количество не по факту, когда документов от поставщика нет','Проводить документ с нулевой ценой по покупной позиции','Оставлять отсутствие документов без запроса Михаилу'],
+    risk:['Без документа и без честного пересчёта компания либо теряет основание для претензии поставщику при недостаче, либо задним числом подгоняет цифры под ожидание — расхождение остаётся незамеченным до инвентаризации.','Нулевая цена в приёмке навсегда фиксирует себестоимость партии как ноль — ФИФО раздаёт её по всем последующим продажам, прибыль по ним завышается задним числом. Уже найдено 29 таких документов, 6 — созданы уже после того, как правило объявили. <span class="tag rev">под пересмотром</span>'],
     errors:[
       {who:'Арсений', when:'21.08', what:'Приёмка Урал-картон с нулевой ценой'},
       {who:'Арсений', when:'21.08', what:'Приёмка товара с нулевой ценой'},
@@ -570,6 +629,7 @@ const DOCS = {
     icon:'<path d="M17 3l4 4-4 4"/><path d="M3 7h18"/><path d="M7 21l-4-4 4-4"/><path d="M21 17H3"/>',
     rule:'Собирается только на основании расчёта в «Снабжении». Порядок: создать в программе → печать (сборочный лист кладовщика) → сборка с отметками (кратность тары или упаковки может изменить количество) → правка факта перемещения в программе → печать чистового → две подписи (сдал/принял) → физическое перемещение → фото документа в чат «Документы» после физического перемещения.<br><br>Правка факта в программе обязательна, иначе перемещение остаётся расчётным.<br><br>На площадку (ХП, РЕЛЛ) материалы идут с «Основного», часть — с «Ответ-хранения», на конкретный склад площадки. Перед отправкой сверить: материалы готовы, остатки на складе площадки, резервы прошлых п/з (работа идёт — резерв ставится, нет — снимается). Колонка «Заказать» в п/з «готовое к отправке» должна быть 0. Печатается сопроводительный ТОРГ-13 для транспортной компании.',
     bad:['Двигать материал без перемещения в программе','Передавать без распечатанного документа','Оставить факт перемещения не исправленным в программе — оно останется расчётным','Отправлять фото документа в чат «Документы» до физического перемещения','Закрывать движение без фото в чат «Документы»','Собирать перемещение «от себя»','Перемещать на «СТМ» или «Общий (ЕКБ)» — СТМ это группа складов площадок, перемещаем на конкретный склад ХП/РЕЛЛ','Отправлять на площадку, пока «Заказать» не равно 0','Пропускать перемещение с Основного на площадку','Пропускать перемещение п/ф на Основной'],
+    risk:'Без документа неизвестно, на чьей стороне возникла недостача. Уже было: 63 позиции уехали на ХП без перемещения и пересчёта — если бы фасовка началась раньше, недостачу было бы не отличить от расхода сырья.',
     errors:[
       {who:'Арсений', when:'21.08', what:'Перемещение с нулевой ценой'},
       {who:'Арсений', when:'20.08', what:'Перемещение оформлено как отгрузка'},
@@ -876,6 +936,10 @@ function openDoc(key){
     <div style="background:var(--danger-bg);border-radius:22px;padding:16px;margin-bottom:18px;">
       ${d.bad.map((b,i)=>`<div style="font-size:12.5px;color:#7a2416;padding:5px 0;">${withRev(b)}</div>${i<d.bad.length-1?'<hr class="sep" style="background:rgba(0,0,0,.08);">':''}`).join('')}
     </div>
+    ${d.risk ? `<div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--warn);margin-bottom:6px;">⚠️ Риск</div>
+    <div style="background:var(--warn-bg);border-radius:22px;padding:16px;margin-bottom:18px;">
+      ${[].concat(d.risk).map((r,i,a)=>`<div style="font-size:12.5px;line-height:1.55;color:#4a2f05;padding:${i?'10px 0 2px':'2px 0 '+(a.length>1?'10px':'2px')};">${r}</div>${i<a.length-1?'<hr class="sep" style="background:rgba(74,47,5,.18);">':''}`).join('')}
+    </div>` : ''}
     <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);margin-bottom:6px;">⚠️ Ошибки, которые уже были — недопустимо</div>
     <div class="blackblock" style="border-radius:22px;padding:16px;">
       ${d.errors.length ? d.errors.map((e,i)=>`<div class="between" style="padding:7px 0;"><span style="font-size:12px;color:#fff;">${withRev(e.what)}</span><span style="font-size:10.5px;color:var(--orange-2);white-space:nowrap;">${e.who} · ${e.when}</span></div>${i<d.errors.length-1?'<hr class="sep" style="background:rgba(255,255,255,.14);">':''}`).join('') : '<div style="font-size:12.5px;color:rgba(255,255,255,.6);">Нарушений по этому документу пока не зафиксировано.</div>'}
@@ -1152,8 +1216,8 @@ function renderRules(){
         <p>${r.ok}</p>
         <div class="rlbl" style="color:var(--danger);">🚫 Нельзя</div>
         <ul>${r.bad.map(b=>`<li>${withRev(b)}</li>`).join('')}</ul>
-        <div class="rlbl" style="color:var(--warn);">⚠️ Риск</div>
-        <p>${r.risk}</p>
+        ${r.risk ? `<div class="rlbl" style="color:var(--warn);">⚠️ Риск</div>
+        <p>${r.risk}</p>` : ''}
       </div>
     </div>`).join('');
   el.querySelectorAll('.racc').forEach(acc=>{
@@ -1187,6 +1251,251 @@ function renderErrors(){
   });
 }
 
+
+// ===== Тренажёр: колода карточек «Правило дня + документы», знаю / повторить =====
+function renderGame(u){
+  var root = document.getElementById('s-game');
+  if (!root) return;
+  root.innerHTML = '<div class="lime-heading">Тренажёр</div>'+
+    '<div class="honest" style="margin:-4px 0 12px 4px;">Правило дня и документы. Свайп вправо — знаю, влево — повторить.</div>'+
+    '<div class="g-stats"><span class="g-pill g-know" id="gPKnow"></span><span class="g-pill g-left" id="gPLeft"></span><span class="g-bar" aria-hidden="true"><i id="gBar"></i></span></div>'+
+    '<div class="g-deck" id="gDeck" aria-label="Колода карточек"><div class="g-done" id="gDone" hidden><div class="g-ok">'+ic('<polyline points="4 12 10 18 20 6"/>',34)+'</div><h3>Все карточки — знаю!</h3><p id="gDoneText"></p><button class="g-again" id="gBtnAgain">Пройти снова</button></div></div>'+
+    '<div class="g-consent">'+ic('<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="7.6" x2="12" y2="7.7"/>',18)+'<span>Нажимая «Знаю», вы подтверждаете, что знаете это правило. Ошибка по нему после этого считается повторной.</span></div>'+
+    '<div class="g-actions"><button class="g-btn" id="gBtnRep">'+ic('<line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/>',16)+'Повторить</button><button class="g-btn g-know" id="gBtnKnow">Знаю'+ic('<line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>',16)+'</button></div>'+
+    '<p class="g-hint">«Повторить» вернёт карточку в конец колоды. Прогресс хранится на этом телефоне.</p>'+
+    '<p class="g-sr" id="gLive" aria-live="polite"></p>';
+
+  var clamp = function(v,a,b){ return Math.max(a,Math.min(b,v)); };
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  var today = new Date();
+  var dayKey = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+  /* Векторные объекты в наших цветах: чёрный контур, оранжевый, лайм, белый */
+  var S = 'stroke="#000" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+  var ART = {
+    rule: function(c){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><rect x="48" y="26" width="104" height="100" rx="14" fill="#fff"/><path d="M48 40a14 14 0 0 1 14-14h76a14 14 0 0 1 14 14v20H48z" fill="#ef7422"/><line x1="76" y1="17" x2="76" y2="35"/><line x1="124" y1="17" x2="124" y2="35"/></g><text x="100" y="106" text-anchor="middle" font-family="Bounded,sans-serif" font-weight="800" font-size="42" fill="#000">'+today.getDate()+'</text></svg>'; },
+    tech: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><path d="M84 22h32v34l32 54a12 12 0 0 1-10 18H62a12 12 0 0 1-10-18l32-54z" fill="#fff"/><path d="M63 92h74l11 18a12 12 0 0 1-10 18H62a12 12 0 0 1-10-18z" fill="#dbff3d"/><line x1="78" y1="22" x2="122" y2="22"/></g><circle cx="90" cy="108" r="5" fill="#ef7422" stroke="#000" stroke-width="2.5"/><circle cx="112" cy="100" r="3.5" fill="#fff" stroke="#000" stroke-width="2.5"/><circle cx="106" cy="118" r="4" fill="#ef7422" stroke="#000" stroke-width="2.5"/></svg>'; },
+    wo: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><rect x="56" y="20" width="88" height="114" rx="12" fill="#ef7422"/><rect x="66" y="38" width="68" height="88" rx="6" fill="#fff"/><rect x="84" y="12" width="32" height="20" rx="6" fill="#000"/><rect x="74" y="50" width="14" height="14" rx="3" fill="#dbff3d"/><rect x="74" y="74" width="14" height="14" rx="3" fill="#dbff3d"/><rect x="74" y="98" width="14" height="14" rx="3" fill="#fff"/><line x1="96" y1="57" x2="124" y2="57"/><line x1="96" y1="81" x2="124" y2="81"/><line x1="96" y1="105" x2="118" y2="105"/><polyline points="77 57 80 60 85 53" stroke-width="2.5"/><polyline points="77 81 80 84 85 77" stroke-width="2.5"/></g></svg>'; },
+    goods: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><polygon points="100,26 160,50 100,76 40,50" fill="#dbff3d"/><polygon points="40,50 100,76 100,132 40,106" fill="#fff"/><polygon points="160,50 100,76 100,132 160,106" fill="#ef7422"/><polyline points="70,38 130,62" stroke-width="2.5"/></g><rect x="52" y="82" width="26" height="14" rx="3" fill="#dbff3d" stroke="#000" stroke-width="2.5" transform="rotate(22 65 89)"/></svg>'; },
+    order: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><rect x="52" y="22" width="86" height="106" rx="10" fill="#fff"/><line x1="66" y1="46" x2="118" y2="46"/><line x1="66" y1="64" x2="118" y2="64"/><line x1="66" y1="82" x2="100" y2="82"/><circle cx="142" cy="108" r="26" fill="#ef7422"/></g><g stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M132 118l20-20"/><path d="M138 98h14v14"/></g></svg>'; },
+    invoice: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><rect x="52" y="22" width="86" height="106" rx="10" fill="#fff"/><line x1="66" y1="46" x2="118" y2="46"/><line x1="66" y1="64" x2="118" y2="64"/><line x1="66" y1="82" x2="96" y2="82"/><circle cx="142" cy="108" r="27" fill="#dbff3d"/></g><text x="142" y="119" text-anchor="middle" font-family="Bounded,sans-serif" font-weight="800" font-size="30" fill="#000">₽</text></svg>'; },
+    receipt: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><path d="M50 84l-10-24h30l6 24z" fill="#ef7422"/><path d="M150 84l10-24h-30l-6 24z" fill="#ef7422"/><rect x="50" y="84" width="100" height="50" rx="8" fill="#fff"/><rect x="82" y="96" width="36" height="12" rx="4" fill="#dbff3d"/><rect x="82" y="26" width="36" height="28" rx="6" fill="#dbff3d"/><line x1="100" y1="58" x2="100" y2="76"/><polyline points="92 70 100 78 108 70"/></g></svg>'; },
+    move: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><rect x="40" y="112" width="120" height="10" rx="2" fill="#fff"/><rect x="40" y="128" width="120" height="10" rx="2" fill="#fff"/><rect x="50" y="122" width="14" height="6" fill="#000"/><rect x="93" y="122" width="14" height="6" fill="#000"/><rect x="136" y="122" width="14" height="6" fill="#000"/><rect x="66" y="66" width="68" height="46" rx="6" fill="#dbff3d"/><line x1="66" y1="82" x2="134" y2="82"/></g><g stroke="#ef7422" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M52 40h60"/><polyline points="102 30 112 40 102 50"/><path d="M148 52H88"/><polyline points="98 42 88 52 98 62"/></g></svg>'; },
+    inv: function(){ return '<svg viewBox="0 0 200 150" aria-hidden="true"><g '+S+'><line x1="30" y1="74" x2="170" y2="74"/><line x1="30" y1="128" x2="170" y2="128"/><rect x="40" y="46" width="32" height="28" rx="4" fill="#dbff3d"/><rect x="78" y="52" width="26" height="22" rx="4" fill="#fff"/><rect x="110" y="40" width="30" height="34" rx="4" fill="#ef7422"/><rect x="40" y="100" width="36" height="28" rx="4" fill="#fff"/><rect x="82" y="106" width="28" height="22" rx="4" fill="#dbff3d"/></g><g stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle cx="140" cy="96" r="24" fill="rgba(255,255,255,.85)"/><line x1="157" y1="113" x2="176" y2="134"/></g><polyline points="129 96 137 104 151 88" stroke="#2f7a3d" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  };
+
+  /* Правило дня — из наших запретов, по дате */
+  var RULES_OF_DAY = [];
+  BANS.forEach(function(b){ b.items.forEach(function(t){
+    if (/нулев/i.test(t) || t.length > 150) return;
+    RULES_OF_DAY.push({tag:b.title, key:'Нельзя '+t.charAt(0).toLowerCase()+t.slice(1)+'.'});
+  }); });
+  var rod = RULES_OF_DAY[(today.getFullYear()*372 + today.getMonth()*31 + today.getDate()) % RULES_OF_DAY.length];
+
+  var ALL = [
+    {id:'rod-'+dayKey, title:'Правило дня', tag:rod.tag, art:'rule', bg:'rgba(219,255,61,.5)', key:rod.key, more:'Правило меняется каждый день. Все правила по документам — в «Памятке документы».'},
+    {id:'techcard', title:'Техкарта', tag:'Производство', art:'tech', bg:'rgba(255,171,94,.42)', key:'Проверка техкарт — до создания п/з. Правит только Михаил.', more:'Михаил запрашивает у директора, правит, директор сверяет изменения и согласует.'},
+    {id:'workorder', title:'Производственное задание', tag:'Производство', art:'wo', bg:'rgba(255,171,94,.42)', key:'Только после «Подтверждён» и на основании заказа.', more:'Дата текущая, проводится сразу. Ошибка в п/з — не трогать, созвон с директором.'},
+    {id:'goods', title:'Товары и услуги', tag:'Товары', art:'goods', bg:'rgba(219,255,61,.45)', key:'Карточку создаёт только Михаил — сразу с ценой продажи.', more:'S 161 ₽, M и XL 180 ₽. Делается по образцу существующей продукции.'},
+    {id:'supplierorder', title:'Заказ поставщику', tag:'Закупки', art:'order', bg:'rgba(219,255,61,.45)', key:'Только по потребности, подтверждённой Антоном.', more:'Создаёт Михаил с учётом остатков всех складов. Отправка — после согласования суммы директором.'},
+    {id:'supplierinvoice', title:'Счёт поставщика', tag:'Закупки', art:'invoice', bg:'rgba(219,255,61,.45)', key:'Сверить счёт сразу после отправки заказа.', more:'До передачи платёжного поручения.'},
+    {id:'receipt', title:'Приёмка', tag:'Закупки', art:'receipt', bg:'rgba(219,255,61,.45)', key:'Количество — по УПД и по факту пересчёта.', more:'Нет документов — принимаем строго по ручному пересчёту, не по заказу.'},
+    {id:'move', title:'Перемещение', tag:'Склад', art:'move', bg:'rgba(0,0,0,.07)', key:'Только по расчёту «Снабжения». Правка факта — обязательна.', more:'Печать, две подписи, физическое перемещение, потом фото в чат «Документы».'},
+    {id:'inventory', title:'Инвентаризация', tag:'Склад', art:'inv', bg:'rgba(0,0,0,.07)', key:'Допуск 5% — по каждой позиции отдельно.', more:'Последний день месяца — полная. Оприходование и списание — только при инвентаризации.'}
+  ];
+
+  var KEY = 'oggo-deck-v1:' + ((u && u.key) || 'guest');
+  var knownIds = new Set();
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && Array.isArray(saved.known)) knownIds = new Set(saved.known); } catch(e) {}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify({known:Array.from(knownIds)})); } catch(e) {} }
+  function knownCount(){ return ALL.filter(function(c){ return knownIds.has(c.id); }).length; }
+
+  var queue = ALL.filter(function(c){ return !knownIds.has(c.id); });
+  var els = new Map();
+  var deck = document.getElementById('gDeck');
+  var done = document.getElementById('gDone');
+  var live = document.getElementById('gLive');
+  var btnRep = document.getElementById('gBtnRep');
+  var btnKnow = document.getElementById('gBtnKnow');
+  var drag = null, locked = false, ready = false;
+
+  function makeEl(card){
+    var el = document.createElement('article');
+    el.className = 'g-card';
+    el.dataset.id = card.id;
+    el.innerHTML = '<div class="g-art" style="background:'+card.bg+'"><div class="g-art-in">'+ART[card.art](card)+'</div>'+
+      '<span class="g-chip g-tag">'+card.tag+'</span><span class="g-chip g-cnt">'+(ALL.indexOf(card)+1)+' / '+ALL.length+'</span></div>'+
+      '<div class="g-body"><div class="g-title">'+card.title+'</div><div class="g-key"><b>Главное</b><span>'+card.key+'</span></div><p class="g-more">'+card.more+'</p></div>'+
+      '<div class="g-stamp g-know">ЗНАЮ</div><div class="g-stamp g-rep">ПОВТОРИТЬ</div><span class="g-tint"></span>';
+    el.addEventListener('pointerdown', onDown);
+    el.addEventListener('keydown', onKey);
+    return el;
+  }
+
+  function layout(){
+    var vis = queue.slice(0,4);
+    els.forEach(function(el,id){ if (!vis.some(function(c){ return c.id === id; })) { el.remove(); els.delete(id); } });
+    vis.forEach(function(c,i){
+      var el = els.get(c.id);
+      if (!el) {
+        el = makeEl(c); deck.appendChild(el); els.set(c.id, el);
+        if (ready) {
+          el.classList.add('g-entering');
+          el.getBoundingClientRect();
+          var show = function(){ el.classList.remove('g-entering'); };
+          requestAnimationFrame(show); setTimeout(show, 80);
+        }
+      }
+      ['g-s0','g-s1','g-s2','g-s3'].forEach(function(k){ el.classList.remove(k); });
+      el.classList.add('g-s'+i);
+      el.tabIndex = i === 0 ? 0 : -1;
+      el.setAttribute('aria-hidden', String(i !== 0));
+    });
+    stats();
+  }
+
+  function stats(){
+    var k = knownCount();
+    document.getElementById('gPKnow').textContent = 'Знаю '+k+' из '+ALL.length;
+    document.getElementById('gPLeft').textContent = 'Осталось '+queue.length;
+    document.getElementById('gBar').style.width = (k/ALL.length*100)+'%';
+    var isDone = queue.length === 0;
+    done.hidden = !isDone;
+    btnRep.disabled = btnKnow.disabled = isDone;
+    if (isDone) document.getElementById('gDoneText').textContent = 'Пройдено '+ALL.length+' из '+ALL.length+': правило дня и документы.';
+  }
+
+  function stampOpacity(el, x){
+    var kn = el.querySelector('.g-stamp.g-know'), rp = el.querySelector('.g-stamp.g-rep');
+    kn.style.opacity = String(clamp(x/90, 0, 1));
+    rp.style.opacity = String(clamp(-x/90, 0, 1));
+    var art = el.querySelector('.g-art-in');
+    art.style.transform = 'translateX('+(-x*0.12)+'px)';
+  }
+
+  function onDown(e){
+    var el = e.currentTarget;
+    if (locked || !el.classList.contains('g-s0')) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    drag = {el:el, id:e.pointerId, sx:e.clientX, sy:e.clientY, x:0, y:0, vx:0, lx:e.clientX, lt:performance.now()};
+    el.classList.add('g-dragging');
+    try { el.setPointerCapture(e.pointerId); } catch(err) {}
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerup', onUp);
+    el.addEventListener('pointercancel', onCancel);
+  }
+
+  function onMove(e){
+    if (!drag || e.pointerId !== drag.id) return;
+    e.preventDefault();
+    var now = performance.now(), dt = Math.max(1, now - drag.lt);
+    drag.vx = drag.vx*0.65 + ((e.clientX - drag.lx)/dt)*0.35;
+    drag.lx = e.clientX; drag.lt = now;
+    drag.x = e.clientX - drag.sx;
+    drag.y = clamp((e.clientY - drag.sy)*0.3, -48, 48);
+    var rot = clamp(drag.x*0.035, -12, 12);
+    drag.el.style.transform = 'translate3d('+drag.x+'px,'+drag.y+'px,0) rotate('+rot+'deg)';
+    drag.el.style.setProperty('--sh', String(Math.min(0.24, Math.abs(drag.x)/650)));
+    stampOpacity(drag.el, drag.x);
+    previewNext(Math.abs(drag.x));
+  }
+
+  function previewNext(dist){
+    var next = queue[1] && els.get(queue[1].id);
+    if (!next) return;
+    var reveal = 1 - Math.pow(1 - Math.min(1, dist/12), 3);
+    var lift = 1 - Math.pow(1 - Math.min(1, dist/96), 2);
+    next.classList.add('g-preview');
+    next.style.transform = 'translate3d('+(-8*(1-lift))+'px,'+(24*(1-lift))+'px,0) rotate('+(1.15*(1-lift))+'deg) scale('+(0.94+0.06*lift)+','+(0.93+0.07*lift)+')';
+    var t = next.querySelector('.g-tint'); if (t) t.style.opacity = String(Math.max(0, 1 - reveal));
+  }
+  function releasePreview(card){
+    var el = card && els.get(card.id);
+    if (!el || !el.classList.contains('g-preview')) return;
+    var t = el.querySelector('.g-tint');
+    el.classList.remove('g-preview');
+    el.getBoundingClientRect();
+    el.style.transform = '';
+    if (t) t.style.opacity = '';
+  }
+
+  function endGesture(){
+    if (!drag) return null;
+    var d = drag;
+    d.el.classList.remove('g-dragging');
+    try { d.el.releasePointerCapture(d.id); } catch(err) {}
+    d.el.removeEventListener('pointermove', onMove);
+    d.el.removeEventListener('pointerup', onUp);
+    d.el.removeEventListener('pointercancel', onCancel);
+    drag = null;
+    return d;
+  }
+  function onUp(e){
+    if (!drag || e.pointerId !== drag.id) return;
+    var d = endGesture();
+    var projected = d.x + d.vx*150;
+    var go = Math.abs(d.x) >= 76 || (Math.abs(projected) >= 112 && Math.abs(d.x) >= 18);
+    if (go) throwTop(Math.sign(d.x || d.vx) || 1, d.x, d.y);
+    else { releasePreview(queue[1]); returnTop(d.el, d.x, d.y); }
+  }
+  function onCancel(e){
+    if (!drag || e.pointerId !== drag.id) return;
+    var d = endGesture();
+    releasePreview(queue[1]); returnTop(d.el, d.x, d.y);
+  }
+
+  function returnTop(el, x, y){
+    locked = true;
+    var rot = clamp(x*0.035, -12, 12);
+    var a = el.animate([{transform:'translate3d('+x+'px,'+y+'px,0) rotate('+rot+'deg)'},{transform:'translate3d(0,0,0) rotate(0deg)'}],
+      {duration: reduced.matches ? 1 : 320, easing:'cubic-bezier(.2,.9,.3,1)', fill:'forwards'});
+    var dur = reduced.matches ? 1 : 320, ended = false;
+    var fin = function(){ if (ended) return; ended = true; clearTimeout(tm); a.cancel(); el.style.transform = ''; el.style.removeProperty('--sh'); stampOpacity(el, 0); locked = false; };
+    var tm = setTimeout(fin, dur + 250);
+    a.finished.then(fin, fin);
+  }
+
+  function throwTop(dir, x, y){
+    x = x || 0; y = y || 0;
+    if (locked || !queue.length) return;
+    locked = true;
+    var card = queue[0], el = els.get(card.id);
+    el.classList.remove('g-dragging'); el.classList.add('g-leaving'); el.tabIndex = -1;
+    var st = el.querySelector(dir > 0 ? '.g-stamp.g-know' : '.g-stamp.g-rep'); if (st) st.style.opacity = '1';
+    var rot = clamp(x*0.035, -12, 12);
+    var a = el.animate([
+      {transform:'translate3d('+x+'px,'+y+'px,0) rotate('+rot+'deg)', opacity:1},
+      {transform:'translate3d('+(dir*560)+'px,'+(y + Math.min(72, Math.abs(x)*0.16))+'px,0) rotate('+(dir*20)+'deg)', opacity:0.15}
+    ], {duration: reduced.matches ? 1 : 430, easing:'cubic-bezier(.2,.72,.18,1)', fill:'forwards'});
+    queue.shift();
+    if (dir > 0) { knownIds.add(card.id); save(); } else { queue.push(card); }
+    els.delete(card.id);
+    releasePreview(queue[0]);
+    layout();
+    live.textContent = (dir > 0 ? 'Знаю: ' : 'Повторить: ') + card.title;
+    var dur = reduced.matches ? 1 : 430, ended = false;
+    var fin = function(){ if (ended) return; ended = true; clearTimeout(tm); el.remove(); setTimeout(function(){ locked = false; }, reduced.matches ? 1 : 160); };
+    var tm = setTimeout(fin, dur + 250);
+    a.finished.then(fin, fin);
+  }
+
+  function onKey(e){
+    if (locked || !e.currentTarget.classList.contains('g-s0')) return;
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    throwTop(e.key === 'ArrowRight' ? 1 : -1);
+  }
+
+  btnKnow.addEventListener('click', function(){ throwTop(1); });
+  btnRep.addEventListener('click', function(){ throwTop(-1); });
+  document.getElementById('gBtnAgain').addEventListener('click', function(){
+    knownIds.clear(); save(); queue = ALL.slice();
+    els.forEach(function(el){ el.remove(); }); els.clear(); layout();
+  });
+
+  layout(); ready = true;
+}
+
 function renderAll(u){
   renderProfile(u);
   renderTasks(u);
@@ -1196,6 +1505,7 @@ function renderAll(u){
   renderDocBlocks();
   renderFlow();
   renderMoveMap();
+  renderGame(u);
   const w = document.getElementById('whoami');
   w.innerHTML = u ? `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>` : `<div class="av">?</div><div class="nm">не определён</div>`;
 }
