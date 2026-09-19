@@ -341,6 +341,11 @@
   .cz-step.open .dtl{opacity:1;transform:none;}
   .cz-step .dtl p{margin:0 0 8px;}
   .cz-step .dtl p:last-child{margin:0;}
+  .cz-ol{list-style:none;margin:0;padding:0;counter-reset:s;}
+  .cz-ol li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;padding:5px 0;font-size:12.5px;line-height:1.55;}
+  .cz-ol li::before{content:counter(s);flex:0 0 22px;height:22px;border-radius:50%;background:var(--lime);color:var(--lime-ink);font-family:var(--font-display);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .cz-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.14);}
+  .cz-link{display:inline-flex;align-items:center;gap:4px;border:0;font:inherit;font-size:11px;font-weight:700;background:var(--lime);color:var(--lime-ink);border-radius:99px;padding:6px 12px;cursor:pointer;}
   .cz-route{border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:9px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);}
   .cz-path{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
   .cz-path .a{font-size:12.5px;font-weight:700;background:rgba(255,255,255,.7);border:1px solid var(--glass-border);border-radius:12px;padding:8px 12px;}
@@ -407,6 +412,12 @@
 
   <!-- 2. ПРОЦЕСС -->
   <div class="section" id="s-process">
+    <div id="scenBlock">
+      <div class="lime-heading">Что делать, если…</div>
+      <div class="honest" style="margin:-4px 0 12px 4px;">Ситуации Антона: короткие чек-листы по эталону процесса</div>
+      <div id="scenarios"></div>
+    </div>
+
     <div class="lime-heading">Памятка документы</div>
     <div class="honest" style="margin:-4px 0 12px 4px;">Правила, запреты и прошлые ошибки по каждому документу</div>
     <div id="docBlocks"></div>
@@ -1289,6 +1300,175 @@ function scaleBlock(){
   `;
 }
 
+// ===== Что делать, если… (ситуации Антона; шаги из эталона процесса п/з от 19.09.2026) =====
+const SCEN = [
+ {
+  "title": "Перед п/з",
+  "icon": "<rect x=\"6\" y=\"6\" width=\"12\" height=\"15\" rx=\"2\"/><path d=\"M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1z\"/><path d=\"M9 13l2 2 4-4\"/>",
+  "items": [
+   {
+    "q": "Пришёл подтверждённый заказ",
+    "sub": "Что сделать до создания п/з",
+    "steps": [
+     "Проверь, что заказ в статусе «Подтверждён» и цены в нём проверил Михаил.",
+     "Проведи выборочную проверку остатков вместе с Арсением: 30% позиций этого п/з.",
+     "Проверь техкарты всех позиций и всех п/ф. Нет техкарты — п/з не создаём, эскалируем Михаилу.",
+     "Создай п/з на ГП: Документ → Снабжение → Производственное задание. Дата текущая.",
+     "Сделай стоп-проверку: какие техкарты участвуют и какой состав. Только потом создавай вложенные п/з."
+    ],
+    "links": [
+     "workorder",
+     "techcard"
+    ]
+   },
+   {
+    "q": "Проверка остатков показала расхождение",
+    "sub": "Аномалия или больше 5% по позиции",
+    "steps": [
+     "Стоп: п/з дальше не создаём, пока не разобрались.",
+     "Разбор и внеплановая инвентаризация этих позиций. Оприходование и списание — только при ней.",
+     "В чат «Документы» напиши пометку «у нас расхождение план/факт».",
+     "После разбора процесс продолжается. Если расхождения нет (до 5%), в чат ничего не пишем."
+    ],
+    "links": [
+     "inventory"
+    ]
+   },
+   {
+    "q": "На позицию нет техкарты",
+    "sub": "Или она не доведена",
+    "steps": [
+     "В работу не берём.",
+     "Эскалируй Михаилу: только он создаёт и правит техкарты.",
+     "Михаил запрашивает у директора редактирование и правит. Директор сверяет, что изменено, и согласует."
+    ],
+    "links": [
+     "techcard"
+    ]
+   },
+   {
+    "q": "Заказ нужно изменить после «Подтверждён»",
+    "sub": "Правки не принимаются",
+    "steps": [
+     "После «Подтверждён» заказ не меняется, правки не принимаются.",
+     "Корректировка — только дополнительным заказом покупателя. Старый заказ остаётся как есть.",
+     "Заказ создаёт и подтверждает директор: передай вопрос ему."
+    ],
+    "links": [
+     "workorder"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Материалы и выдача",
+  "icon": "<path d=\"M20 7l-8-4-8 4v10l8 4 8-4V7z\"/><path d=\"M4 7l8 4 8-4\"/><line x1=\"12\" y1=\"11\" x2=\"12\" y2=\"21\"/>",
+  "items": [
+   {
+    "q": "Не хватает материалов",
+    "sub": "Как закрыть потребность",
+    "steps": [
+     "Расход считай только через «Снабжение», вручную не считаем.",
+     "Материалы проверяются по каждому п/з отдельно: у них разные техкарты.",
+     "Потребность подтверждаешь ты. Заказ поставщику создаёт Михаил с учётом остатков всех складов, включая Ответ-хранение.",
+     "Сумму заказа согласует директор."
+    ],
+    "links": [
+     "supplierorder"
+    ]
+   },
+   {
+    "q": "Пора выдать материалы под п/з",
+    "sub": "Перемещение материалов",
+    "steps": [
+     "Перемещение создаётся в программе из «Снабжения», по расчёту.",
+     "Печать (сборочный лист), сборка с отметками, правка факта в программе, чистовой, две подписи.",
+     "Физическое перемещение, и только после него — фото документа в чат «Документы»."
+    ],
+    "links": [
+     "move"
+    ]
+   },
+   {
+    "q": "Можно ли отдавать п/з в работу",
+    "sub": "Передача упаковщикам",
+    "steps": [
+     "Материалов нет в полном количестве — задание не отдаём.",
+     "Сначала перемещение от Арсения, потом задание уходит упаковщикам.",
+     "Напечатай шаблон п/з с материалами (продукция к производству, техкарта, расход материалов). Печатать можно только то, что создано в программе.",
+     "Передай шаблон упаковщикам и отправь фото документа в чат."
+    ],
+    "links": [
+     "workorder",
+     "move"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Площадка и выпуск",
+  "icon": "<rect x=\"1\" y=\"3\" width=\"15\" height=\"13\"/><polygon points=\"16 8 20 8 23 11 23 16 16 16 16 8\"/><circle cx=\"5.5\" cy=\"18.5\" r=\"2.5\"/><circle cx=\"18.5\" cy=\"18.5\" r=\"2.5\"/>",
+  "items": [
+   {
+    "q": "Отправляем материалы на ХП или РЕЛЛ",
+    "sub": "Что сверить перед отправкой",
+    "steps": [
+     "Сверь: материалы готовы к отправке, остатки на складе площадки, резервы прошлых п/з (работа идёт — резерв ставится, нет — снимается).",
+     "В п/з «готовое к отправке» колонка «Заказать» должна быть 0.",
+     "Перемещай на конкретный склад площадки, а не на «СТМ»: это группа складов.",
+     "Печатается сопроводительный ТОРГ-13 для транспортной компании. В чат площадки уходят документы перемещения и шаблоны п/з (чат наполняет Михаил)."
+    ],
+    "links": [
+     "move"
+    ]
+   },
+   {
+    "q": "Пришёл отчёт площадки по выпуску",
+    "sub": "Внести факт выпуска",
+    "steps": [
+     "Внеси факт выпуска в день отчёта: в п/з через «Выполнение этапа».",
+     "Проверь склад: он должен соответствовать складу отгрузки заказа покупателя.",
+     "Сверь «Запланировано / Произведено»: факт может отличаться из-за погрешностей.",
+     "Пока отчёт не заведён, отгрузки быть не может. Риск — платное хранение ГП."
+    ],
+    "links": [
+     "workorder"
+    ]
+   }
+  ]
+ },
+ {
+  "title": "Ошибки и даты",
+  "icon": "<path d=\"M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z\"/><line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\"/><line x1=\"12\" y1=\"17\" x2=\"12\" y2=\"17.1\"/>",
+  "items": [
+   {
+    "q": "Нашёл ошибку в п/з",
+    "sub": "Не трогать",
+    "steps": [
+     "П/з не трогай: не отменяй, не правь, ничего нового не создавай.",
+     "Созвонись с директором для разбора.",
+     "Решение — по итогам разбора. Почему так: п/з хранит в себе ошибки, при правке техкарты они остаются в п/з."
+    ],
+    "links": [
+     "workorder"
+    ]
+   },
+   {
+    "q": "Нужна другая дата в документе",
+    "sub": "Задним числом",
+    "steps": [
+     "П/з — только текущая дата. Ранней датой не создаём, если нет комментария «исправление».",
+     "До «исправления» лучше не доводить: все даты должны быть корректными сразу.",
+     "Для других документов: не более суток задним числом, больше — только как «восстановительный документ» с пометкой."
+    ],
+    "links": [
+     "workorder"
+    ]
+   }
+  ]
+ }
+];
+
 function renderRules(){
   const icons = ['<path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/>', '<rect x="3" y="5" width="18" height="16" rx="3"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>', '<path d="M4 20l4-1 11-11-3-3L5 16z"/><line x1="13" y1="6" x2="17" y2="10"/>'];
   makeCarousel(document.getElementById('ruleAccordion'), {
@@ -1299,6 +1479,27 @@ function renderRules(){
       return '<div class="cz-rule"><div class="lb" style="color:var(--ok);">✅ Процесс</div><p>'+r.ok+'</p></div>'+
         '<div class="cz-rule bad"><div class="lb" style="color:var(--danger);">🚫 Нельзя</div><ul>'+r.bad.map(b=>'<li>'+withRev(b)+'</li>').join('')+'</ul></div>'+
         (r.risk ? '<div class="cz-rule risk"><div class="lb" style="color:var(--warn);">⚠️ Риск</div><p>'+r.risk+'</p></div>' : '');
+    }
+  });
+}
+
+function renderScenarios(u){
+  const blk = document.getElementById('scenBlock');
+  if(!blk) return;
+  const show = !u || u.key==='anton' || u.key==='director';
+  blk.hidden = !show;
+  if(!show) return;
+  const chev = ic('<polyline points="6 9 12 15 18 9"/>',15);
+  const rowHtml = it => '<div class="cz-step"><div class="hd"><span class="num">?</span><div style="flex:1;min-width:0;"><div class="tt">'+it.q+'</div><div class="dd">'+it.sub+'</div></div><span class="chv">'+chev+'</span></div>'+
+    '<div class="dtl-w"><div><div class="dtl"><ol class="cz-ol">'+it.steps.map(t=>'<li>'+t+'</li>').join('')+'</ol>'+
+    '<div class="cz-links">'+it.links.map(k=>'<button class="cz-link" data-doc="'+k+'">'+DOCS[k].title+' '+ic('<polyline points="9 6 15 12 9 18"/>',13)+'</button>').join('')+'</div></div></div></div></div>';
+  makeCarousel(document.getElementById('scenarios'), {
+    label:'Ситуации',
+    items: SCEN.map(g=>({title:g.title, sub:g.items.length+' '+(g.items.length===1?'ситуация':g.items.length<5?'ситуации':'ситуаций'), icon:g.icon, peek:g.items.map(i=>i.q).join(' · ')})),
+    list: i=>SCEN[i].items.map(rowHtml).join(''),
+    bind: list=>{
+      list.querySelectorAll('.cz-step .hd').forEach(h=>h.addEventListener('click', ()=>h.parentElement.classList.toggle('open')));
+      list.querySelectorAll('.cz-link').forEach(b=>b.addEventListener('click', e=>{ e.stopPropagation(); openDoc(b.dataset.doc); }));
     }
   });
 }
@@ -1589,6 +1790,7 @@ function renderAll(u){
   renderFlow();
   renderMoveMap();
   renderGame(u);
+  renderScenarios(u);
   const w = document.getElementById('whoami');
   w.innerHTML = u ? `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>` : `<div class="av">?</div><div class="nm">не определён</div>`;
 }
