@@ -491,6 +491,10 @@
       <h2>Часто повторяется по отделу</h2>
       <div id="errChips"></div>
     </div>
+    <div class="glass" id="errByEmp" hidden>
+      <h2>По сотрудникам</h2>
+      <div id="errEmpChips"></div>
+    </div>
     <div class="attn col" id="errTopAttn"></div>
     <div class="lime-heading">Запреты</div>
     <div class="honest" id="banCap" style="margin:-4px 0 12px 4px;"></div>
@@ -528,13 +532,13 @@
 <div class="docModal" id="docModal"><div class="docModal-inner" id="docModalInner"></div></div>
 
 <script>
-const EMPLOYEES = {
+let EMPLOYEES = {
   640047705: { key:'mihail', name:'Михаил Поцелуев', role:'Менеджер производства', dept:'Производство и склад', manager:'Антону', reports:'никого', since:'2025', tg:'@nemo101253', initials:'МП' },
   352006434: { key:'anton', name:'Антон', role:'Руководитель отдела производства', dept:'Производство и склад', manager:'Директору', reports:'Михаил, Арсений, старший смены, 5 фасовщиков', since:'2025', tg:'@Ctony3', initials:'АН' },
   7095736310: { key:'director', name:'Алексей', role:'Директор', dept:'Все отделы', manager:'—', reports:'Антон, Марина, Максим', since:'—', tg:'@super_mario812', initials:'АЛ' }
 };
 
-const ROLES = {
+let ROLES = {
   mihail: {
     position: 'Менеджер производства',
     reportsTo: 'Антону',
@@ -588,13 +592,13 @@ const ROLES = {
   }
 };
 
-const ROSTER = [
+let ROSTER = [
   {key:'anton', name:'Антон', initials:'АН', tg:'@Ctony3'},
   {key:'mihail', name:'Михаил Поцелуев', initials:'МП', tg:'@nemo101253'},
   {key:'arseniy', name:'Арсений', initials:'АР', tg:'— бота ещё не открывал'}
 ];
 
-const TASKS = {
+let TASKS = {
   anton: [
     {id:'PRVO-39', title:'Составить п/з по заказу 00009', pri:'hi', due:'21.09'},
     {id:'PRVO-40', title:'Сверить 00059, найти недостачу', pri:'hi', due:'не подтверждён'},
@@ -608,7 +612,7 @@ const TASKS = {
   arseniy: [],
   director: []
 };
-const SHARED_TASK = {id:'PRVO-43', title:'Дорожная карта заказа 00011 (на проверку)', due:'до старта 00011'};
+let SHARED_TASK = {id:'PRVO-43', title:'Дорожная карта заказа 00011 (на проверку)', due:'до старта 00011'};
 
 const RULES = [
   {
@@ -630,7 +634,7 @@ const RULES = [
   }
 ];
 
-const GROWTH = {
+let GROWTH = {
   anton:   { retro:20, retroN:2, retroBreak:'умалчивание 10 · передача без перемещения 10',
              week:31,  weekN:4,  weekBreak:'п/з задним числом 1 · откат проведения п/з 10 · 2× непроведённое перемещение 10+10',
              top:'Откат проведения / перемещение не создано', note:'31 балл — предварительно. Объявление регламента перенесено на 21.09, начисление этих баллов разбирается на созвоне.' },
@@ -653,7 +657,7 @@ const COMEBACK = [
   {way:'Аттестация', need:'Сдать участок — выполнить операцию и письменно объяснить каждое поле', gives:'Возвращаются забранные операции, снимается режим обязательной проверки'}
 ];
 
-const ERROR_LOG = [
+let ERROR_LOG = [
   {emp:'Михаил', cat:'Другое', dt:'2026-09-18', title:'Короб сложной высечки не заказан вовремя'},
   {emp:'Другое', cat:'Точность остатков', dt:'2026-09-17', title:'Пересортица готовой продукции: Пьюр Смородина/Ягодный мармелад'},
   {emp:'Антон', cat:'Самодеятельность', dt:'2026-09-17', title:'Ручной пересчёт вместо снабжения (расхождение 95,83 кг)'},
@@ -1316,7 +1320,7 @@ const accHtml = (num, title, sub, bodyHtml) => '<div class="cz-step"><div class=
 const ulHtml = arr => '<ul style="margin:0;padding-left:18px;">'+arr.map(x=>'<li style="padding:2px 0;">'+x+'</li>').join('')+'</ul>';
 
 // ===== Что делать, если… (ситуации Антона; шаги из эталона процесса п/з от 19.09.2026) =====
-const SCEN = [
+let SCEN = [
  {
   "title": "Перед п/з",
   "icon": "<rect x=\"6\" y=\"6\" width=\"12\" height=\"15\" rx=\"2\"/><path d=\"M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1z\"/><path d=\"M9 13l2 2 4-4\"/>",
@@ -1519,21 +1523,43 @@ function renderScenarios(u){
   });
 }
 
-function renderErrors(){
-  const counts = {};
-  ERROR_LOG.forEach(e=>{ counts[e.cat] = (counts[e.cat]||0)+1; });
-  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  document.getElementById('errChips').innerHTML = sorted.map(([cat,n])=>`<div class="errchip"><span>${cat}</span><span class="cnt">${n}</span></div>`).join('');
+function renderErrors(u){
+  // errorStats приходит с сервера; в запасном режиме (данные из файла) считаем сами
+  let st = window.ERROR_STATS;
+  if(!st){
+    const counts = {};
+    ERROR_LOG.forEach(e=>{ counts[e.cat] = (counts[e.cat]||0)+1; });
+    const dts = ERROR_LOG.map(e=>e.dt).sort();
+    st = {total:ERROR_LOG.length, from:dts[0], to:dts[dts.length-1], byCategory:Object.entries(counts).sort((a,b)=>b[1]-a[1])};
+  }
+  const isDir = !!u && u.key === 'director';
+  const chip = ([k,n]) => `<div class="errchip"><span>${k}</span><span class="cnt">${n}</span></div>`;
+  document.getElementById('errChips').innerHTML = st.byCategory.map(chip).join('');
+  const be = document.getElementById('errByEmp');
+  be.hidden = !(isDir && st.byEmployee);
+  if(!be.hidden) document.getElementById('errEmpChips').innerHTML = st.byEmployee.map(chip).join('');
 
-  const dates = ERROR_LOG.map(e=>e.dt).sort();
-  const fmt = d => d.split('-').reverse().slice(0,2).join('.');
-  document.getElementById('errHonest').textContent = `${ERROR_LOG.length} записей, ${fmt(dates[0])}–${fmt(dates[dates.length-1])} · источник «Учёт ошибок — дисциплина». Проверка проведена машинным интеллектом.`;
+  const fmt = d => (d||'').split('-').reverse().slice(0,2).join('.');
+  document.getElementById('errHonest').textContent = `${st.total} записей по отделу, ${fmt(st.from)}–${fmt(st.to)}`+(u && !isDir ? `, ваших — ${ERROR_LOG.length}` : '')+` · источник «Учёт ошибок — дисциплина». Проверка проведена машинным интеллектом.`;
 
-  document.getElementById('errTopAttn').innerHTML = `
+  // Имена и точные числа по нулевой цене видит только директор: у сотрудника в журнале лишь его записи
+  let topHtml;
+  if(isDir){
+    const zero = ERROR_LOG.filter(e=>/нулев/i.test(e.title));
+    const rec = zero.filter(e=>/приёмк/i.test(e.title)).length;
+    const who = {}; zero.forEach(e=>{ who[e.emp] = (who[e.emp]||0)+1; });
+    const names = Object.entries(who).sort((a,b)=>b[1]-a[1]).map(([k,n])=>k+' — '+n).join(', ');
+    topHtml = `
     <div class="eb">Самое частое конкретное нарушение</div>
-    <p>Нулевая цена в документе при приёмке или перемещении — 4 из ${ERROR_LOG.length} записей (Арсений — 3, Михаил — 1). Разобрано в блоке «Процесс» → движение документов.</p>
-    <p style="margin-top:8px;">Записи про приёмку с нулевой ценой (3 из 4) — <span class="tag rev">под пересмотром</span></p>
-  `;
+    <p>Нулевая цена в документе при приёмке или перемещении — ${zero.length} из ${st.total} записей (${names}). Разобрано в блоке «Процесс» → движение документов.</p>
+    <p style="margin-top:8px;">Записи про приёмку с нулевой ценой (${rec} из ${zero.length}) — <span class="tag rev">под пересмотром</span></p>`;
+  } else {
+    topHtml = `
+    <div class="eb">Самое частое конкретное нарушение</div>
+    <p>Нулевая цена в документе при приёмке или перемещении. Разобрано в блоке «Процесс» → движение документов.</p>
+    <p style="margin-top:8px;">Записи про приёмку с нулевой ценой — <span class="tag rev">под пересмотром</span></p>`;
+  }
+  document.getElementById('errTopAttn').innerHTML = topHtml;
 
   const total = BANS.reduce((n,b)=>n+b.items.length,0);
   document.getElementById('banCap').textContent = 'Полный список — '+total+' пунктов, по группам';
@@ -1800,7 +1826,7 @@ function renderAll(u){
   renderTasks(u);
   renderGrowth(u);
   renderRules();
-  renderErrors();
+  renderErrors(u);
   renderDocBlocks();
   renderFlow();
   renderMoveMap();
@@ -1810,14 +1836,42 @@ function renderAll(u){
   w.innerHTML = u ? `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>` : `<div class="av">?</div><div class="nm">не определён</div>`;
 }
 
-// Auth
+// Auth и загрузка данных
 const tg = window.Telegram && window.Telegram.WebApp;
 let currentUser = null;
-if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user){
-  tg.ready(); tg.expand();
-  currentUser = EMPLOYEES[tg.initDataUnsafe.user.id] || null;
+// Адрес API (чат А). Пусто — данные берутся из этого файла.
+const API_URL = 'https://oggo-ai-assistant-production.up.railway.app/api/app/data';
+
+function applyRemote(d){
+  if(d.employees) EMPLOYEES = d.employees;
+  if(d.roles) ROLES = d.roles;
+  if(d.tasks) TASKS = d.tasks;
+  if(d.growth) GROWTH = d.growth;
+  if(d.sharedTask) SHARED_TASK = d.sharedTask;
+  if(d.errorLog) ERROR_LOG = d.errorLog;
+  if(d.scen) SCEN = d.scen;
+  ROSTER = d.roster || [];
+  window.ERROR_STATS = d.errorStats || null;
 }
-renderAll(currentUser);
+function showBlock(msg){
+  document.querySelectorAll('.section').forEach(sec=>{ sec.innerHTML = '<div class="empty">'+msg+'</div>'; });
+  document.getElementById('whoami').innerHTML = '<div class="av">?</div><div class="nm">не определён</div>';
+}
+async function boot(){
+  if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user){ tg.ready(); tg.expand(); }
+  if(API_URL && tg && tg.initData){
+    document.getElementById('s-profile').innerHTML = '<div class="empty">Загрузка…</div>';
+    try{
+      const r = await fetch(API_URL, {headers:{Authorization:'tma '+tg.initData}});
+      // 401 пока не блокируем: подпись на сервере ещё не проверена настоящим Telegram, работает запасной режим (данные из файла)
+      if(r.status === 403){ showBlock('Вас нет в списке сотрудников. Обратитесь к директору.'); return; }
+      if(r.ok){ const d = await r.json(); applyRemote(d); currentUser = d.me || null; renderAll(currentUser); return; }
+    }catch(e){}
+  }
+  currentUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? (EMPLOYEES[tg.initDataUnsafe.user.id] || null) : null;
+  renderAll(currentUser);
+}
+boot();
 
 // Bottom nav switching
 document.querySelectorAll('.botnav .ni').forEach(btn=>{
