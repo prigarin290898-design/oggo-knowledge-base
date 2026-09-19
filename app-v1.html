@@ -111,12 +111,6 @@
   .blackblock .docdef .ic{background:var(--orange-2);color:#000;}
   .lime-heading{display:inline-block;background:var(--lime);color:var(--lime-ink);font-family:var(--font-display);font-weight:700;font-size:15px;padding:9px 16px;border-radius:99px;margin-bottom:12px;}
 
-  /* 5 стыков документооборота */
-  .stykrow{display:flex;align-items:center;gap:10px;padding:9px 0;}
-  .styknum{width:22px;height:22px;border-radius:50%;background:var(--pill);color:var(--pill-ink);font-family:var(--font-display);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
-  .stykbody{flex:1;display:flex;flex-direction:column;min-width:0;}
-  .stykbody b{font-size:12.5px;}
-  .stykbody span{font-size:11px;color:var(--ink-dim);}
 
   /* Правила — аккордеон */
   .racc{margin-bottom:8px;}
@@ -184,6 +178,20 @@
   .dblock.fast:not(.open){border-style:dashed;border-color:rgba(0,0,0,.35);}
   .dblock.fast .tag.rev{margin-top:5px;}
 
+
+  /* Движение документов */
+  .mroute{display:flex;flex-direction:column;gap:9px;padding:13px 0;}
+  .mpath{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+  .mchip{font-size:12.5px;font-weight:700;color:#fff;background:rgba(255,255,255,.14);border-radius:12px;padding:8px 12px;}
+  .mchip.to{background:#fff;color:#000;}
+  .mpath .ar{display:flex;color:rgba(255,255,255,.6);}
+  .mline{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+  .mlbl{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.6);}
+  .mprint{font-size:11px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:99px;padding:4px 10px;}
+  .mtxt{font-size:12px;line-height:1.45;color:#fff;}
+  .mwhen{display:flex;align-items:flex-start;gap:8px;}
+  .mwhen .k{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;background:var(--lime);color:var(--lime-ink);border-radius:99px;padding:4px 9px;margin-top:1px;}
+
   /* Карточка документа — модалка */
   .docModal{position:fixed;inset:0;background:var(--paper);z-index:30;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
   .docModal.open{display:block;}
@@ -235,31 +243,20 @@
 
   <!-- 2. ПРОЦЕСС -->
   <div class="section" id="s-process">
+    <div class="lime-heading">Памятка документы</div>
+    <div class="honest" style="margin:-4px 0 12px 4px;">Правила, запреты и прошлые ошибки по каждому документу</div>
     <div id="docBlocks"></div>
 
     <div class="lime-heading">Эталонный процесс п/з</div>
     <div class="honest" style="margin:-4px 0 12px 4px;">Редакция директора 19.09.2026 · шаги 0–12</div>
     <div id="flowBlocks"></div>
 
-    <h2 style="margin-top:4px;">Документооборот — 5 стыков</h2>
-    <div class="glass col" style="gap:0;">
-      <div class="stykrow"><span class="styknum">1</span><div class="stykbody"><b>Приёмка на склад производства</b><span>Поставщик → Кладовщик</span></div><span class="tag">УПД пост.</span></div>
-      <hr class="sep">
-      <div class="stykrow"><span class="styknum">2</span><div class="stykbody"><b>Выдача материалов на производство</b><span>Кладовщик → Старший смены</span></div><span class="tag">ТОРГ-13</span></div>
-      <hr class="sep">
-      <div class="stykrow"><span class="styknum">3</span><div class="stykbody"><b>Выпуск ГП</b><span>Факт вносится в п/з через «Выполнение этапа». Прежний стык с ТОРГ-13 снят</span><span style="margin-top:4px;"><span class="tag rev">уточняется в аудите</span></span></div></div>
-      <hr class="sep">
-      <div class="stykrow"><span class="styknum">4</span><div class="stykbody"><b>Перемещение на склад Ответ-хранения</b><span>Кладовщик → Ответ-хранение</span></div><span class="tag">ТОРГ-13</span></div>
-      <hr class="sep">
-      <div class="stykrow"><span class="styknum">5</span><div class="stykbody"><b>Отгрузка покупателю</b><span>Кладовщик → Покупатель</span></div><span class="tag">УПД</span></div>
-    </div>
+    <div class="lime-heading">Движение документов</div>
+    <div class="honest" style="margin:-4px 0 12px 4px;">Откуда, куда, что печатать и когда</div>
+    <div id="moveMap"></div>
     <div class="blackblock col">
-      <div class="eb">Правило подписи на каждом стыке</div>
-      <p style="margin:0;font-size:12.5px;line-height:1.5;">Две подписи от руки — «сдал» и «принял», два экземпляра. Затем фото подписанного документа в чат «Документы» — в день движения, до конца смены. Движение не считается закрытым, пока фото не в чате. PDF из программы фото не заменяет — в нём нет подписей.</p>
-    </div>
-    <div class="attn col">
-      <div class="eb">Контрольный пункт — не стык</div>
-      <p style="margin:0;"><b>Передача п/з в работу.</b> Задание нельзя отдать в работу, если материалов нет в полном количестве: сначала перемещение от Арсения, потом задание уходит упаковщикам. Антон печатает шаблон п/з с материалами (продукция к производству, техкарта, расход материалов), передаёт упаковщикам и присылает фото документа в чат. Напечатать нельзя, пока п/з не создано в программе — по фото директор видит, что задание создано и передано.</p>
+      <div class="eb">Всегда, при любом движении</div>
+      <p style="margin:0;font-size:12.5px;line-height:1.5;">Две подписи от руки — «сдал» и «принял». Затем фото подписанного документа в чат «Документы» — в день движения, до конца смены. PDF из программы фото не заменяет — в нём нет подписей.</p>
     </div>
 
     <h2>Правила по каждому документу</h2>
@@ -415,7 +412,7 @@ const RULES = [
     risk: 'Без документа и без честного пересчёта компания либо теряет основание для претензии поставщику при недостаче, либо задним числом подгоняет цифры под ожидание — расхождение остаётся незамеченным до инвентаризации.'
   },
   {
-    title: '6. Бумажное сопровождение — 5 стыков',
+    title: '6. Бумажное сопровождение',
     ok: 'На каждой передаче ответственности — две подписи от руки (сдал/принял), затем фото подписанного документа в чат «Документы» в день движения, до конца смены.',
     bad: ['Передавать без двух подписей','Заменять фото PDF-версией без подписей'],
     risk: 'Без подписи с обеих сторон при расхождении спор превращается в «я передавал / мне не передавали» без возможности разрешить его фактами.'
@@ -675,6 +672,142 @@ function renderFlow(){
   el.innerHTML = branches + fast;
   el.querySelectorAll('.dblock-head').forEach(h=>h.addEventListener('click', ()=>h.closest('.dblock').classList.toggle('open')));
   el.querySelectorAll('.frow').forEach(r=>r.addEventListener('click', ()=>r.closest('.fstep').classList.toggle('open')));
+}
+
+
+// Движение документов: откуда → куда, что печатать, кто, когда. Пометка «уточняется в аудите» — правил пока нет (решение директора 19.09.2026)
+const MOVEMAP = [
+  {
+    "key": "receipt",
+    "title": "Приёмка",
+    "sub": "Товар пришёл от поставщика",
+    "icon": "<polyline points=\"22 12 16 12 14 15 10 15 8 12 2 12\"/><path d=\"M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/>",
+    "routes": [
+      {
+        "frm": "Поставщик",
+        "to": "Основной склад",
+        "prints": [
+          "УПД поставщика"
+        ],
+        "who": "Арсений, сверяет Антон",
+        "when": "приходит поставка по заказу поставщику"
+      }
+    ]
+  },
+  {
+    "key": "move",
+    "title": "Перемещение",
+    "sub": "Четыре маршрута",
+    "icon": "<path d=\"M17 3l4 4-4 4\"/><path d=\"M3 7h18\"/><path d=\"M7 21l-4-4 4-4\"/><path d=\"M21 17H3\"/>",
+    "routes": [
+      {
+        "frm": "Основной склад",
+        "to": "Производство",
+        "prints": [
+          "Перемещение",
+          "Сборочный лист"
+        ],
+        "who": "Арсений",
+        "when": "нужно выдать материалы под п/з — по расчёту «Снабжения», до передачи п/з в работу"
+      },
+      {
+        "frm": "Производство",
+        "to": "Основной склад",
+        "prints": [
+          "Перемещение",
+          "Сборочный лист"
+        ],
+        "who": "Старший смены (временно Антон)",
+        "when": "создаётся вручную после выпуска полуфабриката",
+        "whenUnclear": true
+      },
+      {
+        "frm": "Основной склад",
+        "to": "Контрактная площадка (ХП, РЕЛЛ)",
+        "prints": [
+          "Перемещение",
+          "ТОРГ-13"
+        ],
+        "who": "Арсений; чат площадки наполняет Михаил",
+        "when": "материалы готовы к отправке и колонка «Заказать» показывает 0"
+      },
+      {
+        "frm": "Основной склад",
+        "to": "Ответ-хранение",
+        "prints": [
+          "Перемещение",
+          "ТОРГ-13"
+        ],
+        "who": "Арсений",
+        "when": "ГП — еженедельно, избытки материалов — по факту после приёмки",
+        "whenUnclear": true
+      }
+    ]
+  },
+  {
+    "key": "handoff",
+    "title": "Передача п/з в работу",
+    "sub": "Печать шаблона и фото в чат",
+    "icon": "<path d=\"M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1z\"/><rect x=\"6\" y=\"6\" width=\"12\" height=\"15\" rx=\"2\"/><line x1=\"9\" y1=\"11\" x2=\"15\" y2=\"11\"/><line x1=\"9\" y1=\"15\" x2=\"15\" y2=\"15\"/>",
+    "routes": [
+      {
+        "frm": "Антон",
+        "to": "Упаковщики",
+        "prints": [
+          "Шаблон п/з с материалами"
+        ],
+        "who": "Антон, фото документа — в чат",
+        "when": "материалы выданы в полном количестве и п/з уже создано в программе"
+      }
+    ]
+  },
+  {
+    "key": "ship",
+    "title": "Отгрузка покупателю",
+    "sub": "Со склада площадки",
+    "icon": "<rect x=\"1\" y=\"3\" width=\"15\" height=\"13\"/><polygon points=\"16 8 20 8 23 11 23 16 16 16 16 8\"/><circle cx=\"5.5\" cy=\"18.5\" r=\"2.5\"/><circle cx=\"18.5\" cy=\"18.5\" r=\"2.5\"/>",
+    "routes": [
+      {
+        "frm": "Склад площадки (ХП, РЕЛЛ)",
+        "to": "Покупатель",
+        "prints": [],
+        "who": "",
+        "when": "",
+        "whoUnclear": true,
+        "printUnclear": true,
+        "whenOnlyUnclear": true
+      }
+    ]
+  }
+];
+
+function renderMoveMap(){
+  const el = document.getElementById('moveMap');
+  if(!el) return;
+  const arrow = ic('<line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>',16);
+  const printer = ic('<polyline points="6 9 6 3 18 3 18 9"/><rect x="4" y="9" width="16" height="9" rx="2"/><rect x="7" y="14" width="10" height="7" rx="1"/>',14);
+  const unclear = '<span class="tag rev">уточняется в аудите</span>';
+  const routeHtml = r => `
+    <div class="mroute">
+      <div class="mpath"><span class="mchip">${r.frm}</span><span class="ar">${arrow}</span><span class="mchip to">${r.to}</span></div>
+      <div class="mline"><span class="mlbl">${printer}К печати</span>${r.printUnclear ? unclear : r.prints.map(x=>`<span class="mprint">${x}</span>`).join('')}</div>
+      <div class="mline"><span class="mlbl">Кто</span>${r.whoUnclear ? unclear : `<span class="mtxt">${r.who}</span>`}</div>
+      <div class="mwhen"><span class="k">КОГДА</span><span class="mtxt">${r.whenOnlyUnclear ? unclear : r.when + (r.whenUnclear ? ' ' + unclear : '')}</span></div>
+    </div>`;
+  el.innerHTML = MOVEMAP.map(m=>`
+    <div class="dblock" data-block="map-${m.key}">
+      <div class="dblock-head">
+        <div class="row" style="gap:14px;min-width:0;">
+          <div class="dblock-ic">${ic(m.icon,22)}</div>
+          <div style="min-width:0;"><div class="dblock-title">${m.title}</div><div class="dblock-count">${m.sub}</div></div>
+        </div>
+        <div class="dblock-chev">${ic('<polyline points="6 9 12 15 18 9"/>',15)}</div>
+      </div>
+      <div class="dblock-body">
+        ${m.routes.map(r=>`<div class="dblock-sep"></div>${routeHtml(r)}`).join('')}
+      </div>
+    </div>`).join('');
+  el.querySelectorAll('.dblock-head').forEach(h=>h.addEventListener('click', ()=>h.closest('.dblock').classList.toggle('open')));
 }
 
 function ruDocWord(n){
@@ -1040,7 +1173,7 @@ function renderErrors(){
 
   document.getElementById('errTopAttn').innerHTML = `
     <div class="eb">Самое частое конкретное нарушение</div>
-    <p>Нулевая цена в документе при приёмке или перемещении — 4 из ${ERROR_LOG.length} записей (Арсений — 3, Михаил — 1). Разобрано в блоке «Процесс» → документооборот.</p>
+    <p>Нулевая цена в документе при приёмке или перемещении — 4 из ${ERROR_LOG.length} записей (Арсений — 3, Михаил — 1). Разобрано в блоке «Процесс» → движение документов.</p>
     <p style="margin-top:8px;">Записи про приёмку с нулевой ценой (3 из 4) — <span class="tag rev">под пересмотром</span></p>
   `;
 
@@ -1062,6 +1195,7 @@ function renderAll(u){
   renderErrors();
   renderDocBlocks();
   renderFlow();
+  renderMoveMap();
   const w = document.getElementById('whoami');
   w.innerHTML = u ? `<div class="av">${u.initials}</div><div class="nm">${u.name.split(' ')[0]}</div>` : `<div class="av">?</div><div class="nm">не определён</div>`;
 }
