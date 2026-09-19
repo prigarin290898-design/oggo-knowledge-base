@@ -90,11 +90,27 @@
   .sublist.active{display:flex;}
 
   /* Team strip */
-  .teamstrip{display:flex;justify-content:space-between;align-items:center;}
-  .teamnode{text-align:center;}
-  .teamnode .avatar{width:34px;height:34px;font-size:12px;margin:0 auto 4px;}
-  .teamnode div.lbl{font-size:9.5px;color:var(--ink-dim);}
-  .teamlink{width:14px;height:2px;background:var(--line);}
+  .tree{display:flex;flex-direction:column;align-items:center;padding:6px 0 2px;}
+  .tn{display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .tn .avatar{width:56px;height:56px;font-size:18px;}
+  .tn.me .avatar{box-shadow:0 0 0 3px rgba(219,255,61,.45);}
+  .tn .nm{margin-top:7px;font-size:14px;font-weight:700;color:var(--ink);line-height:1.2;}
+  .tn .rl{margin-top:2px;font-size:11px;line-height:1.3;color:var(--ink-dim);max-width:130px;}
+  .tn .you{margin-top:6px;padding:3px 10px;border-radius:99px;background:var(--pill);color:var(--pill-ink);font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
+  .tv{width:2px;height:20px;background:var(--line);}
+  .tkids{position:relative;display:flex;width:100%;}
+  .tkids::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:var(--line);}
+  .tk{flex:1;position:relative;padding-top:20px;display:flex;justify-content:center;}
+  .tk::before{content:'';position:absolute;top:0;left:50%;width:2px;height:20px;margin-left:-1px;background:var(--line);}
+  .glass.tblack{background:var(--pill);color:var(--pill-ink);border-color:transparent;box-shadow:0 14px 30px -16px rgba(0,0,0,.45);backdrop-filter:none;-webkit-backdrop-filter:none;}
+  .tblack .tn .avatar{background:rgba(255,255,255,.16);color:#fff;}
+  .tblack .tn.me .avatar{background:var(--lime);color:var(--lime-ink);box-shadow:0 0 0 3px rgba(219,255,61,.35);}
+  .tblack .tn .nm{color:#fff;}
+  .tblack .tn .rl{color:rgba(255,255,255,.62);}
+  .tblack .tn .you{background:var(--lime);color:var(--lime-ink);}
+  .tblack .tv,.tblack .tk::before,.tblack .tkids::before{background:rgba(255,255,255,.28);}
+  .tblack .tnote{border-top-color:rgba(255,255,255,.22);color:rgba(255,255,255,.62);}
+  .tnote{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:11.5px;line-height:1.4;color:var(--ink-dim);text-align:center;width:100%;}
 
   /* Process carousel */
   .carousel-dots{display:flex;gap:5px;justify-content:center;margin-bottom:10px;}
@@ -306,7 +322,7 @@
   .cz-dots button.on{width:22px;background:#000;}
   .cz-list{display:flex;flex-direction:column;gap:8px;margin:0 16px;transition:opacity .12s,transform .12s;}
   .cz-list.out{opacity:0;transform:translateY(6px);}
-  .cz-list > *{animation:cz-in .38s cubic-bezier(.22,.78,.2,1) both;animation-delay:calc(var(--n,0)*55ms);}
+  .cz-list > *{animation:cz-in .38s cubic-bezier(.22,.78,.2,1) both;animation-delay:calc(min(var(--n,0),9)*50ms);}
   @keyframes cz-in{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   .cz-row{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);}
   .cz-row .ic{width:40px;height:40px;border-radius:12px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
@@ -341,6 +357,28 @@
   .cz-step.open .dtl{opacity:1;transform:none;}
   .cz-step .dtl p{margin:0 0 8px;}
   .cz-step .dtl p:last-child{margin:0;}
+  .cz-item{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-radius:18px;font-size:12.5px;line-height:1.5;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);}
+  .cz-item .mk{flex:0 0 22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .cz-item .mk svg{display:block;stroke-width:2.8;}
+  .cz-item .tx{flex:1;min-width:0;}
+  .cz-item .meta{display:block;font-size:10.5px;color:var(--orange-2);margin-top:3px;}
+  .cz-item.bad{background:var(--danger-bg);border-color:transparent;color:#7a2416;}
+  .cz-item.bad .mk{background:var(--danger);}
+  .cz-item.risk{background:var(--warn-bg);border-color:transparent;color:#4a2f05;}
+  .cz-item.risk .mk{background:var(--warn);}
+  .cz-item.err{background:#000;border-color:#000;color:#fff;}
+  .cz-item.err .mk{background:var(--orange-2);color:#000;}
+  .cz-lab{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin:8px 2px 0;}
+  .cz-lab:first-child{margin-top:0;}
+  .cz-lab.ok{color:var(--ok);} .cz-lab.bad{color:var(--danger);} .cz-lab.risk{color:var(--warn);} .cz-lab.err{color:var(--ink);}
+  .cz-stack{display:flex;flex-direction:column;gap:8px;}
+  .cz-zone{display:flex;align-items:center;gap:12px;margin-top:10px;}
+  .ov{flex:0 0 auto;min-width:88px;text-align:center;font-size:13px;font-weight:800;line-height:1;padding:10px 14px;border-radius:99px;}
+  .ov.g{background:var(--lime);color:var(--lime-ink);}
+  .ov.y{background:#ffcf3f;color:#1a1400;}
+  .ov.r{background:#ff5544;color:#1a0500;}
+  .cz-fact{border-radius:20px;padding:14px 16px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);font-size:12.5px;}
+  .cz-task{border-radius:18px;padding:12px 14px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);}
   .cz-ol{list-style:none;margin:0;padding:0;counter-reset:s;}
   .cz-ol li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;padding:5px 0;font-size:12.5px;line-height:1.55;}
   .cz-ol li::before{content:counter(s);flex:0 0 22px;height:22px;border-radius:50%;background:var(--lime);color:var(--lime-ink);font-family:var(--font-display);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
@@ -358,13 +396,6 @@
   .cz-when{display:flex;align-items:flex-start;gap:8px;}
   .cz-when .k{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;background:var(--lime);color:var(--lime-ink);border-radius:99px;padding:4px 9px;margin-top:1px;}
   .cz-when .tx{font-size:12px;line-height:1.45;}
-  .cz-rule{border-radius:22px;padding:14px 16px;background:var(--glass);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);font-size:12.5px;line-height:1.55;}
-  .cz-rule.bad{background:var(--danger-bg);border-color:transparent;color:#7a2416;}
-  .cz-rule.risk{background:var(--warn-bg);border-color:transparent;color:#4a2f05;}
-  .cz-rule .lb{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
-  .cz-rule p{margin:0;}
-  .cz-rule ul{margin:0;padding-left:18px;}
-  .cz-rule li{padding:2px 0;}
   @media (prefers-reduced-motion:reduce){.cz-card,.cz-list,.cz-list > *,.docModal.open .dm-sheet,.docModal.open .dm-hero,.cz-step,.cz-step *{animation:none;transition:none;}}
 
   .step{position:relative;padding:10px 0 10px 24px;font-size:12.5px;}
@@ -441,13 +472,15 @@
 
   <!-- 3. ОШИБКИ -->
   <div class="section" id="s-errors">
+    <div class="lime-heading">Ошибки</div>
+    <div class="honest" id="errHonest" style="margin:-4px 0 12px 4px;"></div>
     <div class="glass">
       <h2>Часто повторяется по отделу</h2>
       <div id="errChips"></div>
-      <div class="honest" style="margin-top:6px;" id="errHonest"></div>
     </div>
     <div class="attn col" id="errTopAttn"></div>
-    <h2 style="margin-top:4px;">Полный список запретов — 22 пункта</h2>
+    <div class="lime-heading">Запреты</div>
+    <div class="honest" id="banCap" style="margin:-4px 0 12px 4px;"></div>
     <div id="banAccordion"></div>
   </div>
 
@@ -953,7 +986,7 @@ function makeCarousel(host, cfg){
   host.innerHTML = '<div class="cz"><div class="cz-track" tabindex="0" aria-label="'+(cfg.label||'')+'"><i class="cz-sp"></i>'+
     cfg.items.map((it,i)=>'<button class="cz-card'+(it.dashed?' dashed':'')+(i===0?' on':'')+'" data-i="'+i+'" style="--k:'+(i===0?0:1)+'">'+
       (it.tag?'<span class="cz-tag tag rev">'+it.tag+'</span>':'')+
-      '<span class="cz-ic">'+ic(it.icon,22)+'</span><span class="cz-t">'+it.title+'</span><span class="cz-s">'+it.sub+'</span>'+(it.peek?'<span class="cz-p">'+it.peek+'</span>':'')+'</button>').join('')+
+      '<span class="cz-ic">'+(it.iconHtml||ic(it.icon,22))+'</span><span class="cz-t">'+it.title+'</span><span class="cz-s">'+it.sub+'</span>'+(it.peek?'<span class="cz-p">'+it.peek+'</span>':'')+'</button>').join('')+
     '<i class="cz-sp"></i></div><div class="cz-dots">'+cfg.items.map((it,i)=>'<button aria-label="'+it.title+'" data-i="'+i+'"'+(i===0?' class="on"':'')+'></button>').join('')+'</div><div class="cz-list"></div></div>';
   const track = host.querySelector('.cz-track');
   const cards = Array.from(track.querySelectorAll('.cz-card'));
@@ -1019,25 +1052,18 @@ function openDoc(key){
   const d = DOCS[key];
   if(!d) return;
   const blk = DOC_BLOCKS.find(b=>b.docs.includes(key));
+  const ruleRows = String(d.rule).split('<br><br>').reduce((a,par)=>a.concat(czSentences(par)),[]).map(t=>czItem(t,'ok')).join('');
+  const riskRows = [].concat(d.risk||[]).reduce((a,r)=>a.concat(czSentences(r)),[]).map(t=>czItem(t,'risk')).join('');
+  const errRows = d.errors.length ? d.errors.map(e=>czItem(withRev(e.what),'err',e.who+' · '+e.when)).join('') : czItem('Нарушений по этому документу пока не зафиксировано.','ok');
   document.getElementById('docModalInner').innerHTML = `
     <div class="dm-top"><button class="dm-back" id="docBack" aria-label="Назад">${ic('<polyline points="15 18 9 12 15 6"/>',20)}</button><div class="dm-cap">Памятка документы</div><span style="width:44px;flex:0 0 auto;"></span></div>
     <div class="dm-hero"><div class="dm-ic">${ic(d.icon,32)}</div><div class="dm-title">${d.title}</div><div class="dm-sub">${blk ? blk.title : d.subtitle}</div></div>
-    <div class="dm-sheet">
-    <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ok);margin-bottom:6px;">✅ Правило работы</div>
-    <div class="glass" style="border-radius:22px;padding:16px;margin-bottom:18px;font-size:12.5px;line-height:1.55;">${d.rule}</div>
-    <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--danger);margin-bottom:6px;">🚫 Нельзя</div>
-    <div style="background:var(--danger-bg);border-radius:22px;padding:16px;margin-bottom:18px;">
-      ${d.bad.map((b,i)=>`<div style="font-size:12.5px;color:#7a2416;padding:5px 0;">${withRev(b)}</div>${i<d.bad.length-1?'<hr class="sep" style="background:rgba(0,0,0,.08);">':''}`).join('')}
-    </div>
-    ${d.risk ? `<div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--warn);margin-bottom:6px;">⚠️ Риск</div>
-    <div style="background:var(--warn-bg);border-radius:22px;padding:16px;margin-bottom:18px;">
-      ${[].concat(d.risk).map((r,i,a)=>`<div style="font-size:12.5px;line-height:1.55;color:#4a2f05;padding:${i?'10px 0 2px':'2px 0 '+(a.length>1?'10px':'2px')};">${r}</div>${i<a.length-1?'<hr class="sep" style="background:rgba(74,47,5,.18);">':''}`).join('')}
-    </div>` : ''}
-    <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);margin-bottom:6px;">⚠️ Ошибки, которые уже были — недопустимо</div>
-    <div class="blackblock" style="border-radius:22px;padding:16px;">
-      ${d.errors.length ? d.errors.map((e,i)=>`<div class="between" style="padding:7px 0;"><span style="font-size:12px;color:#fff;">${withRev(e.what)}</span><span style="font-size:10.5px;color:var(--orange-2);white-space:nowrap;">${e.who} · ${e.when}</span></div>${i<d.errors.length-1?'<hr class="sep" style="background:rgba(255,255,255,.14);">':''}`).join('') : '<div style="font-size:12.5px;color:rgba(255,255,255,.6);">Нарушений по этому документу пока не зафиксировано.</div>'}
-    </div>
-    </div>
+    <div class="dm-sheet"><div class="cz-stack">
+      ${czLabel('ok','Правило работы')}${ruleRows}
+      ${czLabel('bad','Нельзя')}${d.bad.map(b=>czItem(withRev(b),'bad')).join('')}
+      ${d.risk ? czLabel('risk','Риск')+riskRows : ''}
+      ${czLabel('err','Ошибки, которые уже были — недопустимо')}${errRows}
+    </div></div>
   `;
   document.getElementById('docBack').addEventListener('click', closeDoc);
   const modal = document.getElementById('docModal');
@@ -1049,41 +1075,37 @@ function closeDoc(){
   document.getElementById('docModal').classList.remove('open');
 }
 
+function teamTree(u){
+  const node = (key,ini,name,role) => '<div class="tn'+(u.key===key?' me':'')+'"><div class="avatar'+(u.key===key?' lime':'')+'">'+ini+'</div><div class="nm">'+name+'</div><div class="rl">'+role+'</div>'+(u.key===key?'<div class="you">вы</div>':'')+'</div>';
+  return '<div class="tree">'+
+    node('director','АЛ','Алексей','Директор')+
+    '<div class="tv"></div>'+
+    node('anton','АН','Антон','Руководитель отдела производства')+
+    '<div class="tv"></div>'+
+    '<div class="tkids">'+
+      '<div class="tk">'+node('mihail','МП','Михаил','Менеджер производства')+'</div>'+
+      '<div class="tk">'+node('arseniy','АР','Арсений','Ответственный за склад')+'</div>'+
+    '</div>'+
+    '<div class="tnote">Ещё в подчинении Антона: старший смены и 5 фасовщиков</div>'+
+  '</div>';
+}
+
 function renderProfile(u){
   const el = document.getElementById('s-profile');
   if(!u){ el.innerHTML = `<div class="empty">Не удалось определить, кто вы.<br>Откройте кнопку бота внутри Telegram.</div>`; return; }
-  const li = (arr, dash) => arr.map(t=>`<div class="row" style="align-items:flex-start;">${dash?'<span style="color:var(--ink-dim);">−</span>':'<span class="tag" style="background:var(--ink);color:var(--pill-ink);border-color:var(--ink);flex:0 0 auto;">✓</span>'}<span style="font-size:13px;">${t}</span></div>`).join('<hr class="sep">');
 
   if(u.key === 'director'){
-    const personCard = (p) => {
-      const r = ROLES[p.key];
-      const tasks = TASKS[p.key] || [];
-      const g = GROWTH[p.key];
-      const zoneBadge = g ? (g.week<=10
-        ? `<span class="tag" style="background:var(--lime);color:var(--lime-ink);border-color:transparent;font-weight:800;">норма · нед. ${g.week}</span>`
-        : `<span class="tag" style="background:${g.week<=25?'var(--warn-bg)':'var(--danger-bg)'};color:${g.week<=25?'var(--warn)':'var(--danger)'};border-color:transparent;">${g.week<=25?'внимание':'последствие'} · нед. ${g.week}</span>`) : '';
-      return `
-      <div class="racc" data-key="${p.key}">
-        <div class="rhead"><span class="row" style="gap:8px;"><span class="avatar" style="width:26px;height:26px;font-size:10.5px;">${p.initials}</span>${p.name}</span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-        <div class="rbody">
-          <div class="between"><span class="muted">Должность</span><b style="font-size:12px;text-align:right;">${r.position}</b></div>
-          <div class="between"><span class="muted">Подчиняется</span><b style="font-size:12px;">${r.reportsTo}</b></div>
-          <div class="between"><span class="muted">Telegram</span><b style="font-size:12px;">${p.tg}</b></div>
-          <hr class="sep">
-          <div class="muted" style="margin-bottom:4px;">Зона ответственности</div>
-          <p>${r.scope}</p>
-          <div class="between" style="margin:8px 0;"><span class="muted">Шаги процесса</span><span class="tag">${r.stat}</span></div>
-          <div class="rlbl" style="color:var(--ok);">✅ Делает</div>
-          <ul>${r.make.map(x=>`<li>${x}</li>`).join('')}</ul>
-          <div class="rlbl" style="color:var(--ink-dim);">Контролирует</div>
-          <ul>${r.control.map(x=>`<li>${x}</li>`).join('')}</ul>
-          <div class="rlbl" style="color:var(--danger);">🚫 Не делает</div>
-          <ul>${r.dont.map(x=>`<li>${x}</li>`).join('')}</ul>
-          ${zoneBadge ? `<div class="between" style="margin-top:10px;"><span class="muted">Мой рост</span>${zoneBadge}</div>` : ''}
-          <div class="rlbl" style="color:var(--ink-soft);">Задачи сейчас</div>
-          ${tasks.length ? tasks.map(t=>`<div class="between" style="padding:4px 0;font-size:12px;"><span>${t.title}</span><span class="tag" style="font-size:10px;">${t.id}</span></div>`).join('') : '<p class="muted">Нет активных задач</p>'}
-        </div>
-      </div>`;
+    const personList = p => {
+      const r = ROLES[p.key], tasks = TASKS[p.key] || [], g = GROWTH[p.key];
+      const facts = '<div class="cz-fact"><div class="between"><span class="muted">Должность</span><b style="font-size:12px;text-align:right;">'+r.position+'</b></div>'+
+        '<div class="between" style="margin-top:6px;"><span class="muted">Подчиняется</span><b style="font-size:12px;">'+r.reportsTo+'</b></div>'+
+        '<div class="between" style="margin-top:6px;"><span class="muted">Telegram</span><b style="font-size:12px;">'+p.tg+'</b></div>'+
+        '<hr class="sep"><div class="muted" style="margin-bottom:4px;">Зона ответственности</div><p style="margin:0;font-size:12.5px;line-height:1.5;">'+r.scope+'</p>'+
+        '<div class="between" style="margin-top:8px;"><span class="muted">Шаги процесса</span><span class="tag">'+r.stat+'</span></div></div>';
+      const grow = g ? '<div class="cz-fact"><div class="between"><span class="muted">Мой рост</span>'+zoneTag(g)+'</div></div>' : '';
+      const tk = '<div class="cz-fact"><div class="muted" style="margin-bottom:6px;">Задачи сейчас</div>'+(tasks.length ? tasks.map(t=>'<div class="between" style="padding:4px 0;font-size:12px;"><span>'+t.title+'</span><span class="tag" style="font-size:10px;">'+t.id+'</span></div>').join('') : '<span class="muted">Нет активных задач</span>')+'</div>';
+      const note = r.note ? '<div class="attn"><div class="eb">Что показал чек-лист</div><p>'+r.note+'</p></div>' : '';
+      return facts + note + accHtml(r.make.length,'Делает','Что входит в роль',ulHtml(r.make)) + accHtml(r.control.length,'Контролирует','',ulHtml(r.control)) + accHtml(r.dont.length,'Не делает','',ulHtml(r.dont)) + grow + tk;
     };
     el.innerHTML = `
       <div class="glass" style="text-align:center;padding:22px 16px;">
@@ -1091,11 +1113,13 @@ function renderProfile(u){
         <div class="name">${u.name}</div>
         <div class="muted" style="margin-top:2px;">${u.role}</div>
       </div>
-      <h2>Все сотрудники</h2>
-      ${ROSTER.map(personCard).join('')}
-    `;
-    el.querySelectorAll('.racc').forEach(acc=>{
-      acc.querySelector('.rhead').addEventListener('click', ()=>acc.classList.toggle('open'));
+      ${CZ_HEAD('Все сотрудники','Роль, задачи и рост каждого в одном месте')}
+      <div id="czRoster"></div>`;
+    makeCarousel(document.getElementById('czRoster'), {
+      label:'Сотрудники',
+      items: ROSTER.map(p=>{ const g = GROWTH[p.key]; return {title:p.name, sub:ROLES[p.key].position, iconHtml:'<b style="font-family:var(--font-display);font-size:14px;">'+p.initials+'</b>', peek:g ? 'Неделя '+g.week+' · '+zoneWord(g) : ''}; }),
+      list: i=>personList(ROSTER[i]),
+      bind: bindAcc
     });
     return;
   }
@@ -1108,16 +1132,9 @@ function renderProfile(u){
       <div class="muted" style="margin-top:2px;">${u.role}</div>
       <div class="row" style="justify-content:center;gap:8px;margin-top:10px;"><span class="tag">${u.dept}</span></div>
     </div>
-    <div class="glass">
-      <div class="muted" style="margin-bottom:8px;">Команда отдела</div>
-      <div class="teamstrip">
-        <div class="teamnode"><div class="avatar">АЛ</div><div class="lbl">Директор</div></div>
-        <div class="teamlink"></div>
-        <div class="teamnode"><div class="avatar">АН</div><div class="lbl">Антон</div></div>
-        <div class="teamlink"></div>
-        <div class="teamnode"><div class="avatar lime">${u.initials}</div><div class="lbl" style="font-weight:700;color:var(--ink-soft);">вы</div></div>
-        <div class="teamnode"><div class="avatar">АР</div><div class="lbl">Арсений</div></div>
-      </div>
+    <div class="glass tblack">
+      <div class="cz-cap" style="margin-bottom:10px;">Команда отдела</div>
+      ${teamTree(u)}
     </div>
     ${r ? `
     <div class="glass col">
@@ -1130,73 +1147,48 @@ function renderProfile(u){
       <hr class="sep">
       <div class="row" style="justify-content:space-between;"><span class="muted">Шаги процесса</span><span class="tag">${r.stat}</span></div>
     </div>
-    <div class="blackblock col">
+    ${CZ_HEAD('Моя роль','Что делаю, что контролирую и чего не делаю')}
+    <div id="czRole"></div>
+    <div class="attn col">
       <div class="eb">Правила роли</div>
       ${r.rules.map(x=>`<p style="margin:0;font-size:12px;line-height:1.5;">— ${x}</p>`).join('')}
     </div>
-    <div class="subtabs">
-      <div class="subtab active" data-sub="make">Делаю</div>
-      <div class="subtab" data-sub="control">Контролирую</div>
-      <div class="subtab" data-sub="dont">Не делаю</div>
-    </div>
-    <div class="glass">
-      <div class="sublist active" data-sub="make">${li(r.make,false)}</div>
-      <div class="sublist" data-sub="control">${li(r.control,false)}</div>
-      <div class="sublist" data-sub="dont">${li(r.dont,true)}</div>
-    </div>
-    <div class="attn"><div class="eb">Что показал чек-лист</div><p>${r.note}</p></div>` : ''}
+    ` : ''}
     <div class="glass row" style="justify-content:space-between;">
       <span style="font-size:12.5px;font-weight:600;">Telegram</span><span class="tag">${u.tg}</span>
     </div>
   `;
-  el.querySelectorAll('.subtab').forEach(st=>{
-    st.addEventListener('click', ()=>{
-      el.querySelectorAll('.subtab').forEach(x=>x.classList.remove('active'));
-      el.querySelectorAll('.sublist').forEach(x=>x.classList.remove('active'));
-      st.classList.add('active');
-      el.querySelector(`.sublist[data-sub="${st.dataset.sub}"]`).classList.add('active');
+  if(r){
+    const groups = [{t:'Делаю', a:r.make, icon:IC.check, bad:false},{t:'Контролирую', a:r.control, icon:IC.eye, bad:false},{t:'Не делаю', a:r.dont, icon:IC.ban, bad:true}];
+    makeCarousel(document.getElementById('czRole'), {
+      label:'Моя роль',
+      items: groups.map(g=>({title:g.t, sub:g.a.length+' '+(g.a.length===1?'пункт':g.a.length<5?'пункта':'пунктов'), icon:g.icon, peek:plain(g.a[0]||'',60)})),
+      list: i=>groups[i].a.map(t=>czItem(t, groups[i].bad)).join('')
     });
-  });
+  }
 }
 
 function renderTasks(u){
   const el = document.getElementById('s-tasks');
   if(!u){ el.innerHTML = `<div class="empty">Задачи появятся после определения пользователя.</div>`; return; }
-  const card = t => `
-    <div class="taskcard">
-      <div class="between"><span class="row" style="gap:6px;font-size:12.5px;font-weight:700;"><span class="dotpri ${t.pri==='hi'?'':t.pri==='mid'?'mid':'low'}"></span>${t.title}</span><span class="tag">${t.id}</span></div>
-      <div class="muted">срок ${t.due}</div>
-    </div>`;
-  const sharedBlock = `
-    <div class="glass">
-      <h2>Общее</h2>
-      <div class="taskcard">
-        <div class="between"><span style="font-size:12.5px;font-weight:700;">${SHARED_TASK.title}</span><span class="tag">${SHARED_TASK.id}</span></div>
-        <div class="muted">срок ${SHARED_TASK.due}</div>
-      </div>
-    </div>
-    <div class="pill lime" id="openTracker" style="justify-content:center;width:100%;text-align:center;margin-bottom:10px;cursor:pointer;">Открыть в Трекере</div>
-    <div class="honest">Данные из Яндекс Трекер (очередь PR-VO) на 19.09.2026.</div>
-  `;
-
+  const row = t => '<div class="cz-task"><div class="between"><span class="row" style="gap:8px;font-size:12.5px;font-weight:700;">'+(t.pri?'<span class="dotpri '+(t.pri==='hi'?'':t.pri==='mid'?'mid':'low')+'"></span>':'')+t.title+'</span><span class="tag">'+t.id+'</span></div><div class="muted" style="margin-top:4px;">срок '+t.due+'</div></div>';
+  const shared = {title:'Общее', sub:'1 задача', icon:IC.users, peek:SHARED_TASK.title, list:[SHARED_TASK]};
+  const n = a => a.length ? a.length+' '+(a.length===1?'задача':a.length<5?'задачи':'задач') : 'пусто';
+  let groups;
   if(u.key === 'director'){
-    el.innerHTML = ROSTER.map(p=>{
-      const list = TASKS[p.key] || [];
-      return `
-      <div class="glass">
-        <div class="between" style="margin-bottom:8px;"><h2 style="margin:0;">${p.name}</h2><span class="tag">${list.length ? list.length+' задач' : 'пусто'}</span></div>
-        ${list.length ? list.map(card).join('') : '<div class="muted">Сейчас ничего не назначено.</div>'}
-      </div>`;
-    }).join('') + sharedBlock;
+    groups = ROSTER.map(p=>{ const l = TASKS[p.key] || []; return {title:p.name, sub:n(l), iconHtml:'<b style="font-family:var(--font-display);font-size:14px;">'+p.initials+'</b>', peek:l[0] ? l[0].title : 'Сейчас ничего не назначено', list:l}; }).concat([shared]);
   } else {
     const own = TASKS[u.key] || [];
-    el.innerHTML = `
-      <div class="glass">
-        <h2>Ваши задачи</h2>
-        ${own.length ? own.map(card).join('') : '<div class="muted">Сейчас на вас ничего не назначено.</div>'}
-      </div>
-    ` + sharedBlock;
+    groups = [{title:'Ваши задачи', sub:n(own), icon:IC.tasks, peek:own[0] ? own[0].title : 'Сейчас ничего не назначено', list:own}, shared];
   }
+  el.innerHTML = CZ_HEAD('Задачи','Данные из Яндекс Трекера (очередь PR-VO) на 19.09.2026')+
+    '<div id="czTasks"></div>'+
+    '<div class="pill lime" id="openTracker" style="justify-content:center;width:100%;text-align:center;margin-bottom:10px;cursor:pointer;">Открыть в Трекере</div>';
+  makeCarousel(document.getElementById('czTasks'), {
+    label:'Задачи',
+    items: groups.map(g=>({title:g.title, sub:g.sub, icon:g.icon, iconHtml:g.iconHtml, peek:g.peek})),
+    list: i=>groups[i].list.length ? groups[i].list.map(row).join('') : czEmpty('Сейчас ничего не назначено.')
+  });
   const trackerUrl = 'https://tracker.yandex.ru/issues/?query=Queue%3A%20PRVO%20Sort%20By%3A%20key%20DESC';
   document.getElementById('openTracker').addEventListener('click', ()=>{
     if(tg && tg.openLink){ tg.openLink(trackerUrl); }
@@ -1207,98 +1199,104 @@ function renderTasks(u){
 function renderGrowth(u){
   const el = document.getElementById('s-growth');
   if(!u){ el.innerHTML = `<div class="empty">Раздел доступен после определения пользователя.</div>`; return; }
+  const important = `<div class="attn"><div class="eb">Важно</div><p>Счёт по регламенту идёт с 21.09.2026, но денежный вес баллы получают только с 01.10.2026 — сентябрь считается «на сухую». Заявил проблему сам — ноль баллов всегда, без исключений.</p></div>`;
+  const detail = g => '<div class="cz-fact"><div class="muted">Из чего баллы этой недели</div><p style="margin:4px 0 0;font-size:12.5px;line-height:1.5;">'+g.weekBreak+'</p></div>'+
+    '<div class="cz-fact"><div class="muted">Из чего баллы ретроспективы</div><p style="margin:4px 0 0;font-size:12.5px;line-height:1.5;">'+g.retroBreak+'</p></div>'+
+    (g.note ? '<div class="cz-note"><div class="cz-cap">Уточнение</div><div class="cz-txt">'+g.note+'</div></div>' : '')+
+    '<div class="cz-fact"><div class="muted" style="margin-bottom:6px;">Часто повторяется</div><div class="errchip" style="margin:0;"><span>'+g.top+'</span></div></div>';
 
   if(u.key === 'director'){
-    const row = p => {
-      const g = GROWTH[p.key];
-      if(!g) return '';
-      const zoneBadge = g.week<=10
-        ? `<span class="tag" style="background:var(--lime);color:var(--lime-ink);border-color:transparent;font-weight:800;">норма</span>`
-        : `<span class="tag" style="background:${g.week<=25?'var(--warn-bg)':'var(--danger-bg)'};color:${g.week<=25?'var(--warn)':'var(--danger)'};border-color:transparent;">${g.week<=25?'внимание':'последствие'}</span>`;
-      return `
-      <div class="glass">
-        <div class="between">
-          <div class="row" style="gap:8px;"><span class="avatar" style="width:32px;height:32px;font-size:11px;">${p.initials}</span><b style="font-size:13px;">${p.name}</b></div>
-          <div class="row" style="gap:8px;"><span class="huge" style="font-size:20px;">${g.week}</span>${zoneBadge}</div>
-        </div>
-        <div class="errchip" style="margin-top:8px;"><span>${g.top}</span></div>
-      </div>`;
-    };
-    el.innerHTML = `
-      <div class="glass col"><div class="muted">Текущая неделя (15–21.09) — по отделу</div></div>
-      ${ROSTER.map(row).join('')}
-      <div class="attn">
-        <div class="eb">Важно</div>
-        <p>Счёт по регламенту идёт с 21.09.2026, но денежный вес баллы получают только с 01.10.2026 — сентябрь считается «на сухую». Заявил проблему сам — ноль баллов всегда, без исключений.</p>
-      </div>
-      ${scaleBlock()}
-    `;
+    const list = ROSTER.filter(p=>GROWTH[p.key]);
+    el.innerHTML = CZ_HEAD('Мой рост','Текущая неделя (15–21.09) — по отделу')+'<div id="czGrowth"></div>'+important+'<div id="czScale"></div>';
+    makeCarousel(document.getElementById('czGrowth'), {
+      label:'Рост сотрудников',
+      items: list.map(p=>{ const g = GROWTH[p.key]; return {title:p.name, sub:'Неделя: '+g.week+' балл.', iconHtml:'<b style="font-family:var(--font-display);font-size:14px;">'+p.initials+'</b>', peek:zoneWord(g)+' · '+g.top}; }),
+      list: i=>{ const g = GROWTH[list[i].key]; return '<div class="cz-fact"><div class="between"><span class="muted">Текущая неделя</span>'+zoneTag(g)+'</div><div class="huge" style="font-size:30px;margin-top:6px;">'+g.week+'</div></div>'+detail(g); }
+    });
+    scaleBlock();
     return;
   }
 
   const g = GROWTH[u.key];
   if(!g){ el.innerHTML = `<div class="empty">Раздел доступен после определения пользователя.</div>`; return; }
-  const zone = g.week<=10 ? {c:'ok',l:'норма'} : g.week<=25 ? {c:'warn',l:'внимание'} : {c:'danger',l:'последствие'};
-  const zoneBadge = g.week<=10
-    ? `<span class="tag" style="background:var(--lime);color:var(--lime-ink);border-color:transparent;font-weight:800;">норма</span>`
-    : `<span class="tag" style="background:var(--${zone.c}-bg);color:var(--${zone.c});border-color:transparent;">${zone.l}</span>`;
-  el.innerHTML = `
+  el.innerHTML = CZ_HEAD('Мой рост','Текущая неделя (15–21.09)')+`
     <div class="glass">
       <div class="between">
-        <div><div class="muted">Текущая неделя (15–21.09)</div><div class="huge" style="font-size:32px;">${g.week}</div></div>
-        ${zoneBadge}
+        <div><div class="muted">Баллы за неделю</div><div class="huge" style="font-size:32px;">${g.week}</div></div>
+        ${zoneTag(g)}
       </div>
       <div class="bars"><div class="b" style="height:${Math.max(10,g.retro/1.2)}%;"></div><div class="b hi" style="height:${Math.max(10,g.week/1.2)}%;"></div></div>
       <div class="row" style="justify-content:space-between;"><span class="muted" style="font-size:10px;">ретро 18.08–16.09 (${g.retroN} зап.)</span><span class="muted" style="font-size:10px;">тек. неделя (${g.weekN} зап.)</span></div>
     </div>
-    <div class="glass col">
-      <div class="muted">Из чего баллы этой недели</div>
-      <div style="font-size:12.5px;line-height:1.5;">${g.weekBreak}</div>
-    </div>
-    <div class="glass col">
-      <div class="muted">Из чего баллы ретроспективы</div>
-      <div style="font-size:12.5px;line-height:1.5;">${g.retroBreak}</div>
-    </div>
-    ${g.note ? `<div class="attn"><div class="eb">Уточнение</div><p>${g.note}</p></div>` : ''}
-    <div class="glass col"><div class="muted">Часто повторяется</div><div class="errchip"><span>${g.top}</span></div></div>
-    <div class="attn">
-      <div class="eb">Важно</div>
-      <p>Счёт по регламенту идёт с 21.09.2026, но денежный вес баллы получают только с 01.10.2026 — сентябрь считается «на сухую». Заявил проблему сам — ноль баллов всегда, без исключений.</p>
-    </div>
-    ${scaleBlock()}
-  `;
+    ${CZ_HEAD('Разбор баллов','Из чего складывается ваш счёт')}
+    <div id="czGrowth"></div>
+    ${important}
+    <div id="czScale"></div>`;
+  const parts = [
+    {t:'Эта неделя', s:g.week+' балл.', icon:IC.step, body:'<div class="cz-fact"><p style="margin:0;font-size:12.5px;line-height:1.5;">'+g.weekBreak+'</p></div>'},
+    {t:'Ретроспектива', s:g.retro+' балл.', icon:IC.chart, body:'<div class="cz-fact"><p style="margin:0;font-size:12.5px;line-height:1.5;">'+g.retroBreak+'</p></div>'},
+    {t:'Часто повторяется', s:'Что чаще всего', icon:IC.flag, body:'<div class="cz-fact"><div class="errchip" style="margin:0;"><span>'+g.top+'</span></div></div>'+(g.note ? '<div class="cz-note"><div class="cz-cap">Уточнение</div><div class="cz-txt">'+g.note+'</div></div>' : '')}
+  ];
+  makeCarousel(document.getElementById('czGrowth'), {
+    label:'Разбор баллов',
+    items: parts.map(x=>({title:x.t, sub:x.s, icon:x.icon, peek:plain(x.body,60)})),
+    list: i=>parts[i].body
+  });
+  scaleBlock();
 }
 
 function scaleBlock(){
-  return `
-    <h2 style="margin-top:4px;">Как считаются баллы</h2>
-    <div class="glass col" style="gap:0;">
-      ${SCALE.map(s=>`
-        <div class="between" style="padding:9px 0;">
-          <div><b style="font-size:12.5px;">Уровень ${s.lvl}</b><div class="muted" style="font-size:11px;max-width:220px;">${s.meaning}</div></div>
-          <div class="row" style="gap:6px;"><span class="tag">1-й раз ${s.first}</span><span class="tag" style="background:var(--pill);color:var(--pill-ink);border-color:var(--pill);">повтор ${s.repeat}</span></div>
-        </div>
-        ${s.lvl<3 ? '<hr class="sep">' : ''}
-      `).join('')}
-    </div>
-    <div class="blackblock col">
-      <div class="eb">Зоны месяца</div>
-      <p style="margin:0;font-size:12.5px;">🟢 0–10 — норма, ничего не происходит. 🟡 11–25 — разговор один на один с директором. 🔴 выше 25 — не проходит аттестацию, не получает расширения полномочий, с фондом — депремирование.</p>
-    </div>
-    <h2>Два пути обратно</h2>
-    <div class="glass col" style="gap:0;">
-      ${COMEBACK.map((c,i)=>`
-        <div style="padding:9px 0;">
-          <b style="font-size:12.5px;">${c.way}</b>
-          <div style="font-size:12px;margin-top:2px;"><span class="muted">Нужно:</span> ${c.need}</div>
-          <div style="font-size:12px;margin-top:2px;"><span class="muted">Даёт:</span> ${c.gives}</div>
-        </div>
-        ${i<COMEBACK.length-1 ? '<hr class="sep">' : ''}
-      `).join('')}
-    </div>
-    <div class="honest">Аттестация — ежемесячно, два дня: 01–02.10 (установочная, без последствий) · 02–03.11 · 01–02.12. Сдача — право, не обязанность: тратит время только тот, у кого есть повод вернуть операцию или снять проверку.</div>
-  `;
+  const host = document.getElementById('czScale');
+  if(!host) return;
+  host.innerHTML = CZ_HEAD('Как считаются баллы','Уровни, зоны месяца и пути обратно')+'<div id="czScaleC"></div>';
+  const levels = SCALE.map(x=>'<div class="cz-fact"><div class="between"><b style="font-size:12.5px;">Уровень '+x.lvl+'</b><span class="row" style="gap:6px;"><span class="tag">1-й раз '+x.first+'</span><span class="tag" style="background:var(--pill);color:var(--pill-ink);border-color:var(--pill);">повтор '+x.repeat+'</span></span></div><div class="muted" style="margin-top:4px;font-size:11.5px;">'+x.meaning+'</div></div>').join('');
+  const zones = '<div class="cz-note"><div class="cz-cap">Зоны месяца</div>'+
+    [['g','0–10','норма, ничего не происходит.'],['y','11–25','разговор один на один с директором.'],['r','выше 25','не проходит аттестацию, не получает расширения полномочий, с фондом — депремирование.']]
+    .map(z=>'<div class="cz-zone"><span class="ov '+z[0]+'">'+z[1]+'</span><span class="cz-txt">'+z[2]+'</span></div>').join('')+'</div>';
+  const ways = COMEBACK.map(c=>'<div class="cz-fact"><b style="font-size:12.5px;">'+c.way+'</b><div style="font-size:12px;margin-top:4px;"><span class="muted">Нужно:</span> '+c.need+'</div><div style="font-size:12px;margin-top:2px;"><span class="muted">Даёт:</span> '+c.gives+'</div></div>').join('');
+  const att = '<div class="cz-note"><div class="cz-cap">Аттестация</div><div class="cz-txt">Ежемесячно, два дня: 01–02.10 (установочная, без последствий) · 02–03.11 · 01–02.12. Сдача — право, не обязанность: тратит время только тот, у кого есть повод вернуть операцию или снять проверку.</div></div>';
+  const items = [{t:'Уровни', s:'1, 2 и 3', icon:IC.list, body:levels},{t:'Зоны месяца', s:'Норма, внимание, последствие', icon:IC.flag, body:zones},{t:'Пути обратно', s:'Два пути', icon:IC.route, body:ways},{t:'Аттестация', s:'Ежемесячно', icon:IC.cal, body:att}];
+  makeCarousel(document.getElementById('czScaleC'), {
+    label:'Как считаются баллы',
+    items: items.map(x=>({title:x.t, sub:x.s, icon:x.icon})),
+    list: i=>items[i].body
+  });
 }
+
+// ===== Помощники для экранов в стиле каруселей =====
+const CZ_HEAD = (t, cap) => '<div class="lime-heading">'+t+'</div>'+(cap ? '<div class="honest" style="margin:-4px 0 12px 4px;">'+cap+'</div>' : '');
+const MK = {
+  ok:'<polyline points="5 12.5 10 17.5 19 7"/>',
+  bad:'<line x1="6" y1="12" x2="18" y2="12"/>',
+  risk:'<line x1="12" y1="6.5" x2="12" y2="13"/><line x1="12" y1="17.2" x2="12" y2="17.3"/>',
+  err:'<line x1="12" y1="6.5" x2="12" y2="13"/><line x1="12" y1="17.2" x2="12" y2="17.3"/>'
+};
+const czItem = (t, kind, meta) => { const k = kind===true ? 'bad' : (kind || 'ok'); return '<div class="cz-item '+k+'"><span class="mk">'+ic(MK[k],13)+'</span><span class="tx">'+t+(meta ? '<span class="meta">'+meta+'</span>' : '')+'</span></div>'; };
+const czLabel = (kind, text) => '<div class="cz-lab '+kind+'">'+text+'</div>';
+const czSentences = h => String(h).split(/(?<=[.!?])\s+(?=[А-ЯЁA-Z«"])/).filter(Boolean);
+const czEmpty = t => '<div class="cz-item"><span>'+t+'</span></div>';
+function zoneTag(g){
+  if(g.week<=10) return '<span class="tag" style="background:var(--lime);color:var(--lime-ink);border-color:transparent;font-weight:800;">норма · нед. '+g.week+'</span>';
+  const c = g.week<=25 ? 'warn' : 'danger';
+  return '<span class="tag" style="background:var(--'+c+'-bg);color:var(--'+c+');border-color:transparent;">'+(g.week<=25?'внимание':'последствие')+' · нед. '+g.week+'</span>';
+}
+function zoneWord(g){ return g.week<=10 ? 'норма' : g.week<=25 ? 'внимание' : 'последствие'; }
+const IC = {
+  check:'<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  ban:'<circle cx="12" cy="12" r="9"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/>',
+  tasks:'<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 12l3 3 5-6"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.6 3-6 7-6s7 2.4 7 6"/><path d="M16 4.5a3.5 3.5 0 010 7"/><path d="M18 14.5c2.4.7 4 2.5 4 5.5"/>',
+  chart:'<line x1="5" y1="19" x2="5" y2="13"/><line x1="12" y1="19" x2="12" y2="7"/><line x1="19" y1="19" x2="19" y2="11"/>',
+  list:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+  flag:'<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
+  route:'<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 000-8h-4a4 4 0 010-8h6"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
+  step:'<path d="M3 17l6-6 4 4 8-8"/><polyline points="14 7 21 7 21 14"/>'
+};
+function bindAcc(list){ list.querySelectorAll('.cz-step .hd').forEach(h=>h.addEventListener('click', ()=>h.parentElement.classList.toggle('open'))); }
+const accHtml = (num, title, sub, bodyHtml) => '<div class="cz-step"><div class="hd"><span class="num">'+num+'</span><div style="flex:1;min-width:0;"><div class="tt">'+title+'</div>'+(sub?'<div class="dd">'+sub+'</div>':'')+'</div><span class="chv">'+ic('<polyline points="6 9 12 15 18 9"/>',15)+'</span></div><div class="dtl-w"><div><div class="dtl">'+bodyHtml+'</div></div></div></div>';
+const ulHtml = arr => '<ul style="margin:0;padding-left:18px;">'+arr.map(x=>'<li style="padding:2px 0;">'+x+'</li>').join('')+'</ul>';
 
 // ===== Что делать, если… (ситуации Антона; шаги из эталона процесса п/з от 19.09.2026) =====
 const SCEN = [
@@ -1476,9 +1474,9 @@ function renderRules(){
     items: RULES.map((r,i)=>({title:r.title.replace(/^\d+\.\s*/,''), sub:'Для любого документа', icon:icons[i%icons.length], peek:plain(r.ok,60)})),
     list: i=>{
       const r = RULES[i];
-      return '<div class="cz-rule"><div class="lb" style="color:var(--ok);">✅ Процесс</div><p>'+r.ok+'</p></div>'+
-        '<div class="cz-rule bad"><div class="lb" style="color:var(--danger);">🚫 Нельзя</div><ul>'+r.bad.map(b=>'<li>'+withRev(b)+'</li>').join('')+'</ul></div>'+
-        (r.risk ? '<div class="cz-rule risk"><div class="lb" style="color:var(--warn);">⚠️ Риск</div><p>'+r.risk+'</p></div>' : '');
+      return czLabel('ok','Процесс')+czSentences(r.ok).map(t=>czItem(t,'ok')).join('')+
+        czLabel('bad','Нельзя')+r.bad.map(b=>czItem(withRev(b),'bad')).join('')+
+        (r.risk ? czLabel('risk','Риск')+czSentences(r.risk).map(t=>czItem(t,'risk')).join('') : '');
     }
   });
 }
@@ -1512,7 +1510,7 @@ function renderErrors(){
 
   const dates = ERROR_LOG.map(e=>e.dt).sort();
   const fmt = d => d.split('-').reverse().slice(0,2).join('.');
-  document.getElementById('errHonest').textContent = `${ERROR_LOG.length} записей, ${fmt(dates[0])}–${fmt(dates[dates.length-1])} · источник 🚩 Учёт ошибок — дисциплина. Проверка проведена машинным интеллектом.`;
+  document.getElementById('errHonest').textContent = `${ERROR_LOG.length} записей, ${fmt(dates[0])}–${fmt(dates[dates.length-1])} · источник «Учёт ошибок — дисциплина». Проверка проведена машинным интеллектом.`;
 
   document.getElementById('errTopAttn').innerHTML = `
     <div class="eb">Самое частое конкретное нарушение</div>
@@ -1520,13 +1518,13 @@ function renderErrors(){
     <p style="margin-top:8px;">Записи про приёмку с нулевой ценой (3 из 4) — <span class="tag rev">под пересмотром</span></p>
   `;
 
-  document.getElementById('banAccordion').innerHTML = BANS.map((b,i)=>`
-    <div class="racc" data-i="${i}">
-      <div class="rhead"><span>${b.title} (${b.items.length})</span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="rbody"><ul>${b.items.map(x=>`<li>${withRev(x)}</li>`).join('')}</ul></div>
-    </div>`).join('');
-  document.querySelectorAll('#banAccordion .racc').forEach(acc=>{
-    acc.querySelector('.rhead').addEventListener('click', ()=>acc.classList.toggle('open'));
+  const total = BANS.reduce((n,b)=>n+b.items.length,0);
+  document.getElementById('banCap').textContent = 'Полный список — '+total+' пунктов, по группам';
+  const banIcons = [IC.tasks, '<path d="M17 3l4 4-4 4"/><path d="M3 7h18"/><path d="M7 21l-4-4 4-4"/><path d="M21 17H3"/>', '<path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/>', IC.cal, '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>'];
+  makeCarousel(document.getElementById('banAccordion'), {
+    label:'Запреты',
+    items: BANS.map((b,i)=>({title:b.title, sub:b.items.length+' '+(b.items.length===1?'запрет':b.items.length<5?'запрета':'запретов'), icon:banIcons[i%banIcons.length], peek:plain(b.items[0],56)})),
+    list: i=>BANS[i].items.map(x=>czItem(withRev(x), true)).join('')
   });
 }
 
@@ -1811,7 +1809,7 @@ document.querySelectorAll('.botnav .ni').forEach(btn=>{
     document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
     btn.classList.add('on');
     document.getElementById('s-'+btn.dataset.s).classList.add('active');
-    if(btn.dataset.s==='process') refreshCarousels();
+    refreshCarousels();
   });
 });
 
